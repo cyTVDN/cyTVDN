@@ -12,7 +12,7 @@ cdef _float clipval(_float a, _float val) nogil:
     
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def cy_roll_sub_clip(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):
+def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
     '''
@@ -60,7 +60,7 @@ def cy_roll_sub_clip(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip)
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-def update_step(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1, 
+def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1, 
                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu):
     '''
     perform the TV update step:
