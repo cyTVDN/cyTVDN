@@ -12,7 +12,7 @@ cdef _float clipval(_float a, _float val) nogil:
     
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):
+def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
     '''

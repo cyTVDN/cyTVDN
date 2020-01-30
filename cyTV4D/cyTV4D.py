@@ -12,6 +12,10 @@ def denoise4D(datacube, lam, mu, iterations=75):
 	lam				(np.array) TV weights for each dimension. Must be same dtype as datacube
 	mu 				(float) TV weighting parameter
 	iterations		(int) number of iterations to perform TV update step
+
+	The algorithm used is an extension of that shown in this paper:
+	Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
+	Advances in Computational Mathematics 33.2 (2010): 231-241.
 	'''
 
 	assert datacube.dtype in (np.float32, np.float64), "datacube must be floating point datatype."
@@ -22,6 +26,8 @@ def denoise4D(datacube, lam, mu, iterations=75):
 
 	lambdaInv = 1. / lam
 	lam_mu = (lam / mu).astype(datacube.dtype)
+
+	assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
 
 	# allocate memory for the accumulators and the output datacube
 

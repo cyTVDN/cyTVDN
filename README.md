@@ -13,4 +13,4 @@ Naturally, you will need a C compiler in order for Cython to compile the module.
 
 ### Notes
 
-**Memory Layout** It is required that all the numpy arrays used in the computation are C-contiguous. This is normally not a problem, as numpy arrays are created in C-contiguous mode by default. However, if you slice a numpy array, this produces a view which will usually *not* be C-contiguous. Thus, if you want to split a large TV denoising problem into chunks it will be necessary to create copies of the chunks with `datacube[chunk_x:chunk_y,:,:].copy()`, and to copy the denoised data back into the larger array.
+**Memory Layout** It is required that all the numpy arrays used in the computation are C-contiguous. This is normally not a problem, as numpy arrays are created in C-contiguous mode by default. However, if you slice a numpy array, this produces a view which will usually *not* be C-contiguous. Thus, if you want to split a large TV denoising problem into chunks it will be necessary to create copies of the chunks with `datacube[chunk_x:chunk_y,:,:].copy()`, and to copy the denoised data back into the larger array, or to use `np.ascontiguousarray()`.

@@ -1,12 +1,21 @@
 from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Build import cythonize
+import platform
 import os
 
-ext_modules = [Extension('cyTV4D.tv4d_utils', ['cyTV4D/tv4d_utils.pyx'], extra_compile_args=['-fopenmp'], 
-	extra_link_args=['-fopenmp', '-lgomp', '-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/'])]
+extra_link_args = ['-fopenmp']
+extra_compile_args = ['-fopenmp']
 
-os.environ['CC'] = 'gcc-9'
+if platform.system == 'Darwin':
+	# we are on a Mac, link to the Homebrew installation of llvm
+	extra_link_args.append('-lgomp')
+	extra_link_args.append('-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/')
+	# use the Homebrew gcc
+	os.environ['CC'] = 'gcc-9'
+
+ext_modules = [Extension('cyTV4D.tv4d_utils', ['cyTV4D/tv4d_utils.pyx'], extra_compile_args=extra_compile_args,
+				extra_link_args=extra_link_args)]
 
 setup(
 	name='cyTV4D',
