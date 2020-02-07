@@ -2386,7 +2386,7 @@ static double __pyx_fuse_1__pyx_f_6cyTV4D_10tv4d_utils_clipval(double __pyx_v_a,
 /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
@@ -3390,7 +3390,7 @@ static PyObject *__pyx_pf_6cyTV4D_10tv4d_utils_6accumulator_update(CYTHON_UNUSED
   /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
@@ -3878,7 +3878,7 @@ static PyObject *__pyx_pf_6cyTV4D_10tv4d_utils_8accumulator_update(CYTHON_UNUSED
   /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
@@ -20279,7 +20279,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
@@ -20485,7 +20485,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
@@ -20952,7 +20952,7 @@ if (!__Pyx_RefNanny) {
   /* "cyTV4D/tv4d_utils.pyx":15
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
- * def accumulator_update(_float[:,:,:,::] a,_float [:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
+ * def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */

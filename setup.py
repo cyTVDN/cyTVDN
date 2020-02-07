@@ -1,5 +1,6 @@
-from distutils.core import setup
-from distutils.extension import Extension
+from setuptools import setup, Extension
+# from distutils.core import setup
+# from distutils.extension import Extension
 from Cython.Build import cythonize
 import platform
 import os
@@ -29,5 +30,10 @@ setup(
     author="SE Zeltmann",
     author_email="steven.zeltmann@lbl.gov",
     packages=['cyTV4D'],
-    ext_modules=cythonize(ext_modules)
+    ext_modules=cythonize(ext_modules),
+    install_requires=[
+        'Cython',
+        'hurry.filesize',
+        'psutil'
+    ]
 )

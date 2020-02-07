@@ -2,6 +2,8 @@ from cyTV4D.tv4d_utils import accumulator_update, datacube_update, MSE
 
 import numpy as np
 from tqdm import tqdm
+from hurry.filesize import size, alternative
+import psutil
 
 def denoise4D(datacube, lam, mu, iterations=75):
     '''
@@ -29,8 +31,11 @@ def denoise4D(datacube, lam, mu, iterations=75):
 
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
 
-    # allocate memory for the accumulators and the output datacube
+    # warn about memory requirements
+    print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}")
+    print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...")
 
+    # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
     acc2 = np.zeros_like(datacube)
     acc3 = np.zeros_like(datacube)
