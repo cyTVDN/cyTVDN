@@ -20,9 +20,13 @@ if platform.system() == 'Darwin':
     os.environ['CC'] = 'gcc-9'
 
 ext_modules = [Extension(
-    'cyTV4D.tv4d_utils', ['cyTV4D/tv4d_utils.pyx'],
+    'cyTV4D.utils', ['cyTV4D/utils.pyx'],
     extra_compile_args=extra_compile_args,
-    extra_link_args=extra_link_args)]
+    extra_link_args=extra_link_args),
+    Extension(
+        'cyTV4D.anisotropic', ['cyTV4D/anisotropic.pyx'],
+        extra_compile_args=extra_compile_args,
+        extra_link_args=extra_link_args)]
 
 setup(
     name='cyTV4D',
@@ -34,6 +38,7 @@ setup(
     install_requires=[
         'Cython',
         'hurry.filesize',
-        'psutil'
+        'psutil',
+        'tabulate'
     ]
 )

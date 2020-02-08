@@ -1,9 +1,11 @@
-from cyTV4D.tv4d_utils import accumulator_update, datacube_update, MSE
+from cyTV4D.utils import datacube_update, MSE
+from cyTV4D.anisotropic import accumulator_update
 
 import numpy as np
 from tqdm import tqdm
 from hurry.filesize import size, alternative
 import psutil
+from tabulate import tabulate
 
 def denoise4D(datacube, lam, mu, iterations=75):
     '''
@@ -32,8 +34,8 @@ def denoise4D(datacube, lam, mu, iterations=75):
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
 
     # warn about memory requirements
-    print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}")
-    print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...")
+    print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
+    print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...", flush=True)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -54,3 +56,27 @@ def denoise4D(datacube, lam, mu, iterations=75):
         datacube_update(datacube, recon, acc1, acc2, acc3, acc4, lam_mu)
 
     return recon
+
+
+def check_memory(datacube):
+    '''
+    Determine if there is sufficient RAM to perform different TV denoising algorithms
+    '''
+    avail = psutil.virtual_memory().available
+    dcsize = datacube.nbytes
+
+    def fmt(x):
+        return size(x, system=alternative)
+
+    def checkmark(b):
+        return "✅" if b < avail else "❌"
+
+    headers = ["Algorithm", "RAM Needed", "OK?"]
+
+    algos = [
+        ["Anisotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)],
+        ["Anisotropic FISTA", fmt(dcsize * 13), checkmark(dcsize * 13)],
+        ["(Half-)Isotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)]
+    ]
+
+    print(tabulate(algos, headers))
