@@ -8,6 +8,12 @@ Describe algo here...
 ## Installation
 Naturally, you will need a C compiler in order for Cython to compile the module. On Macs this is somewhat complicated because the Apple-provided versions of `gcc` and `clang` do not support the `-fopenmp` option, which is used to enable multithreaded execution. To build with multithreading on a Mac you will need to use Homebrew to install `gcc`, `llvm`, and `libomp`. 
 
+To install, clone the git repo, navigate to the directory and run:
+```bash
+python setup.py build_ext
+python setup.py install
+```
+
 
 ## Usage
 
