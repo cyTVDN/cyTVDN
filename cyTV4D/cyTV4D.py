@@ -7,7 +7,7 @@ from hurry.filesize import size, alternative
 import psutil
 from tabulate import tabulate
 
-def denoise4D(datacube, lam, mu, iterations=75):
+def denoise4D(datacube, lam, mu, iterations=75, PBC=False):
     '''
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
@@ -16,6 +16,8 @@ def denoise4D(datacube, lam, mu, iterations=75):
     lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
     mu              (float) TV weighting parameter
     iterations      (int) number of iterations to perform TV update step
+    PBC             (bool) whether to use periodic boundary conditions (True) or
+                    mirror boundary conditions (False, default)
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
