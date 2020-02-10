@@ -36,10 +36,17 @@ def sum_square_error(_float[:,:,:,::] a, _float[:,:,:,::] b):
 @cython.wraparound(False)
 @cython.cdivision(True)
 def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1, 
-               _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+               _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
     '''
     perform the TV update step:
     recon = orig - ( b1 - roll(b1,-1,1) )*lambda_mu - ...
+    Boundary conditions for the gradient operator can be:
+        0: periodic
+        1: mirror
+        2: Jia-Zhao Adv Comp Math 2010 33:231-241
+            NOTE: We implememnt the JZ boundary conditions identically to periodic
+            under the assumption that the accumulators are also computed with JZ
+            boundary conditions, such that there are zeros in all the right places
     '''
     # shape of the 4-D array
     cdef int shape[4]
@@ -49,13 +56,13 @@ def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,
     cdef int i,j,k,l
 
     # index limits for the mirror boundary condition
-    # (These can't be defined inside the conditional)
+    # (In Cython these can't be defined inside the conditional)
     cdef int MBCend[4]
     MBCend = shape
     for q in range(4):
         MBCend[q] -= 1
     
-    if PBC == True:
+    if (BC_mode == 0) | (BC_mode == 2):
         # in the case of periodic boundary conditions we can
         # perform the entire loop at once, correctly wrapping indices.
         # this is gonna be somewhat slower than ideal but probably still
@@ -71,10 +78,10 @@ def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,
                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +
                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
                             )
-    else:
+    elif BC_mode == 1:
         # handling the mirror boundary condition 
         # simply requires different math for computing the indices.
-        # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+        # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
         for i in prange(shape[0],nogil=True):
             for j in range(shape[1]):
                 for k in range(shape[2]):

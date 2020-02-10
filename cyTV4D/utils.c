@@ -952,16 +952,16 @@ typedef struct __pyx_defaults2 __pyx_defaults2;
 struct __pyx_defaults3;
 typedef struct __pyx_defaults3 __pyx_defaults3;
 struct __pyx_defaults {
-  int __pyx_arg_PBC;
+  int __pyx_arg_BC_mode;
 };
 struct __pyx_defaults1 {
-  int __pyx_arg_PBC;
+  int __pyx_arg_BC_mode;
 };
 struct __pyx_defaults2 {
-  int __pyx_arg_PBC;
+  int __pyx_arg_BC_mode;
 };
 struct __pyx_defaults3 {
-  int __pyx_arg_PBC;
+  int __pyx_arg_BC_mode;
 };
 
 /* "View.MemoryView":105
@@ -1824,14 +1824,14 @@ static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsds
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_dsdsdsds_double(PyObject *, int writable_flag);
 
+/* CIntToPy.proto */
+static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
+
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *, int writable_flag);
 
 /* ObjectToMemviewSlice.proto */
 static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *, int writable_flag);
-
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
@@ -1843,14 +1843,14 @@ __pyx_memoryview_copy_new_contig(const __Pyx_memviewslice *from_mvs,
                                  size_t sizeof_dtype, int contig_flag,
                                  int dtype_is_object);
 
-/* BytesContains.proto */
-static CYTHON_INLINE int __Pyx_BytesContains(PyObject* bytes, char character);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *);
 
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
+
+/* BytesContains.proto */
+static CYTHON_INLINE int __Pyx_BytesContains(PyObject* bytes, char character);
 
 /* ImportNumPyArray.proto */
 static PyObject *__pyx_numpy_ndarray = NULL;
@@ -1958,7 +1958,6 @@ static const char __pyx_k_b3[] = "b3";
 static const char __pyx_k_b4[] = "b4";
 static const char __pyx_k_id[] = "id";
 static const char __pyx_k_np[] = "np";
-static const char __pyx_k_PBC[] = "PBC";
 static const char __pyx_k_new[] = "__new__";
 static const char __pyx_k_obj[] = "obj";
 static const char __pyx_k_sum[] = "sum";
@@ -2004,6 +2003,7 @@ static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_struct[] = "struct";
 static const char __pyx_k_unpack[] = "unpack";
 static const char __pyx_k_update[] = "update";
+static const char __pyx_k_BC_mode[] = "BC_mode";
 static const char __pyx_k_float32[] = "float32";
 static const char __pyx_k_fortran[] = "fortran";
 static const char __pyx_k_memview[] = "memview";
@@ -2070,6 +2070,7 @@ static const char __pyx_k_no_default___reduce___due_to_non[] = "no default __red
 static const char __pyx_k_unable_to_allocate_shape_and_str[] = "unable to allocate shape and strides.";
 static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_ASCII;
+static PyObject *__pyx_n_s_BC_mode;
 static PyObject *__pyx_kp_s_Buffer_view_does_not_expose_stri;
 static PyObject *__pyx_kp_s_Can_only_create_a_buffer_that_is;
 static PyObject *__pyx_kp_s_Cannot_assign_to_read_only_memor;
@@ -2091,7 +2092,6 @@ static PyObject *__pyx_kp_s_MemoryView_of_r_object;
 static PyObject *__pyx_kp_s_No_matching_signature_found;
 static PyObject *__pyx_n_b_O;
 static PyObject *__pyx_kp_s_Out_of_bounds_on_buffer_access_a;
-static PyObject *__pyx_n_s_PBC;
 static PyObject *__pyx_n_s_PickleError;
 static PyObject *__pyx_n_s_TypeError;
 static PyObject *__pyx_kp_s_Unable_to_convert_item_to_object;
@@ -2203,9 +2203,9 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_4sum_square_error(CYTHON_UNUSED PyObjec
 static PyObject *__pyx_pf_6cyTV4D_5utils_6sum_square_error(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_a, __Pyx_memviewslice __pyx_v_b); /* proto */
 static PyObject *__pyx_pf_6cyTV4D_5utils_2datacube_update(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_signatures, PyObject *__pyx_v_args, PyObject *__pyx_v_kwargs, CYTHON_UNUSED PyObject *__pyx_v_defaults); /* proto */
 static PyObject *__pyx_pf_6cyTV4D_5utils_20__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_PBC); /* proto */
+static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_BC_mode); /* proto */
 static PyObject *__pyx_pf_6cyTV4D_5utils_22__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_PBC); /* proto */
+static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_BC_mode); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array___cinit__(struct __pyx_array_obj *__pyx_v_self, PyObject *__pyx_v_shape, Py_ssize_t __pyx_v_itemsize, PyObject *__pyx_v_format, PyObject *__pyx_v_mode, int __pyx_v_allocate_buffer); /* proto */
 static int __pyx_array___pyx_pf_15View_dot_MemoryView_5array_2__getbuffer__(struct __pyx_array_obj *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_array___pyx_pf_15View_dot_MemoryView_5array_4__dealloc__(struct __pyx_array_obj *__pyx_v_self); /* proto */
@@ -3565,13 +3565,13 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_6sum_square_error(CYTHON_UNUSED PyObjec
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,             # <<<<<<<<<<<<<<
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
 
 /* Python wrapper */
 static PyObject *__pyx_pw_6cyTV4D_5utils_3datacube_update(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_6cyTV4D_5utils_2datacube_update[] = "\n    perform the TV update step:\n    recon = orig - ( b1 - roll(b1,-1,1) )*lambda_mu - ...\n    ";
+static char __pyx_doc_6cyTV4D_5utils_2datacube_update[] = "\n    perform the TV update step:\n    recon = orig - ( b1 - roll(b1,-1,1) )*lambda_mu - ...\n    Boundary conditions for the gradient operator can be:\n        0: periodic\n        1: mirror\n        2: Jia-Zhao Adv Comp Math 2010 33:231-241\n            NOTE: We implememnt the JZ boundary conditions identically to periodic\n            under the assumption that the accumulators are also computed with JZ\n            boundary conditions, such that there are zeros in all the right places\n    ";
 static PyMethodDef __pyx_mdef_6cyTV4D_5utils_3datacube_update = {"datacube_update", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_6cyTV4D_5utils_3datacube_update, METH_VARARGS|METH_KEYWORDS, __pyx_doc_6cyTV4D_5utils_2datacube_update};
 static PyObject *__pyx_pw_6cyTV4D_5utils_3datacube_update(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_signatures = 0;
@@ -4101,7 +4101,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_20__defaults__(CYTHON_UNUSED PyObject *
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_self)->__pyx_arg_PBC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -4143,12 +4143,12 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_5utils_11datacube_update(PyObject 
   __Pyx_memviewslice __pyx_v_b3 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_b4 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_lambda_mu = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_v_PBC;
+  int __pyx_v_BC_mode;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("datacube_update (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_orig,&__pyx_n_s_recon,&__pyx_n_s_b1,&__pyx_n_s_b2,&__pyx_n_s_b3,&__pyx_n_s_b4,&__pyx_n_s_lambda_mu,&__pyx_n_s_PBC,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_orig,&__pyx_n_s_recon,&__pyx_n_s_b1,&__pyx_n_s_b2,&__pyx_n_s_b3,&__pyx_n_s_b4,&__pyx_n_s_lambda_mu,&__pyx_n_s_BC_mode,0};
     PyObject* values[8] = {0,0,0,0,0,0,0,0};
     __pyx_defaults2 *__pyx_dynamic_args = __Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_self);
     if (unlikely(__pyx_kwds)) {
@@ -4218,7 +4218,7 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_5utils_11datacube_update(PyObject 
         CYTHON_FALLTHROUGH;
         case  7:
         if (kw_args > 0) {
-          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_PBC);
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_BC_mode);
           if (value) { values[7] = value; kw_args--; }
         }
       }
@@ -4248,9 +4248,9 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_5utils_11datacube_update(PyObject 
     __pyx_v_b4 = __Pyx_PyObject_to_MemoryviewSlice_dsdsdsds_float(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b4.memview)) __PYX_ERR(0, 39, __pyx_L3_error)
     __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 39, __pyx_L3_error)
     if (values[7]) {
-      __pyx_v_PBC = __Pyx_PyObject_IsTrue(values[7]); if (unlikely((__pyx_v_PBC == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L3_error)
     } else {
-      __pyx_v_PBC = __pyx_dynamic_args->__pyx_arg_PBC;
+      __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
@@ -4261,14 +4261,14 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_5utils_11datacube_update(PyObject 
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyTV4D_5utils_10datacube_update(__pyx_self, __pyx_v_orig, __pyx_v_recon, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_lambda_mu, __pyx_v_PBC);
+  __pyx_r = __pyx_pf_6cyTV4D_5utils_10datacube_update(__pyx_self, __pyx_v_orig, __pyx_v_recon, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_lambda_mu, __pyx_v_BC_mode);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_PBC) {
+static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_BC_mode) {
   int __pyx_v_shape[4];
   int __pyx_v_i;
   int __pyx_v_j;
@@ -4388,7 +4388,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
   Py_ssize_t __pyx_t_108;
   __Pyx_RefNannySetupContext("__pyx_fuse_0datacube_update", 0);
 
-  /* "cyTV4D/utils.pyx":46
+  /* "cyTV4D/utils.pyx":53
  *     # shape of the 4-D array
  *     cdef int shape[4]
  *     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2],orig.shape[3]]             # <<<<<<<<<<<<<<
@@ -4401,8 +4401,8 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
   __pyx_t_1[3] = (__pyx_v_orig.shape[3]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (4));
 
-  /* "cyTV4D/utils.pyx":54
- *     # (These can't be defined inside the conditional)
+  /* "cyTV4D/utils.pyx":61
+ *     # (In Cython these can't be defined inside the conditional)
  *     cdef int MBCend[4]
  *     MBCend = shape             # <<<<<<<<<<<<<<
  *     for q in range(4):
@@ -4410,7 +4410,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
  */
   memcpy(&(__pyx_v_MBCend[0]), __pyx_v_shape, sizeof(__pyx_v_MBCend[0]) * (4));
 
-  /* "cyTV4D/utils.pyx":55
+  /* "cyTV4D/utils.pyx":62
  *     cdef int MBCend[4]
  *     MBCend = shape
  *     for q in range(4):             # <<<<<<<<<<<<<<
@@ -4420,28 +4420,28 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
   for (__pyx_t_2 = 0; __pyx_t_2 < 4; __pyx_t_2+=1) {
     __pyx_v_q = __pyx_t_2;
 
-    /* "cyTV4D/utils.pyx":56
+    /* "cyTV4D/utils.pyx":63
  *     MBCend = shape
  *     for q in range(4):
  *         MBCend[q] -= 1             # <<<<<<<<<<<<<<
  * 
- *     if PBC == True:
+ *     if (BC_mode == 0) | (BC_mode == 2):
  */
     __pyx_t_3 = __pyx_v_q;
     (__pyx_v_MBCend[__pyx_t_3]) = ((__pyx_v_MBCend[__pyx_t_3]) - 1);
   }
 
-  /* "cyTV4D/utils.pyx":58
+  /* "cyTV4D/utils.pyx":65
  *         MBCend[q] -= 1
  * 
- *     if PBC == True:             # <<<<<<<<<<<<<<
+ *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
  *         # in the case of periodic boundary conditions we can
  *         # perform the entire loop at once, correctly wrapping indices.
  */
-  __pyx_t_4 = ((__pyx_v_PBC == 1) != 0);
+  __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTV4D/utils.pyx":63
+    /* "cyTV4D/utils.pyx":70
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -4482,7 +4482,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                               __pyx_v_k = ((int)0xbad0bad0);
                               __pyx_v_l = ((int)0xbad0bad0);
 
-                              /* "cyTV4D/utils.pyx":64
+                              /* "cyTV4D/utils.pyx":71
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):             # <<<<<<<<<<<<<<
@@ -4494,7 +4494,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_j = __pyx_t_10;
 
-                                /* "cyTV4D/utils.pyx":65
+                                /* "cyTV4D/utils.pyx":72
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -4506,7 +4506,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_k = __pyx_t_13;
 
-                                  /* "cyTV4D/utils.pyx":66
+                                  /* "cyTV4D/utils.pyx":73
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -4518,7 +4518,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                   for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                     __pyx_v_l = __pyx_t_16;
 
-                                    /* "cyTV4D/utils.pyx":67
+                                    /* "cyTV4D/utils.pyx":74
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -4530,7 +4530,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_19 = __pyx_v_k;
                                     __pyx_t_20 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":69
+                                    /* "cyTV4D/utils.pyx":76
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +             # <<<<<<<<<<<<<<
@@ -4547,7 +4547,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_28 = __pyx_v_k;
                                     __pyx_t_29 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":70
+                                    /* "cyTV4D/utils.pyx":77
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +             # <<<<<<<<<<<<<<
@@ -4564,7 +4564,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_37 = __pyx_v_k;
                                     __pyx_t_38 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":71
+                                    /* "cyTV4D/utils.pyx":78
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +             # <<<<<<<<<<<<<<
@@ -4581,12 +4581,12 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_46 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
                                     __pyx_t_47 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":72
+                                    /* "cyTV4D/utils.pyx":79
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +
  *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))             # <<<<<<<<<<<<<<
  *                             )
- *     else:
+ *     elif BC_mode == 1:
  */
                                     __pyx_t_48 = 3;
                                     __pyx_t_49 = __pyx_v_i;
@@ -4598,7 +4598,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_55 = __pyx_v_k;
                                     __pyx_t_56 = ((__pyx_v_l + 1) % (__pyx_v_shape[3]));
 
-                                    /* "cyTV4D/utils.pyx":67
+                                    /* "cyTV4D/utils.pyx":74
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -4626,7 +4626,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
           #endif
         }
 
-        /* "cyTV4D/utils.pyx":63
+        /* "cyTV4D/utils.pyx":70
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -4645,24 +4645,33 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
         }
     }
 
-    /* "cyTV4D/utils.pyx":58
+    /* "cyTV4D/utils.pyx":65
  *         MBCend[q] -= 1
  * 
- *     if PBC == True:             # <<<<<<<<<<<<<<
+ *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
  *         # in the case of periodic boundary conditions we can
  *         # perform the entire loop at once, correctly wrapping indices.
  */
     goto __pyx_L5;
   }
 
-  /* "cyTV4D/utils.pyx":78
+  /* "cyTV4D/utils.pyx":81
+ *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
+ *                             )
+ *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
+ *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+ */
+  __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
+  if (__pyx_t_4) {
+
+    /* "cyTV4D/utils.pyx":85
+ *         # simply requires different math for computing the indices.
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  */
-  /*else*/ {
     {
         #ifdef WITH_THREAD
         PyThreadState *_save;
@@ -4697,8 +4706,8 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                               __pyx_v_k = ((int)0xbad0bad0);
                               __pyx_v_l = ((int)0xbad0bad0);
 
-                              /* "cyTV4D/utils.pyx":79
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+                              /* "cyTV4D/utils.pyx":86
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):             # <<<<<<<<<<<<<<
  *                 for k in range(shape[2]):
@@ -4709,7 +4718,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_j = __pyx_t_10;
 
-                                /* "cyTV4D/utils.pyx":80
+                                /* "cyTV4D/utils.pyx":87
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -4721,7 +4730,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_k = __pyx_t_13;
 
-                                  /* "cyTV4D/utils.pyx":81
+                                  /* "cyTV4D/utils.pyx":88
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -4733,7 +4742,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                   for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                     __pyx_v_l = __pyx_t_16;
 
-                                    /* "cyTV4D/utils.pyx":82
+                                    /* "cyTV4D/utils.pyx":89
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -4745,7 +4754,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_63 = __pyx_v_k;
                                     __pyx_t_64 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":84
+                                    /* "cyTV4D/utils.pyx":91
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +             # <<<<<<<<<<<<<<
@@ -4769,7 +4778,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_73 = __pyx_v_k;
                                     __pyx_t_74 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":85
+                                    /* "cyTV4D/utils.pyx":92
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +             # <<<<<<<<<<<<<<
@@ -4793,7 +4802,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_83 = __pyx_v_k;
                                     __pyx_t_84 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":86
+                                    /* "cyTV4D/utils.pyx":93
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(i+1,MBCend[2]),l])) +             # <<<<<<<<<<<<<<
@@ -4817,7 +4826,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_93 = __pyx_t_90;
                                     __pyx_t_94 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":87
+                                    /* "cyTV4D/utils.pyx":94
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(i+1,MBCend[2]),l])) +
  *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(i+1,MBCend[3])]))             # <<<<<<<<<<<<<<
@@ -4840,7 +4849,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_103 = __pyx_v_k;
                                     __pyx_t_104 = __pyx_t_100;
 
-                                    /* "cyTV4D/utils.pyx":82
+                                    /* "cyTV4D/utils.pyx":89
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -4868,9 +4877,9 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
           #endif
         }
 
-        /* "cyTV4D/utils.pyx":78
+        /* "cyTV4D/utils.pyx":85
  *         # simply requires different math for computing the indices.
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
@@ -4886,6 +4895,14 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
           __pyx_L23:;
         }
     }
+
+    /* "cyTV4D/utils.pyx":81
+ *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
+ *                             )
+ *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
+ *         # handling the mirror boundary condition
+ *         # simply requires different math for computing the indices.
+ */
   }
   __pyx_L5:;
 
@@ -4893,7 +4910,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10datacube_update(CYTHON_UNUSED PyObjec
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,             # <<<<<<<<<<<<<<
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
 
@@ -4918,7 +4935,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_22__defaults__(CYTHON_UNUSED PyObject *
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyBool_FromLong(__Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_self)->__pyx_arg_PBC); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -4960,12 +4977,12 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_5utils_13datacube_update(PyObject 
   __Pyx_memviewslice __pyx_v_b3 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_b4 = { 0, 0, { 0 }, { 0 }, { 0 } };
   __Pyx_memviewslice __pyx_v_lambda_mu = { 0, 0, { 0 }, { 0 }, { 0 } };
-  int __pyx_v_PBC;
+  int __pyx_v_BC_mode;
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("datacube_update (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_orig,&__pyx_n_s_recon,&__pyx_n_s_b1,&__pyx_n_s_b2,&__pyx_n_s_b3,&__pyx_n_s_b4,&__pyx_n_s_lambda_mu,&__pyx_n_s_PBC,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_orig,&__pyx_n_s_recon,&__pyx_n_s_b1,&__pyx_n_s_b2,&__pyx_n_s_b3,&__pyx_n_s_b4,&__pyx_n_s_lambda_mu,&__pyx_n_s_BC_mode,0};
     PyObject* values[8] = {0,0,0,0,0,0,0,0};
     __pyx_defaults3 *__pyx_dynamic_args = __Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_self);
     if (unlikely(__pyx_kwds)) {
@@ -5035,7 +5052,7 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_5utils_13datacube_update(PyObject 
         CYTHON_FALLTHROUGH;
         case  7:
         if (kw_args > 0) {
-          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_PBC);
+          PyObject* value = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_BC_mode);
           if (value) { values[7] = value; kw_args--; }
         }
       }
@@ -5065,9 +5082,9 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_5utils_13datacube_update(PyObject 
     __pyx_v_b4 = __Pyx_PyObject_to_MemoryviewSlice_dsdsdsds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b4.memview)) __PYX_ERR(0, 39, __pyx_L3_error)
     __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[6], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 39, __pyx_L3_error)
     if (values[7]) {
-      __pyx_v_PBC = __Pyx_PyObject_IsTrue(values[7]); if (unlikely((__pyx_v_PBC == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[7]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 39, __pyx_L3_error)
     } else {
-      __pyx_v_PBC = __pyx_dynamic_args->__pyx_arg_PBC;
+      __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
@@ -5078,14 +5095,14 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_5utils_13datacube_update(PyObject 
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_6cyTV4D_5utils_12datacube_update(__pyx_self, __pyx_v_orig, __pyx_v_recon, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_lambda_mu, __pyx_v_PBC);
+  __pyx_r = __pyx_pf_6cyTV4D_5utils_12datacube_update(__pyx_self, __pyx_v_orig, __pyx_v_recon, __pyx_v_b1, __pyx_v_b2, __pyx_v_b3, __pyx_v_b4, __pyx_v_lambda_mu, __pyx_v_BC_mode);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_PBC) {
+static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_orig, __Pyx_memviewslice __pyx_v_recon, __Pyx_memviewslice __pyx_v_b1, __Pyx_memviewslice __pyx_v_b2, __Pyx_memviewslice __pyx_v_b3, __Pyx_memviewslice __pyx_v_b4, __Pyx_memviewslice __pyx_v_lambda_mu, int __pyx_v_BC_mode) {
   int __pyx_v_shape[4];
   int __pyx_v_i;
   int __pyx_v_j;
@@ -5205,7 +5222,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
   Py_ssize_t __pyx_t_108;
   __Pyx_RefNannySetupContext("__pyx_fuse_1datacube_update", 0);
 
-  /* "cyTV4D/utils.pyx":46
+  /* "cyTV4D/utils.pyx":53
  *     # shape of the 4-D array
  *     cdef int shape[4]
  *     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2],orig.shape[3]]             # <<<<<<<<<<<<<<
@@ -5218,8 +5235,8 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
   __pyx_t_1[3] = (__pyx_v_orig.shape[3]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (4));
 
-  /* "cyTV4D/utils.pyx":54
- *     # (These can't be defined inside the conditional)
+  /* "cyTV4D/utils.pyx":61
+ *     # (In Cython these can't be defined inside the conditional)
  *     cdef int MBCend[4]
  *     MBCend = shape             # <<<<<<<<<<<<<<
  *     for q in range(4):
@@ -5227,7 +5244,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
  */
   memcpy(&(__pyx_v_MBCend[0]), __pyx_v_shape, sizeof(__pyx_v_MBCend[0]) * (4));
 
-  /* "cyTV4D/utils.pyx":55
+  /* "cyTV4D/utils.pyx":62
  *     cdef int MBCend[4]
  *     MBCend = shape
  *     for q in range(4):             # <<<<<<<<<<<<<<
@@ -5237,28 +5254,28 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
   for (__pyx_t_2 = 0; __pyx_t_2 < 4; __pyx_t_2+=1) {
     __pyx_v_q = __pyx_t_2;
 
-    /* "cyTV4D/utils.pyx":56
+    /* "cyTV4D/utils.pyx":63
  *     MBCend = shape
  *     for q in range(4):
  *         MBCend[q] -= 1             # <<<<<<<<<<<<<<
  * 
- *     if PBC == True:
+ *     if (BC_mode == 0) | (BC_mode == 2):
  */
     __pyx_t_3 = __pyx_v_q;
     (__pyx_v_MBCend[__pyx_t_3]) = ((__pyx_v_MBCend[__pyx_t_3]) - 1);
   }
 
-  /* "cyTV4D/utils.pyx":58
+  /* "cyTV4D/utils.pyx":65
  *         MBCend[q] -= 1
  * 
- *     if PBC == True:             # <<<<<<<<<<<<<<
+ *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
  *         # in the case of periodic boundary conditions we can
  *         # perform the entire loop at once, correctly wrapping indices.
  */
-  __pyx_t_4 = ((__pyx_v_PBC == 1) != 0);
+  __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTV4D/utils.pyx":63
+    /* "cyTV4D/utils.pyx":70
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -5299,7 +5316,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                               __pyx_v_k = ((int)0xbad0bad0);
                               __pyx_v_l = ((int)0xbad0bad0);
 
-                              /* "cyTV4D/utils.pyx":64
+                              /* "cyTV4D/utils.pyx":71
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):             # <<<<<<<<<<<<<<
@@ -5311,7 +5328,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_j = __pyx_t_10;
 
-                                /* "cyTV4D/utils.pyx":65
+                                /* "cyTV4D/utils.pyx":72
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -5323,7 +5340,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_k = __pyx_t_13;
 
-                                  /* "cyTV4D/utils.pyx":66
+                                  /* "cyTV4D/utils.pyx":73
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -5335,7 +5352,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                   for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                     __pyx_v_l = __pyx_t_16;
 
-                                    /* "cyTV4D/utils.pyx":67
+                                    /* "cyTV4D/utils.pyx":74
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5347,7 +5364,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_19 = __pyx_v_k;
                                     __pyx_t_20 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":69
+                                    /* "cyTV4D/utils.pyx":76
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +             # <<<<<<<<<<<<<<
@@ -5364,7 +5381,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_28 = __pyx_v_k;
                                     __pyx_t_29 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":70
+                                    /* "cyTV4D/utils.pyx":77
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +             # <<<<<<<<<<<<<<
@@ -5381,7 +5398,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_37 = __pyx_v_k;
                                     __pyx_t_38 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":71
+                                    /* "cyTV4D/utils.pyx":78
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +             # <<<<<<<<<<<<<<
@@ -5398,12 +5415,12 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_46 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
                                     __pyx_t_47 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":72
+                                    /* "cyTV4D/utils.pyx":79
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +
  *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))             # <<<<<<<<<<<<<<
  *                             )
- *     else:
+ *     elif BC_mode == 1:
  */
                                     __pyx_t_48 = 3;
                                     __pyx_t_49 = __pyx_v_i;
@@ -5415,7 +5432,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_55 = __pyx_v_k;
                                     __pyx_t_56 = ((__pyx_v_l + 1) % (__pyx_v_shape[3]));
 
-                                    /* "cyTV4D/utils.pyx":67
+                                    /* "cyTV4D/utils.pyx":74
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5443,7 +5460,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
           #endif
         }
 
-        /* "cyTV4D/utils.pyx":63
+        /* "cyTV4D/utils.pyx":70
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -5462,24 +5479,33 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
         }
     }
 
-    /* "cyTV4D/utils.pyx":58
+    /* "cyTV4D/utils.pyx":65
  *         MBCend[q] -= 1
  * 
- *     if PBC == True:             # <<<<<<<<<<<<<<
+ *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
  *         # in the case of periodic boundary conditions we can
  *         # perform the entire loop at once, correctly wrapping indices.
  */
     goto __pyx_L5;
   }
 
-  /* "cyTV4D/utils.pyx":78
+  /* "cyTV4D/utils.pyx":81
+ *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
+ *                             )
+ *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
+ *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+ */
+  __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
+  if (__pyx_t_4) {
+
+    /* "cyTV4D/utils.pyx":85
+ *         # simply requires different math for computing the indices.
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  */
-  /*else*/ {
     {
         #ifdef WITH_THREAD
         PyThreadState *_save;
@@ -5514,8 +5540,8 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                               __pyx_v_k = ((int)0xbad0bad0);
                               __pyx_v_l = ((int)0xbad0bad0);
 
-                              /* "cyTV4D/utils.pyx":79
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+                              /* "cyTV4D/utils.pyx":86
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):             # <<<<<<<<<<<<<<
  *                 for k in range(shape[2]):
@@ -5526,7 +5552,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_j = __pyx_t_10;
 
-                                /* "cyTV4D/utils.pyx":80
+                                /* "cyTV4D/utils.pyx":87
  *         for i in prange(shape[0],nogil=True):
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -5538,7 +5564,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_k = __pyx_t_13;
 
-                                  /* "cyTV4D/utils.pyx":81
+                                  /* "cyTV4D/utils.pyx":88
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -5550,7 +5576,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                   for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                     __pyx_v_l = __pyx_t_16;
 
-                                    /* "cyTV4D/utils.pyx":82
+                                    /* "cyTV4D/utils.pyx":89
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5562,7 +5588,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_63 = __pyx_v_k;
                                     __pyx_t_64 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":84
+                                    /* "cyTV4D/utils.pyx":91
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +             # <<<<<<<<<<<<<<
@@ -5586,7 +5612,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_73 = __pyx_v_k;
                                     __pyx_t_74 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":85
+                                    /* "cyTV4D/utils.pyx":92
  *                             (
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +             # <<<<<<<<<<<<<<
@@ -5610,7 +5636,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_83 = __pyx_v_k;
                                     __pyx_t_84 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":86
+                                    /* "cyTV4D/utils.pyx":93
  *                                 (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(i+1,MBCend[2]),l])) +             # <<<<<<<<<<<<<<
@@ -5634,7 +5660,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_93 = __pyx_t_90;
                                     __pyx_t_94 = __pyx_v_l;
 
-                                    /* "cyTV4D/utils.pyx":87
+                                    /* "cyTV4D/utils.pyx":94
  *                                 (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(i+1,MBCend[1]),k,l])) +
  *                                 (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(i+1,MBCend[2]),l])) +
  *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(i+1,MBCend[3])]))             # <<<<<<<<<<<<<<
@@ -5657,7 +5683,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
                                     __pyx_t_103 = __pyx_v_k;
                                     __pyx_t_104 = __pyx_t_100;
 
-                                    /* "cyTV4D/utils.pyx":82
+                                    /* "cyTV4D/utils.pyx":89
  *                 for k in range(shape[2]):
  *                     for l in range(shape[3]):
  *                         recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5685,9 +5711,9 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
           #endif
         }
 
-        /* "cyTV4D/utils.pyx":78
+        /* "cyTV4D/utils.pyx":85
  *         # simply requires different math for computing the indices.
- *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1
+ *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for i in prange(shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *             for j in range(shape[1]):
  *                 for k in range(shape[2]):
@@ -5703,6 +5729,14 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
           __pyx_L23:;
         }
     }
+
+    /* "cyTV4D/utils.pyx":81
+ *                                 (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
+ *                             )
+ *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
+ *         # handling the mirror boundary condition
+ *         # simply requires different math for computing the indices.
+ */
   }
   __pyx_L5:;
 
@@ -5710,7 +5744,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_12datacube_update(CYTHON_UNUSED PyObjec
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,             # <<<<<<<<<<<<<<
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
 
@@ -19314,6 +19348,7 @@ static struct PyModuleDef __pyx_moduledef = {
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
   {&__pyx_n_s_ASCII, __pyx_k_ASCII, sizeof(__pyx_k_ASCII), 0, 0, 1, 1},
+  {&__pyx_n_s_BC_mode, __pyx_k_BC_mode, sizeof(__pyx_k_BC_mode), 0, 0, 1, 1},
   {&__pyx_kp_s_Buffer_view_does_not_expose_stri, __pyx_k_Buffer_view_does_not_expose_stri, sizeof(__pyx_k_Buffer_view_does_not_expose_stri), 0, 0, 1, 0},
   {&__pyx_kp_s_Can_only_create_a_buffer_that_is, __pyx_k_Can_only_create_a_buffer_that_is, sizeof(__pyx_k_Can_only_create_a_buffer_that_is), 0, 0, 1, 0},
   {&__pyx_kp_s_Cannot_assign_to_read_only_memor, __pyx_k_Cannot_assign_to_read_only_memor, sizeof(__pyx_k_Cannot_assign_to_read_only_memor), 0, 0, 1, 0},
@@ -19335,7 +19370,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_No_matching_signature_found, __pyx_k_No_matching_signature_found, sizeof(__pyx_k_No_matching_signature_found), 0, 0, 1, 0},
   {&__pyx_n_b_O, __pyx_k_O, sizeof(__pyx_k_O), 0, 0, 0, 1},
   {&__pyx_kp_s_Out_of_bounds_on_buffer_access_a, __pyx_k_Out_of_bounds_on_buffer_access_a, sizeof(__pyx_k_Out_of_bounds_on_buffer_access_a), 0, 0, 1, 0},
-  {&__pyx_n_s_PBC, __pyx_k_PBC, sizeof(__pyx_k_PBC), 0, 0, 1, 1},
   {&__pyx_n_s_PickleError, __pyx_k_PickleError, sizeof(__pyx_k_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
   {&__pyx_kp_s_Unable_to_convert_item_to_object, __pyx_k_Unable_to_convert_item_to_object, sizeof(__pyx_k_Unable_to_convert_item_to_object), 0, 0, 1, 0},
@@ -19684,10 +19718,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,             # <<<<<<<<<<<<<<
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
-  __pyx_tuple__25 = PyTuple_Pack(15, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_b4, __pyx_n_s_lambda_mu, __pyx_n_s_PBC, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_l, __pyx_n_s_MBCend, __pyx_n_s_q); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(15, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_b4, __pyx_n_s_lambda_mu, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_l, __pyx_n_s_MBCend, __pyx_n_s_q); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__25);
   __Pyx_GIVEREF(__pyx_tuple__25);
   __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(8, 0, 15, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTV4D_utils_pyx, __pyx_n_s_datacube_update, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 38, __pyx_L1_error)
@@ -20151,18 +20185,18 @@ if (!__Pyx_RefNanny) {
   /* "cyTV4D/utils.pyx":39
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):             # <<<<<<<<<<<<<<
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     perform the TV update step:
  */
-  __pyx_t_3 = __Pyx_PyBool_FromLong(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
 
   /* "cyTV4D/utils.pyx":38
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:,:,::] b1,             # <<<<<<<<<<<<<<
- *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, bint PBC=False):
+ *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
   __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 38, __pyx_L1_error)
@@ -20175,7 +20209,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTV4D_5utils_11datacube_update, 0, __pyx_n_s_datacube_update, NULL, __pyx_n_s_cyTV4D_utils, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (!__Pyx_CyFunction_InitDefaults(__pyx_t_5, sizeof(__pyx_defaults2), 0)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_t_5)->__pyx_arg_PBC = 0;
+  __Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_t_5)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_t_4);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_5, __pyx_pf_6cyTV4D_5utils_20__defaults__);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_float, __pyx_t_5) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
@@ -20183,7 +20217,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_5 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTV4D_5utils_13datacube_update, 0, __pyx_n_s_datacube_update, NULL, __pyx_n_s_cyTV4D_utils, __pyx_d, ((PyObject *)__pyx_codeobj__26)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   if (!__Pyx_CyFunction_InitDefaults(__pyx_t_5, sizeof(__pyx_defaults3), 0)) __PYX_ERR(0, 38, __pyx_L1_error)
-  __Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_t_5)->__pyx_arg_PBC = 0;
+  __Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_t_5)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_5, __pyx_t_4);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_5, __pyx_pf_6cyTV4D_5utils_22__defaults__);
   if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_double, __pyx_t_5) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
@@ -24821,52 +24855,6 @@ __pyx_fail:
     return result;
 }
 
-/* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *obj, int writable_flag) {
-    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
-    __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
-    int retcode;
-    if (obj == Py_None) {
-        result.memview = (struct __pyx_memoryview_obj *) Py_None;
-        return result;
-    }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS_RO | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_float, stack,
-                                                 &result, obj);
-    if (unlikely(retcode == -1))
-        goto __pyx_fail;
-    return result;
-__pyx_fail:
-    result.memview = NULL;
-    result.data = NULL;
-    return result;
-}
-
-/* ObjectToMemviewSlice */
-  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *obj, int writable_flag) {
-    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
-    __Pyx_BufFmt_StackElem stack[1];
-    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
-    int retcode;
-    if (obj == Py_None) {
-        result.memview = (struct __pyx_memoryview_obj *) Py_None;
-        return result;
-    }
-    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
-                                                 PyBUF_RECORDS_RO | writable_flag, 1,
-                                                 &__Pyx_TypeInfo_double, stack,
-                                                 &result, obj);
-    if (unlikely(retcode == -1))
-        goto __pyx_fail;
-    return result;
-__pyx_fail:
-    result.memview = NULL;
-    result.data = NULL;
-    return result;
-}
-
 /* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) ((long) 0 - (long) 1), const_zero = (long) 0;
@@ -24898,6 +24886,29 @@ __pyx_fail:
     }
 }
 
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_float(PyObject *obj, int writable_flag) {
+    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
+    __Pyx_BufFmt_StackElem stack[1];
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+    int retcode;
+    if (obj == Py_None) {
+        result.memview = (struct __pyx_memoryview_obj *) Py_None;
+        return result;
+    }
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                 PyBUF_RECORDS_RO | writable_flag, 1,
+                                                 &__Pyx_TypeInfo_float, stack,
+                                                 &result, obj);
+    if (unlikely(retcode == -1))
+        goto __pyx_fail;
+    return result;
+__pyx_fail:
+    result.memview = NULL;
+    result.data = NULL;
+    return result;
+}
+
 /* CIntFromPyVerify */
   #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
@@ -24919,6 +24930,29 @@ __pyx_fail:
         }\
         return (target_type) value;\
     }
+
+/* ObjectToMemviewSlice */
+  static CYTHON_INLINE __Pyx_memviewslice __Pyx_PyObject_to_MemoryviewSlice_ds_double(PyObject *obj, int writable_flag) {
+    __Pyx_memviewslice result = { 0, 0, { 0 }, { 0 }, { 0 } };
+    __Pyx_BufFmt_StackElem stack[1];
+    int axes_specs[] = { (__Pyx_MEMVIEW_DIRECT | __Pyx_MEMVIEW_STRIDED) };
+    int retcode;
+    if (obj == Py_None) {
+        result.memview = (struct __pyx_memoryview_obj *) Py_None;
+        return result;
+    }
+    retcode = __Pyx_ValidateAndInit_memviewslice(axes_specs, 0,
+                                                 PyBUF_RECORDS_RO | writable_flag, 1,
+                                                 &__Pyx_TypeInfo_double, stack,
+                                                 &result, obj);
+    if (unlikely(retcode == -1))
+        goto __pyx_fail;
+    return result;
+__pyx_fail:
+    result.memview = NULL;
+    result.data = NULL;
+    return result;
+}
 
 /* CIntToPy */
   static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
@@ -25016,13 +25050,6 @@ no_fail:
     __Pyx_XDECREF(array_obj);
     __Pyx_RefNannyFinishContext();
     return new_mvs;
-}
-
-/* BytesContains */
-  static CYTHON_INLINE int __Pyx_BytesContains(PyObject* bytes, char character) {
-    const Py_ssize_t length = PyBytes_GET_SIZE(bytes);
-    char* char_start = PyBytes_AS_STRING(bytes);
-    return memchr(char_start, (unsigned char)character, (size_t)length) != NULL;
 }
 
 /* CIntFromPy */
@@ -25401,6 +25428,13 @@ raise_neg_overflow:
     PyErr_SetString(PyExc_OverflowError,
         "can't convert negative value to long");
     return (long) -1;
+}
+
+/* BytesContains */
+  static CYTHON_INLINE int __Pyx_BytesContains(PyObject* bytes, char character) {
+    const Py_ssize_t length = PyBytes_GET_SIZE(bytes);
+    char* char_start = PyBytes_AS_STRING(bytes);
+    return memchr(char_start, (unsigned char)character, (size_t)length) != NULL;
 }
 
 /* ImportNumPyArray */

@@ -12,9 +12,13 @@ cdef _float clipval(_float a, _float val) nogil:
     
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip, bint PBC=False):
+def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip, int BC_mode=2):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
+    Boundary conditions for the gradient operator can be:
+        0: periodic
+        1: mirror
+        2: Jia-Zhao Adv Comp Math 2010 33:231-241
     '''
     
     # shape of the 4-D array
@@ -48,10 +52,13 @@ def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip
     
     cdef int delta[4]
     delta[:] = [0,0,0,0]
-    if PBC == True:
+    if BC_mode == 0:
         delta[ax] = shape[ax] - 1
-    else:
+    elif BC_mode == 1:
         delta[ax] = 1
+    elif BC_mode == 2:
+        # keep all deltas at zero to make each entry on the hyperslab zero!
+        delta[ax] = 0
     
     for m in range(stop[0]):
         for n in range(stop[1]):
@@ -60,7 +67,5 @@ def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip
                     b[m,n,o,p] = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
                                         + b[m,n,o,p], clip)
     
-
-
 
 

@@ -1,4 +1,4 @@
-from cyTV4D.utils import datacube_update, MSE
+from cyTV4D.utils import datacube_update, sum_square_error
 from cyTV4D.anisotropic import accumulator_update
 
 import numpy as np
@@ -7,7 +7,7 @@ from hurry.filesize import size, alternative
 import psutil
 from tabulate import tabulate
 
-def denoise4D(datacube, lam, mu, iterations=75, PBC=False):
+def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
     '''
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
@@ -16,8 +16,10 @@ def denoise4D(datacube, lam, mu, iterations=75, PBC=False):
     lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
     mu              (float) TV weighting parameter
     iterations      (int) number of iterations to perform TV update step
-    PBC             (bool) whether to use periodic boundary conditions (True) or
-                    mirror boundary conditions (False, default)
+    BC_mode         (int) boundary conditions for evaluating difference operators:
+                        0: Periodic
+                        1: Mirror
+                        2: Jia-Zhao Adv Comp Math 2010 33:231-241
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -34,6 +36,7 @@ def denoise4D(datacube, lam, mu, iterations=75, PBC=False):
     lam_mu = (lam / mu).astype(datacube.dtype)
 
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
+    print(f"λ/μ = [1/{mu/lam[0]}, 1/{mu/lam[1]}, 1/{mu/lam[2]}, 1,{mu/lam[3]}]")
 
     # warn about memory requirements
     print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
@@ -49,13 +52,13 @@ def denoise4D(datacube, lam, mu, iterations=75, PBC=False):
 
     for i in tqdm(range(int(iterations))):
         # update accumulators
-        accumulator_update(recon, acc1, 0, lambdaInv[0])
-        accumulator_update(recon, acc2, 1, lambdaInv[1])
-        accumulator_update(recon, acc3, 2, lambdaInv[2])
-        accumulator_update(recon, acc4, 3, lambdaInv[3])
+        accumulator_update(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
+        accumulator_update(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
+        accumulator_update(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
+        accumulator_update(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
 
         # update reconstruction
-        datacube_update(datacube, recon, acc1, acc2, acc3, acc4, lam_mu)
+        datacube_update(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
     return recon
 
