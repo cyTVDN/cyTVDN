@@ -1,5 +1,5 @@
-from cyTV4D.utils import datacube_update, sum_square_error
-from cyTV4D.anisotropic import accumulator_update
+from cyTV4D.utils import datacube_update_4D, sum_square_error
+from cyTV4D.anisotropic import accumulator_update_4D
 
 import numpy as np
 from tqdm import tqdm
@@ -36,7 +36,7 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
     lam_mu = (lam / mu).astype(datacube.dtype)
 
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
-    print(f"λ/μ = [1/{mu/lam[0]}, 1/{mu/lam[1]}, 1/{mu/lam[2]}, 1,{mu/lam[3]}]")
+    print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1,{mu/lam[3]:.0f}]")
 
     # warn about memory requirements
     print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
@@ -52,13 +52,13 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
 
     for i in tqdm(range(int(iterations))):
         # update accumulators
-        accumulator_update(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
-        accumulator_update(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
-        accumulator_update(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
-        accumulator_update(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
+        accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
+        accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
+        accumulator_update_4D(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
+        accumulator_update_4D(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
 
         # update reconstruction
-        datacube_update(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
+        datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
     return recon
 
@@ -78,10 +78,17 @@ def check_memory(datacube):
 
     headers = ["Algorithm", "RAM Needed", "OK?"]
 
-    algos = [
-        ["Anisotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)],
-        ["Anisotropic FISTA", fmt(dcsize * 13), checkmark(dcsize * 13)],
-        ["(Half-)Isotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)]
-    ]
+    if len(datacube.shape) == 4:
+        algos = [
+            ["Anisotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)],
+            ["Anisotropic FISTA", fmt(dcsize * 13), checkmark(dcsize * 13)],
+            ["(Half-)Isotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)]
+        ]
+    elif len(datacube.shape) == 3:
+        algos = [
+            ["Anisotropic Unaccelerated", fmt(dcsize * 4), checkmark(dcsize * 4)],
+            ["Anisotropic FISTA", fmt(dcsize * 11), checkmark(dcsize * 11)],
+            ["(Half-)Isotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)]
+        ]
 
     print(tabulate(algos, headers))

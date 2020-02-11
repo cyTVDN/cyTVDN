@@ -12,7 +12,7 @@ cdef _float clipval(_float a, _float val) nogil:
     
 @cython.boundscheck(False)
 @cython.wraparound(False)
-def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip, int BC_mode=2):
+def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip, int BC_mode=2):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
     Boundary conditions for the gradient operator can be:
@@ -66,6 +66,62 @@ def accumulator_update(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip
                 for p in range(stop[3]):
                     b[m,n,o,p] = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
                                         + b[m,n,o,p], clip)
+    
+
+@cython.boundscheck(False)
+@cython.wraparound(False)
+def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):
+    '''
+    computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
+    Boundary conditions for the gradient operator can be:
+        0: periodic
+        1: mirror
+        2: Jia-Zhao Adv Comp Math 2010 33:231-241
+    '''
+    
+    # shape of the 4-D array
+    cdef int shape[3]
+    shape[:] = [a.shape[0],a.shape[1],a.shape[2]]
+    
+    # start point on each axis. this is zero for all axes but the rolling direction
+    cdef int start[3]
+    start[:] = [0,0,0]
+    start[ax] += 1
+
+    # index variables for the 4D loop
+    cdef int i,j,k
+    
+    # perform the main loop
+    for i in prange(start[0],shape[0],nogil=True):
+        for j in range(start[1],shape[1]):
+            for k in range(start[2],shape[2]):
+                    b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+                                     + b[i,j,k], clip)
+                    
+    # perform the final hyperslab
+    # in principle we can use index wraparound to make this easier
+    # but that would have a speed penalty on every iteration in the 
+    # main loop, so we do this explicitly for zero overhead
+    cdef int m,n,o
+    cdef int stop[3]
+    stop = shape
+    stop[ax] = 1
+    
+    cdef int delta[3]
+    delta[:] = [0,0,0]
+    if BC_mode == 0:
+        delta[ax] = shape[ax] - 1
+    elif BC_mode == 1:
+        delta[ax] = 1
+    elif BC_mode == 2:
+        # keep all deltas at zero to make each entry on the hyperslab zero!
+        delta[ax] = 0
+    
+    for m in range(stop[0]):
+        for n in range(stop[1]):
+            for o in range(stop[2]):
+                    b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+                                        + b[m,n,o], clip)
     
 
 
