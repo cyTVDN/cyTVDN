@@ -36,8 +36,10 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
     lam_mu = (lam / mu).astype(datacube.dtype)
 
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
-    print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1,{mu/lam[3]:.0f}]")
-
+    try:
+        print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1/{mu/lam[3]:.0f}]")
+    except:
+        print("I tried to print the memory requirements but your system doesn't like Unicode...")
     # warn about memory requirements
     print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
     print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...", flush=True)

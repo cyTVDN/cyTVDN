@@ -8,16 +8,20 @@ import os
 if platform.system() == 'Windows':
     extra_compile_args = ['/openmp']
     extra_link_args = ['/openmp']
-else:
+elif platform.system() == "Darwin":
     extra_link_args = ['-fopenmp']
     extra_compile_args = ['-fopenmp']
 
-if platform.system() == 'Darwin':
     # we are on a Mac, link to the Homebrew installation of llvm
     extra_link_args.append('-lgomp')
     extra_link_args.append('-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/')
     # use the Homebrew gcc
     os.environ['CC'] = 'gcc-9'
+
+# NOTE: On NERSC Cori things are harder:
+# What worked for me is to run `module swap PrgEnv-intel PrgEnv-cray`
+# to use the Cray compilers and also specify the compiler
+# when running setup.py: `CC='cc' python setup.py build_ext`
 
 ext_modules = [Extension(
     'cyTV4D.utils', ['cyTV4D/utils.pyx'],
@@ -40,5 +44,6 @@ setup(
         'hurry.filesize',
         'psutil',
         'tabulate'
-    ]
+    ],
+    setup_requires=['Cython']
 )
