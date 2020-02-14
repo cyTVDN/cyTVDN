@@ -17,6 +17,9 @@ elif platform.system() == "Darwin":
     extra_link_args.append('-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/')
     # use the Homebrew gcc
     os.environ['CC'] = 'gcc-9'
+else:
+    extra_compile_args = []
+    extra_link_args = []
 
 # NOTE: On NERSC Cori things are harder:
 # What worked for me is to run `module swap PrgEnv-intel PrgEnv-cray`
