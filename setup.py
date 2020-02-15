@@ -24,7 +24,7 @@ else:
 # NOTE: On NERSC Cori things are harder:
 # What worked for me is to run `module swap PrgEnv-intel PrgEnv-cray`
 # to use the Cray compilers and also specify the compiler
-# when running setup.py: `CC='cc' python setup.py build_ext`
+# when running setup.py: `CC='cc' LDSHARED='cc -shared' python setup.py build_ext`
 
 ext_modules = [Extension(
     'cyTV4D.utils', ['cyTV4D/utils.pyx'],
