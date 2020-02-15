@@ -18,8 +18,8 @@ elif platform.system() == "Darwin":
     # use the Homebrew gcc
     os.environ['CC'] = 'gcc-9'
 else:
-    extra_compile_args = []
-    extra_link_args = []
+    extra_compile_args = ['-fopenmp']
+    extra_link_args = ['-fopenmp']
 
 # NOTE: On NERSC Cori things are harder:
 # What worked for me is to run `module swap PrgEnv-intel PrgEnv-cray`
