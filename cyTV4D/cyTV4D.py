@@ -1,5 +1,5 @@
 from cyTV4D.utils import datacube_update_4D, sum_square_error
-from cyTV4D.anisotropic import accumulator_update_4D
+from cyTV4D.anisotropic import accumulator_update_4D, accumulator_update_4D_FISTA
 
 import numpy as np
 from tqdm import tqdm
@@ -7,7 +7,8 @@ from hurry.filesize import size, alternative
 import psutil
 from tabulate import tabulate
 
-def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
+
+def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
     '''
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
@@ -20,6 +21,8 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
                         0: Periodic
                         1: Mirror
                         2: Jia-Zhao Adv Comp Math 2010 33:231-241
+    FISTA           (bool) whether to use FISA Acceleration. Converges much faster,
+                    but involves much more memory use
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -38,7 +41,7 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
     assert np.all(lam_mu < (1. / 8.)) & np.all(lam_mu > 0), "Parameters must satisfy 0 < λ/μ < 1/8"
     try:
         print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1/{mu/lam[3]:.0f}]")
-    except:
+    except Exception:
         print("I tried to print the memory requirements but your system doesn't like Unicode...")
     # warn about memory requirements
     print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
@@ -50,17 +53,39 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2):
     acc3 = np.zeros_like(datacube)
     acc4 = np.zeros_like(datacube)
 
-    recon = np.zeros_like(datacube)
+    # if using FISTA, allocate the extra auxiliary arrays
+    if FISTA:
+        d1 = np.zeros_like(datacube)
+        d2 = np.zeros_like(datacube)
+        d3 = np.zeros_like(datacube)
+        d4 = np.zeros_like(datacube)
 
-    for i in tqdm(range(int(iterations))):
-        # update accumulators
-        accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
-        accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
-        accumulator_update_4D(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
-        accumulator_update_4D(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
+        tk = 1
 
-        # update reconstruction
-        datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
+    recon = datacube.copy()
+
+    if FISTA:
+        for i in tqdm(range(int(iterations)), desc='FISTA Accelerated Iteration:'):
+            # update accumulators
+            accumulator_update_4D_FISTA(recon, acc1, d1, tk, 0, lambdaInv[0], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc1, d2, tk, 1, lambdaInv[1], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc1, d3, tk, 2, lambdaInv[2], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc1, d4, tk, 3, lambdaInv[3], BC_mode=BC_mode)
+
+            # update the tk factor
+            tk /= ((1 + np.sqrt(1 + 4*tk**2))/2)
+
+            datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
+    else:
+        for i in tqdm(range(int(iterations)), desc='Unaccelerated TV Denoising:'):
+            # update accumulators
+            accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
+            accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
+            accumulator_update_4D(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
+            accumulator_update_4D(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
+
+            # update reconstruction
+            datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
     return recon
 
