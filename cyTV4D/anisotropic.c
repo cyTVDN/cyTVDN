@@ -5208,7 +5208,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_12accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):             # <<<<<<<<<<<<<<
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  */
         __pyx_t_12 = (__pyx_v_stop[3]);
         __pyx_t_13 = __pyx_t_12;
@@ -5219,7 +5219,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_12accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]             # <<<<<<<<<<<<<<
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  */
           __pyx_t_41 = __pyx_v_m;
@@ -5234,7 +5234,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_12accumulator_update_4D_FISTA(CY
           /* "cyTV4D/anisotropic.pyx":132
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o,p], clip)             # <<<<<<<<<<<<<<
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  *                     d[m,n,o,p] = d_new
  */
@@ -5247,14 +5247,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_12accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]             # <<<<<<<<<<<<<<
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  */
           __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_41 * __pyx_v_a.strides[0]) ) + __pyx_t_42 * __pyx_v_a.strides[1]) ) + __pyx_t_43 * __pyx_v_a.strides[2]) ) + __pyx_t_44 * __pyx_v_a.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_45 * __pyx_v_a.strides[0]) ) + __pyx_t_46 * __pyx_v_a.strides[1]) ) + __pyx_t_47 * __pyx_v_a.strides[2]) ) + __pyx_t_48 * __pyx_v_a.strides[3]) )))) + (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_49 * __pyx_v_b.strides[0]) ) + __pyx_t_50 * __pyx_v_b.strides[1]) ) + __pyx_t_51 * __pyx_v_b.strides[2]) ) + __pyx_t_52 * __pyx_v_b.strides[3]) )))), __pyx_v_clip);
 
           /* "cyTV4D/anisotropic.pyx":133
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])             # <<<<<<<<<<<<<<
  *                     d[m,n,o,p] = d_new
  * 
@@ -5270,7 +5270,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_12accumulator_update_4D_FISTA(CY
           *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_57 * __pyx_v_b.strides[0]) ) + __pyx_t_58 * __pyx_v_b.strides[1]) ) + __pyx_t_59 * __pyx_v_b.strides[2]) ) + __pyx_t_60 * __pyx_v_b.strides[3]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_53 * __pyx_v_d.strides[0]) ) + __pyx_t_54 * __pyx_v_d.strides[1]) ) + __pyx_t_55 * __pyx_v_d.strides[2]) ) + __pyx_t_56 * __pyx_v_d.strides[3]) ))))));
 
           /* "cyTV4D/anisotropic.pyx":134
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  *                     d[m,n,o,p] = d_new             # <<<<<<<<<<<<<<
  * 
@@ -5930,7 +5930,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_14accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):             # <<<<<<<<<<<<<<
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  */
         __pyx_t_12 = (__pyx_v_stop[3]);
         __pyx_t_13 = __pyx_t_12;
@@ -5941,7 +5941,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_14accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]             # <<<<<<<<<<<<<<
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  */
           __pyx_t_41 = __pyx_v_m;
@@ -5956,7 +5956,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_14accumulator_update_4D_FISTA(CY
           /* "cyTV4D/anisotropic.pyx":132
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o,p], clip)             # <<<<<<<<<<<<<<
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  *                     d[m,n,o,p] = d_new
  */
@@ -5969,14 +5969,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_14accumulator_update_4D_FISTA(CY
  *             for o in range(stop[2]):
  *                 for p in range(stop[3]):
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]             # <<<<<<<<<<<<<<
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  */
           __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_41 * __pyx_v_a.strides[0]) ) + __pyx_t_42 * __pyx_v_a.strides[1]) ) + __pyx_t_43 * __pyx_v_a.strides[2]) ) + __pyx_t_44 * __pyx_v_a.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_45 * __pyx_v_a.strides[0]) ) + __pyx_t_46 * __pyx_v_a.strides[1]) ) + __pyx_t_47 * __pyx_v_a.strides[2]) ) + __pyx_t_48 * __pyx_v_a.strides[3]) )))) + (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_49 * __pyx_v_b.strides[0]) ) + __pyx_t_50 * __pyx_v_b.strides[1]) ) + __pyx_t_51 * __pyx_v_b.strides[2]) ) + __pyx_t_52 * __pyx_v_b.strides[3]) )))), __pyx_v_clip);
 
           /* "cyTV4D/anisotropic.pyx":133
  *                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])             # <<<<<<<<<<<<<<
  *                     d[m,n,o,p] = d_new
  * 
@@ -5992,7 +5992,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_14accumulator_update_4D_FISTA(CY
           *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_57 * __pyx_v_b.strides[0]) ) + __pyx_t_58 * __pyx_v_b.strides[1]) ) + __pyx_t_59 * __pyx_v_b.strides[2]) ) + __pyx_t_60 * __pyx_v_b.strides[3]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_53 * __pyx_v_d.strides[0]) ) + __pyx_t_54 * __pyx_v_d.strides[1]) ) + __pyx_t_55 * __pyx_v_d.strides[2]) ) + __pyx_t_56 * __pyx_v_d.strides[3]) ))))));
 
           /* "cyTV4D/anisotropic.pyx":134
- *                         + b[m,n,o,p], clip)
+ *                                     + b[m,n,o,p], clip)
  *                     b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
  *                     d[m,n,o,p] = d_new             # <<<<<<<<<<<<<<
  * 
