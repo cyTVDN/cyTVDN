@@ -10,7 +10,7 @@ ctypedef fused _float:
 @cython.boundscheck(False)
 @cython.wraparound(False)
 @cython.cdivision(True)
-def sum_square_error(_float[:,:,:,::] a, _float[:,:,:,::] b):
+def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
     cdef int i,j,k,l
     
     if _float is float:
@@ -31,6 +31,28 @@ def sum_square_error(_float[:,:,:,::] a, _float[:,:,:,::] b):
                     
     return mserr_np.sum()
 
+@cython.boundscheck(False)
+@cython.wraparound(False)
+@cython.cdivision(True)
+def sum_square_error_3D(_float[:,:,::] a, _float[:,:,::] b):
+    cdef int i,j,k
+    
+    if _float is float:
+        dtype = np.float32
+    if _float is double:
+        dtype = np.double
+    mserr_np = np.zeros((a.shape[0],),dtype=dtype)
+    cdef _float[:] mserr = mserr_np
+    
+    cdef _float tmp
+    
+    for i in prange(a.shape[0],nogil=True):
+        for j in range(a.shape[1]):
+            for k in range(a.shape[2]):
+                    tmp = a[i,j,k] - b[i,j,k]
+                    mserr[i] = mserr[i] + (tmp*tmp)
+                    
+    return mserr_np.sum()
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
