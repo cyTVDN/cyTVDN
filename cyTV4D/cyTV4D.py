@@ -8,7 +8,7 @@ import psutil
 from tabulate import tabulate
 
 
-def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
+def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, reference_data=None):
     '''
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
@@ -23,6 +23,8 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
                         2: Jia-Zhao Adv Comp Math 2010 33:231-241
     FISTA           (bool) whether to use FISA Acceleration. Converges much faster,
                     but involves much more memory use
+    reference_data  (np.array) For testing convergence, pass an infinite signal dataset
+                    and the mean square error will be calculated for each iteration
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -45,7 +47,15 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
         print("I tried to print the memory requirements but your system doesn't like Unicode...")
     # warn about memory requirements
     print(f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}", flush=True)
-    print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...", flush=True)
+    if FISTA:
+        print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*13,system=alternative)} of RAM...", flush=True)
+    else:
+        print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...", flush=True)
+
+    calculate_error = reference_data is not None
+    if calculate_error:
+        MSE = np.zeros((iterations+1,), dtype=datacube.dtype)
+        MSE[0] = sum_square_error(datacube, reference_data)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -60,24 +70,29 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
         d3 = np.zeros_like(datacube)
         d4 = np.zeros_like(datacube)
 
-        tk = 1
+        tk = 1.
 
     recon = datacube.copy()
 
     if FISTA:
-        for i in tqdm(range(int(iterations)), desc='FISTA Accelerated Iteration:'):
-            # update accumulators
-            accumulator_update_4D_FISTA(recon, acc1, d1, tk, 0, lambdaInv[0], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc1, d2, tk, 1, lambdaInv[1], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc1, d3, tk, 2, lambdaInv[2], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc1, d4, tk, 3, lambdaInv[3], BC_mode=BC_mode)
-
+        for i in tqdm(range(int(iterations)), desc='FISTA Accelerated Denoising'):
             # update the tk factor
-            tk /= ((1 + np.sqrt(1 + 4*tk**2))/2)
+            tk_new = (1 + np.sqrt(1 + 4*tk**2)) / 2
+            tk_ratio = tk / tk_new
+            tk = tk_new
+
+            # update accumulators
+            accumulator_update_4D_FISTA(recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode)
+            accumulator_update_4D_FISTA(recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode)
 
             datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
+
+            if calculate_error:
+                MSE[i+1] = sum_square_error(reference_data,recon)
     else:
-        for i in tqdm(range(int(iterations)), desc='Unaccelerated TV Denoising:'):
+        for i in tqdm(range(int(iterations)), desc='Unaccelerated TV Denoising'):
             # update accumulators
             accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
             accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
@@ -87,7 +102,13 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False):
             # update reconstruction
             datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
-    return recon
+            if calculate_error:
+                MSE[i+1] = sum_square_error(reference_data,recon)
+
+    if calculate_error:
+        return recon, MSE
+    else:
+        return recon
 
 
 def check_memory(datacube):
