@@ -23,7 +23,7 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, referenc
                         0: Periodic
                         1: Mirror
                         2: Jia-Zhao Adv Comp Math 2010 33:231-241
-    FISTA           (bool) whether to use FISA Acceleration. Converges much faster,
+    FISTA           (bool) whether to use FISTA Acceleration. Converges much faster,
                     but involves much more memory use
     reference_data  (np.array) For testing convergence, pass an infinite signal dataset
                     and the mean square error will be calculated for each iteration
@@ -54,10 +54,12 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, referenc
     else:
         print(f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...", flush=True)
 
-    calculate_error = reference_data is not None
-    if calculate_error:
+    calculate_MSE = reference_data is not None
+    if calculate_MSE:
         MSE = np.zeros((iterations+1,), dtype=datacube.dtype)
         MSE[0] = sum_square_error_4D(datacube, reference_data)
+
+    error = np.zeros((iterations), dtype=datacube.dtype)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -84,33 +86,34 @@ def denoise4D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, referenc
             tk = tk_new
 
             # update accumulators
-            accumulator_update_4D_FISTA(recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode)
-            accumulator_update_4D_FISTA(recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D_FISTA(recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D_FISTA(recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D_FISTA(recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D_FISTA(recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode)
 
             datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
-            if calculate_error:
+            if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
     else:
         for i in tqdm(range(int(iterations)), desc='Unaccelerated TV Denoising'):
             # update accumulators
-            accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
-            accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
-            accumulator_update_4D(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
-            accumulator_update_4D(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D(recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D(recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D(recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode)
+            error[i] += accumulator_update_4D(recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode)
 
             # update reconstruction
             datacube_update_4D(datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode)
 
-            if calculate_error:
+            if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
 
-    if calculate_error:
-        return recon, MSE
+    if calculate_MSE:
+        return recon, error, MSE
     else:
-        return recon
+        return recon, error
+
 
 def denoise3D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, reference_data=None):
     '''
@@ -158,7 +161,7 @@ def denoise3D(datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, referenc
 
     calculate_error = reference_data is not None
     if calculate_error:
-        MSE = np.zeros((iterations+1,), dtype=datacube.dtype)
+        MSE = np.zeros((iterations + 1,), dtype=datacube.dtype)
         MSE[0] = sum_square_error_3D(datacube, reference_data)
 
     # allocate memory for the accumulators and the output datacube

@@ -1,6 +1,7 @@
 cimport cython
 from cython.parallel import prange
 import numpy as np
+from libc.math cimport fabs
 
 # define a fused floating point type so that we can use single or double precision floats:
 ctypedef fused _float:
@@ -32,14 +33,26 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
 
     # index variables for the 4D loop
     cdef int i,j,k,l
+
+    # keep track of the norm of the accumulator
+    if _float is float:
+        dtype = np.float32
+    if _float is double:
+        dtype = np.double
+    norm_np = np.zeros((a.shape[0],),dtype=dtype)
+    cdef _float[:] norm = norm_np
+
+    cdef _float b_new
     
     # perform the main loop
     for i in prange(start[0],shape[0],nogil=True):
         for j in range(start[1],shape[1]):
             for k in range(start[2],shape[2]):
                 for l in range(start[3],shape[3]):
-                    b[i,j,k,l] = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
-                                     + b[i,j,k,l], clip)
+                    b_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
+                                                         + b[i,j,k,l], clip)
+                    norm[i] += fabs(b_new)
+                    b[i,j,k,l] = b_new
                     
     # perform the final hyperslab
     # in principle we can use index wraparound to make this easier
@@ -64,9 +77,12 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
         for n in range(stop[1]):
             for o in range(stop[2]):
                 for p in range(stop[3]):
-                    b[m,n,o,p] = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
+                    b_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
                                         + b[m,n,o,p], clip)
+                    norm[m] += fabs(b_new)
+                    b[m,n,o,p] = b_new
 
+    return norm_np.sum()
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -94,6 +110,16 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
 
     # temporary holder for updated d value
     cdef _float d_new = 0.0
+
+    # keep track of the norm of the accumulator
+    if _float is float:
+        dtype = np.float32
+    if _float is double:
+        dtype = np.double
+    norm_np = np.zeros((a.shape[0],),dtype=dtype)
+    cdef _float[:] norm = norm_np
+
+    cdef _float b_new
     
     # perform the main loop
     for i in prange(start[0],shape[0],nogil=True):
@@ -102,7 +128,9 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
                 for l in range(start[3],shape[3]):
                     d_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
                                      + b[i,j,k,l], clip)
-                    b[i,j,k,l] = d_new + tk*(d_new - d[i,j,k,l])
+                    b_new = d_new + tk*(d_new - d[i,j,k,l])
+                    b[i,j,k,l] = b_new
+                    norm[i] += fabs(b_new)
                     d[i,j,k,l] = d_new
                     
     # perform the final hyperslab
@@ -130,8 +158,12 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
                 for p in range(stop[3]):
                     d_new = clipval( a[m,n,o,p] - a[m+delta[0],n+delta[1],o+delta[2],p+delta[3]]
                                     + b[m,n,o,p], clip)
-                    b[m,n,o,p] = d_new + tk*(d_new - d[m,n,o,p])
+                    b_new = d_new + tk*(d_new - d[m,n,o,p])
+                    b[m,n,o,p] = b_new
+                    norm[m] += fabs(b_new)
                     d[m,n,o,p] = d_new
+
+    return norm_np.sum()
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
