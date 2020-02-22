@@ -1,5 +1,5 @@
 # cyTV4D
-Fast multi-threaded four-dimensional anisotropic total variational denoising
+Fast multi-threaded multi-dimensional total variational denoising
 
 ## Algorithm
 
@@ -14,9 +14,46 @@ python setup.py build_ext
 python setup.py install
 ```
 
+### High-performance computing
+When building on HPC, note that `gcc` and Cray compilers use `-fopenmp` while Intel compilers require `-qopenmp` to enable threading.
+
+On NERSC, you must export the correct compiler as part of the `build_ext` command:
+
+For Cray compilers:
+```bash
+module swap PrgEnv-Intel PrgEnv-Cray
+CC=cc LDSHARED="cc -shared" python setup.py build_ext
+```
+For Intel compilers, first edit `setup.py` to replace `-fopenmp` with `-qopenmp`, then run:
+```bash
+module load PrgEnv-Intel # this is loaded by default
+CC=icc LDSHARED="icc -shared" python setup.py build_ext
+```
 
 ## Usage
+Example usage for EELS:
+```python
+import cyTV4D as tv
+import numpy as np
+# eels_data should be a 3D numpy array, usually with
+# scan axes on axes 0 and 1, and eels spetra along axis 2
+mu = np.array([1, 1, 0.5], dtype=eels_data.dtype)
+lam = mu / 16.
+recon, convergence = tv.denoise3D(eels_data, lam, mu, iterations=1_000, FISTA=False)
+```
+
+Example usage for 4D-STEM:
+```python
+import cyTV4D as tv
+import numpy as np
+import py4DSTEM
+
+datacube = py4DSTEM.file.io.read('/Path/To/Data.dm4')
+mu = np.array([1, 1, 0.5, 0.5], dtype=datacube.data.dtype)
+lam = mu / 32.
+recon, convergence = tv.denoise4D(datacube.data, lam, mu, iterations=1_000, FISTA=False)
+```
 
 ### Notes
 
-**Memory Layout** It is required that all the numpy arrays used in the computation are C-contiguous. This is normally not a problem, as numpy arrays are created in C-contiguous mode by default. However, if you slice a numpy array, this produces a view which will usually *not* be C-contiguous. Thus, if you want to split a large TV denoising problem into chunks it will be necessary to create copies of the chunks with `datacube[chunk_x:chunk_y,:,:].copy()`, and to copy the denoised data back into the larger array, or to use `np.ascontiguousarray()`.
+**Memory Layout** Because of the way that Cython converts numpy arrays to C, it is required that all the numpy arrays used in the computation are C-contiguous. This is normally not a problem, as numpy arrays are created in C-contiguous mode by default. However, if you slice a numpy array, this produces a view which will usually *not* be C-contiguous. Thus, if you want to split a large TV denoising problem into chunks it will be necessary to create copies of the chunks with `datacube[chunk_x:chunk_y,:,:].copy()`, and to copy the denoised data back into the larger array, or to use `np.ascontiguousarray()`.
