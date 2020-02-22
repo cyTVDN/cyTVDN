@@ -7449,6 +7449,10 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_11anisotropic_21accumulator_update
 static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_a, __Pyx_memviewslice __pyx_v_b, int __pyx_v_ax, float __pyx_v_clip, int __pyx_v_BC_mode) {
   int __pyx_v_shape[3];
   int __pyx_v_start[3];
+  PyObject *__pyx_v_dtype = NULL;
+  PyObject *__pyx_v_norm_np = NULL;
+  __Pyx_memviewslice __pyx_v_norm = { 0, 0, { 0 }, { 0 }, { 0 } };
+  float __pyx_v_b_new;
   int __pyx_v_i;
   int __pyx_v_j;
   int __pyx_v_k;
@@ -7462,20 +7466,20 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
   int __pyx_t_1[3];
   int __pyx_t_2[3];
   int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
-  Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  int __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
@@ -7483,19 +7487,26 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
   Py_ssize_t __pyx_t_22;
   Py_ssize_t __pyx_t_23;
   Py_ssize_t __pyx_t_24;
-  int __pyx_t_25[3];
+  Py_ssize_t __pyx_t_25;
   Py_ssize_t __pyx_t_26;
   Py_ssize_t __pyx_t_27;
   Py_ssize_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
   Py_ssize_t __pyx_t_30;
-  Py_ssize_t __pyx_t_31;
+  int __pyx_t_31[3];
   Py_ssize_t __pyx_t_32;
   Py_ssize_t __pyx_t_33;
   Py_ssize_t __pyx_t_34;
   Py_ssize_t __pyx_t_35;
   Py_ssize_t __pyx_t_36;
   Py_ssize_t __pyx_t_37;
+  Py_ssize_t __pyx_t_38;
+  Py_ssize_t __pyx_t_39;
+  Py_ssize_t __pyx_t_40;
+  Py_ssize_t __pyx_t_41;
+  Py_ssize_t __pyx_t_42;
+  Py_ssize_t __pyx_t_43;
+  Py_ssize_t __pyx_t_44;
   __Pyx_RefNannySetupContext("__pyx_fuse_0accumulator_update_3D", 0);
 
   /* "cyTV4D/anisotropic.pyx":181
@@ -7527,12 +7538,74 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
  * 
- *     # index variables for the 4D loop
+ *     # keep track of the norm of the accumulators
  */
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
   /* "cyTV4D/anisotropic.pyx":192
+ *     # keep track of the norm of the accumulator
+ *     if _float is float:
+ *         dtype = np.float32             # <<<<<<<<<<<<<<
+ *     if _float is double:
+ *         dtype = np.double
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_dtype = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":195
+ *     if _float is double:
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)             # <<<<<<<<<<<<<<
+ *     cdef _float[:] norm = norm_np
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_a.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_v_norm_np = __pyx_t_7;
+  __pyx_t_7 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":196
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np             # <<<<<<<<<<<<<<
+ * 
+ *     cdef _float b_new
+ */
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_ds_float(__pyx_v_norm_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_v_norm = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
+
+  /* "cyTV4D/anisotropic.pyx":204
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -7547,7 +7620,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
       #endif
       /*try:*/ {
         __pyx_t_3 = (__pyx_v_start[0]);
-        __pyx_t_4 = (__pyx_v_shape[0]);
+        __pyx_t_9 = (__pyx_v_shape[0]);
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -7556,83 +7629,103 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_6 = (__pyx_t_4 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_6 > 0)
+            __pyx_t_11 = (__pyx_t_9 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_11 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_7, __pyx_t_8, __pyx_t_9)
+                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
+                    #pragma omp for lastprivate(__pyx_v_b_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
                     #endif /* _OPENMP */
-                    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
+                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
                         {
-                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_5);
+                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_10);
                             /* Initialize private variables to invalid values */
+                            __pyx_v_b_new = ((float)__PYX_NAN());
                             __pyx_v_j = ((int)0xbad0bad0);
                             __pyx_v_k = ((int)0xbad0bad0);
 
-                            /* "cyTV4D/anisotropic.pyx":193
+                            /* "cyTV4D/anisotropic.pyx":205
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):             # <<<<<<<<<<<<<<
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  */
-                            __pyx_t_7 = (__pyx_v_shape[1]);
-                            __pyx_t_8 = __pyx_t_7;
-                            for (__pyx_t_9 = (__pyx_v_start[1]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-                              __pyx_v_j = __pyx_t_9;
+                            __pyx_t_12 = (__pyx_v_shape[1]);
+                            __pyx_t_13 = __pyx_t_12;
+                            for (__pyx_t_14 = (__pyx_v_start[1]); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+                              __pyx_v_j = __pyx_t_14;
 
-                              /* "cyTV4D/anisotropic.pyx":194
+                              /* "cyTV4D/anisotropic.pyx":206
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)
  */
-                              __pyx_t_10 = (__pyx_v_shape[2]);
-                              __pyx_t_11 = __pyx_t_10;
-                              for (__pyx_t_12 = (__pyx_v_start[2]); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
-                                __pyx_v_k = __pyx_t_12;
+                              __pyx_t_15 = (__pyx_v_shape[2]);
+                              __pyx_t_16 = __pyx_t_15;
+                              for (__pyx_t_17 = (__pyx_v_start[2]); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+                                __pyx_v_k = __pyx_t_17;
 
-                                /* "cyTV4D/anisotropic.pyx":195
+                                /* "cyTV4D/anisotropic.pyx":207
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- * 
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
  */
-                                __pyx_t_13 = __pyx_v_i;
-                                __pyx_t_14 = __pyx_v_j;
-                                __pyx_t_15 = __pyx_v_k;
-                                __pyx_t_16 = (__pyx_v_i - (__pyx_v_start[0]));
-                                __pyx_t_17 = (__pyx_v_j - (__pyx_v_start[1]));
-                                __pyx_t_18 = (__pyx_v_k - (__pyx_v_start[2]));
+                                __pyx_t_18 = __pyx_v_i;
+                                __pyx_t_19 = __pyx_v_j;
+                                __pyx_t_20 = __pyx_v_k;
+                                __pyx_t_21 = (__pyx_v_i - (__pyx_v_start[0]));
+                                __pyx_t_22 = (__pyx_v_j - (__pyx_v_start[1]));
+                                __pyx_t_23 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                                /* "cyTV4D/anisotropic.pyx":196
+                                /* "cyTV4D/anisotropic.pyx":208
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
- * 
- *     # perform the final hyperslab
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
+ *                 norm[i] += fabs(b_new)
+ *                 b[i,j,k] = b_new
  */
-                                __pyx_t_19 = __pyx_v_i;
-                                __pyx_t_20 = __pyx_v_j;
-                                __pyx_t_21 = __pyx_v_k;
+                                __pyx_t_24 = __pyx_v_i;
+                                __pyx_t_25 = __pyx_v_j;
+                                __pyx_t_26 = __pyx_v_k;
 
-                                /* "cyTV4D/anisotropic.pyx":195
+                                /* "cyTV4D/anisotropic.pyx":207
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
+ */
+                                __pyx_v_b_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_21 * __pyx_v_a.strides[0]) ) + __pyx_t_22 * __pyx_v_a.strides[1]) ) + __pyx_t_23 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_24 * __pyx_v_b.strides[0]) ) + __pyx_t_25 * __pyx_v_b.strides[1]) ) + __pyx_t_26 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+                                /* "cyTV4D/anisotropic.pyx":209
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 b[i,j,k] = b_new
  * 
  */
-                                __pyx_t_22 = __pyx_v_i;
-                                __pyx_t_23 = __pyx_v_j;
-                                __pyx_t_24 = __pyx_v_k;
-                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_22 * __pyx_v_b.strides[0]) ) + __pyx_t_23 * __pyx_v_b.strides[1]) ) + __pyx_t_24 * __pyx_v_b.strides[2]) )) = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_16 * __pyx_v_a.strides[0]) ) + __pyx_t_17 * __pyx_v_a.strides[1]) ) + __pyx_t_18 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_19 * __pyx_v_b.strides[0]) ) + __pyx_t_20 * __pyx_v_b.strides[1]) ) + __pyx_t_21 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+                                __pyx_t_27 = __pyx_v_i;
+                                *((float *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_27 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+                                /* "cyTV4D/anisotropic.pyx":210
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
+ *                 b[i,j,k] = b_new             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+                                __pyx_t_28 = __pyx_v_i;
+                                __pyx_t_29 = __pyx_v_j;
+                                __pyx_t_30 = __pyx_v_k;
+                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_28 * __pyx_v_b.strides[0]) ) + __pyx_t_29 * __pyx_v_b.strides[1]) ) + __pyx_t_30 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
                               }
                             }
                         }
@@ -7648,7 +7741,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
         #endif
       }
 
-      /* "cyTV4D/anisotropic.pyx":192
+      /* "cyTV4D/anisotropic.pyx":204
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -7667,7 +7760,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
       }
   }
 
-  /* "cyTV4D/anisotropic.pyx":204
+  /* "cyTV4D/anisotropic.pyx":219
  *     cdef int m,n,o
  *     cdef int stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -7676,7 +7769,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":205
+  /* "cyTV4D/anisotropic.pyx":220
  *     cdef int stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -7685,19 +7778,19 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTV4D/anisotropic.pyx":208
+  /* "cyTV4D/anisotropic.pyx":223
  * 
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  */
-  __pyx_t_25[0] = 0;
-  __pyx_t_25[1] = 0;
-  __pyx_t_25[2] = 0;
-  memcpy(&(__pyx_v_delta[0]), __pyx_t_25, sizeof(__pyx_v_delta[0]) * (3));
+  __pyx_t_31[0] = 0;
+  __pyx_t_31[1] = 0;
+  __pyx_t_31[2] = 0;
+  memcpy(&(__pyx_v_delta[0]), __pyx_t_31, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":209
+  /* "cyTV4D/anisotropic.pyx":224
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -7707,7 +7800,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTV4D/anisotropic.pyx":210
+    /* "cyTV4D/anisotropic.pyx":225
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -7716,7 +7809,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTV4D/anisotropic.pyx":209
+    /* "cyTV4D/anisotropic.pyx":224
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -7726,7 +7819,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
     break;
     case 1:
 
-    /* "cyTV4D/anisotropic.pyx":212
+    /* "cyTV4D/anisotropic.pyx":227
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -7735,7 +7828,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTV4D/anisotropic.pyx":211
+    /* "cyTV4D/anisotropic.pyx":226
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -7745,7 +7838,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
     break;
     case 2:
 
-    /* "cyTV4D/anisotropic.pyx":215
+    /* "cyTV4D/anisotropic.pyx":230
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -7754,7 +7847,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTV4D/anisotropic.pyx":213
+    /* "cyTV4D/anisotropic.pyx":228
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -7765,81 +7858,129 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
     default: break;
   }
 
-  /* "cyTV4D/anisotropic.pyx":217
+  /* "cyTV4D/anisotropic.pyx":232
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  */
-  __pyx_t_6 = (__pyx_v_stop[0]);
-  __pyx_t_5 = __pyx_t_6;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
-    __pyx_v_m = __pyx_t_4;
+  __pyx_t_11 = (__pyx_v_stop[0]);
+  __pyx_t_10 = __pyx_t_11;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9+=1) {
+    __pyx_v_m = __pyx_t_9;
 
-    /* "cyTV4D/anisotropic.pyx":218
+    /* "cyTV4D/anisotropic.pyx":233
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  */
     __pyx_t_3 = (__pyx_v_stop[1]);
-    __pyx_t_7 = __pyx_t_3;
-    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_n = __pyx_t_8;
+    __pyx_t_12 = __pyx_t_3;
+    for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
+      __pyx_v_n = __pyx_t_13;
 
-      /* "cyTV4D/anisotropic.pyx":219
+      /* "cyTV4D/anisotropic.pyx":234
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                         + b[m,n,o], clip)
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)
  */
-      __pyx_t_9 = (__pyx_v_stop[2]);
-      __pyx_t_10 = __pyx_t_9;
-      for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-        __pyx_v_o = __pyx_t_11;
+      __pyx_t_14 = (__pyx_v_stop[2]);
+      __pyx_t_15 = __pyx_t_14;
+      for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
+        __pyx_v_o = __pyx_t_16;
 
-        /* "cyTV4D/anisotropic.pyx":220
+        /* "cyTV4D/anisotropic.pyx":235
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                         + b[m,n,o], clip)
- * 
- */
-        __pyx_t_26 = __pyx_v_m;
-        __pyx_t_27 = __pyx_v_n;
-        __pyx_t_28 = __pyx_v_o;
-        __pyx_t_29 = (__pyx_v_m + (__pyx_v_delta[0]));
-        __pyx_t_30 = (__pyx_v_n + (__pyx_v_delta[1]));
-        __pyx_t_31 = (__pyx_v_o + (__pyx_v_delta[2]));
-
-        /* "cyTV4D/anisotropic.pyx":221
- *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                         + b[m,n,o], clip)             # <<<<<<<<<<<<<<
- * 
- * 
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
  */
         __pyx_t_32 = __pyx_v_m;
         __pyx_t_33 = __pyx_v_n;
         __pyx_t_34 = __pyx_v_o;
+        __pyx_t_35 = (__pyx_v_m + (__pyx_v_delta[0]));
+        __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
+        __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTV4D/anisotropic.pyx":220
+        /* "cyTV4D/anisotropic.pyx":236
+ *             for o in range(stop[2]):
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
+ *                 norm[m] += fabs(b_new)
+ *                 b[m,n,o] = b_new
+ */
+        __pyx_t_38 = __pyx_v_m;
+        __pyx_t_39 = __pyx_v_n;
+        __pyx_t_40 = __pyx_v_o;
+
+        /* "cyTV4D/anisotropic.pyx":235
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                         + b[m,n,o], clip)
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
+ */
+        __pyx_v_b_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+        /* "cyTV4D/anisotropic.pyx":237
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 b[m,n,o] = b_new
  * 
  */
-        __pyx_t_35 = __pyx_v_m;
-        __pyx_t_36 = __pyx_v_n;
-        __pyx_t_37 = __pyx_v_o;
-        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_35 * __pyx_v_b.strides[0]) ) + __pyx_t_36 * __pyx_v_b.strides[1]) ) + __pyx_t_37 * __pyx_v_b.strides[2]) )) = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_26 * __pyx_v_a.strides[0]) ) + __pyx_t_27 * __pyx_v_a.strides[1]) ) + __pyx_t_28 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_29 * __pyx_v_a.strides[0]) ) + __pyx_t_30 * __pyx_v_a.strides[1]) ) + __pyx_t_31 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_32 * __pyx_v_b.strides[0]) ) + __pyx_t_33 * __pyx_v_b.strides[1]) ) + __pyx_t_34 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+        __pyx_t_41 = __pyx_v_m;
+        *((float *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_41 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+        /* "cyTV4D/anisotropic.pyx":238
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
+ *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
+ * 
+ *     return norm_np.sum()
+ */
+        __pyx_t_42 = __pyx_v_m;
+        __pyx_t_43 = __pyx_v_n;
+        __pyx_t_44 = __pyx_v_o;
+        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_42 * __pyx_v_b.strides[0]) ) + __pyx_t_43 * __pyx_v_b.strides[1]) ) + __pyx_t_44 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
       }
     }
   }
+
+  /* "cyTV4D/anisotropic.pyx":240
+ *                 b[m,n,o] = b_new
+ * 
+ *     return norm_np.sum()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_norm_np, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_7 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_r = __pyx_t_7;
+  __pyx_t_7 = 0;
+  goto __pyx_L0;
 
   /* "cyTV4D/anisotropic.pyx":170
  * @cython.boundscheck(False)
@@ -7850,7 +7991,18 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_20accumulator_update_3D(CYTHON_U
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
+  __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_dtype);
+  __Pyx_XDECREF(__pyx_v_norm_np);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_norm, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_a, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_b, 1);
   __Pyx_XGIVEREF(__pyx_r);
@@ -8002,6 +8154,10 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_11anisotropic_23accumulator_update
 static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_a, __Pyx_memviewslice __pyx_v_b, int __pyx_v_ax, double __pyx_v_clip, int __pyx_v_BC_mode) {
   int __pyx_v_shape[3];
   int __pyx_v_start[3];
+  PyObject *__pyx_v_dtype = NULL;
+  PyObject *__pyx_v_norm_np = NULL;
+  __Pyx_memviewslice __pyx_v_norm = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_b_new;
   int __pyx_v_i;
   int __pyx_v_j;
   int __pyx_v_k;
@@ -8015,20 +8171,20 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
   int __pyx_t_1[3];
   int __pyx_t_2[3];
   int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
-  Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  int __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
@@ -8036,19 +8192,26 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
   Py_ssize_t __pyx_t_22;
   Py_ssize_t __pyx_t_23;
   Py_ssize_t __pyx_t_24;
-  int __pyx_t_25[3];
+  Py_ssize_t __pyx_t_25;
   Py_ssize_t __pyx_t_26;
   Py_ssize_t __pyx_t_27;
   Py_ssize_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
   Py_ssize_t __pyx_t_30;
-  Py_ssize_t __pyx_t_31;
+  int __pyx_t_31[3];
   Py_ssize_t __pyx_t_32;
   Py_ssize_t __pyx_t_33;
   Py_ssize_t __pyx_t_34;
   Py_ssize_t __pyx_t_35;
   Py_ssize_t __pyx_t_36;
   Py_ssize_t __pyx_t_37;
+  Py_ssize_t __pyx_t_38;
+  Py_ssize_t __pyx_t_39;
+  Py_ssize_t __pyx_t_40;
+  Py_ssize_t __pyx_t_41;
+  Py_ssize_t __pyx_t_42;
+  Py_ssize_t __pyx_t_43;
+  Py_ssize_t __pyx_t_44;
   __Pyx_RefNannySetupContext("__pyx_fuse_1accumulator_update_3D", 0);
 
   /* "cyTV4D/anisotropic.pyx":181
@@ -8080,12 +8243,74 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
  * 
- *     # index variables for the 4D loop
+ *     # keep track of the norm of the accumulators
  */
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTV4D/anisotropic.pyx":192
+  /* "cyTV4D/anisotropic.pyx":194
+ *         dtype = np.float32
+ *     if _float is double:
+ *         dtype = np.double             # <<<<<<<<<<<<<<
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 194, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_dtype = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":195
+ *     if _float is double:
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)             # <<<<<<<<<<<<<<
+ *     cdef _float[:] norm = norm_np
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_a.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 195, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 195, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_v_norm_np = __pyx_t_7;
+  __pyx_t_7 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":196
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np             # <<<<<<<<<<<<<<
+ * 
+ *     cdef _float b_new
+ */
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_v_norm_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 196, __pyx_L1_error)
+  __pyx_v_norm = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
+
+  /* "cyTV4D/anisotropic.pyx":204
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -8100,7 +8325,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
       #endif
       /*try:*/ {
         __pyx_t_3 = (__pyx_v_start[0]);
-        __pyx_t_4 = (__pyx_v_shape[0]);
+        __pyx_t_9 = (__pyx_v_shape[0]);
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -8109,83 +8334,103 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_6 = (__pyx_t_4 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_6 > 0)
+            __pyx_t_11 = (__pyx_t_9 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_11 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_7, __pyx_t_8, __pyx_t_9)
+                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
-                    #pragma omp for firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
+                    #pragma omp for lastprivate(__pyx_v_b_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
                     #endif /* _OPENMP */
-                    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
+                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
                         {
-                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_5);
+                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_10);
                             /* Initialize private variables to invalid values */
+                            __pyx_v_b_new = ((double)__PYX_NAN());
                             __pyx_v_j = ((int)0xbad0bad0);
                             __pyx_v_k = ((int)0xbad0bad0);
 
-                            /* "cyTV4D/anisotropic.pyx":193
+                            /* "cyTV4D/anisotropic.pyx":205
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):             # <<<<<<<<<<<<<<
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  */
-                            __pyx_t_7 = (__pyx_v_shape[1]);
-                            __pyx_t_8 = __pyx_t_7;
-                            for (__pyx_t_9 = (__pyx_v_start[1]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-                              __pyx_v_j = __pyx_t_9;
+                            __pyx_t_12 = (__pyx_v_shape[1]);
+                            __pyx_t_13 = __pyx_t_12;
+                            for (__pyx_t_14 = (__pyx_v_start[1]); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+                              __pyx_v_j = __pyx_t_14;
 
-                              /* "cyTV4D/anisotropic.pyx":194
+                              /* "cyTV4D/anisotropic.pyx":206
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)
  */
-                              __pyx_t_10 = (__pyx_v_shape[2]);
-                              __pyx_t_11 = __pyx_t_10;
-                              for (__pyx_t_12 = (__pyx_v_start[2]); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
-                                __pyx_v_k = __pyx_t_12;
+                              __pyx_t_15 = (__pyx_v_shape[2]);
+                              __pyx_t_16 = __pyx_t_15;
+                              for (__pyx_t_17 = (__pyx_v_start[2]); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+                                __pyx_v_k = __pyx_t_17;
 
-                                /* "cyTV4D/anisotropic.pyx":195
+                                /* "cyTV4D/anisotropic.pyx":207
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- * 
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
  */
-                                __pyx_t_13 = __pyx_v_i;
-                                __pyx_t_14 = __pyx_v_j;
-                                __pyx_t_15 = __pyx_v_k;
-                                __pyx_t_16 = (__pyx_v_i - (__pyx_v_start[0]));
-                                __pyx_t_17 = (__pyx_v_j - (__pyx_v_start[1]));
-                                __pyx_t_18 = (__pyx_v_k - (__pyx_v_start[2]));
+                                __pyx_t_18 = __pyx_v_i;
+                                __pyx_t_19 = __pyx_v_j;
+                                __pyx_t_20 = __pyx_v_k;
+                                __pyx_t_21 = (__pyx_v_i - (__pyx_v_start[0]));
+                                __pyx_t_22 = (__pyx_v_j - (__pyx_v_start[1]));
+                                __pyx_t_23 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                                /* "cyTV4D/anisotropic.pyx":196
+                                /* "cyTV4D/anisotropic.pyx":208
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
- * 
- *     # perform the final hyperslab
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
+ *                 norm[i] += fabs(b_new)
+ *                 b[i,j,k] = b_new
  */
-                                __pyx_t_19 = __pyx_v_i;
-                                __pyx_t_20 = __pyx_v_j;
-                                __pyx_t_21 = __pyx_v_k;
+                                __pyx_t_24 = __pyx_v_i;
+                                __pyx_t_25 = __pyx_v_j;
+                                __pyx_t_26 = __pyx_v_k;
 
-                                /* "cyTV4D/anisotropic.pyx":195
+                                /* "cyTV4D/anisotropic.pyx":207
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
+ */
+                                __pyx_v_b_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_21 * __pyx_v_a.strides[0]) ) + __pyx_t_22 * __pyx_v_a.strides[1]) ) + __pyx_t_23 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_24 * __pyx_v_b.strides[0]) ) + __pyx_t_25 * __pyx_v_b.strides[1]) ) + __pyx_t_26 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+                                /* "cyTV4D/anisotropic.pyx":209
+ *                 b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 b[i,j,k] = b_new
  * 
  */
-                                __pyx_t_22 = __pyx_v_i;
-                                __pyx_t_23 = __pyx_v_j;
-                                __pyx_t_24 = __pyx_v_k;
-                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_22 * __pyx_v_b.strides[0]) ) + __pyx_t_23 * __pyx_v_b.strides[1]) ) + __pyx_t_24 * __pyx_v_b.strides[2]) )) = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_16 * __pyx_v_a.strides[0]) ) + __pyx_t_17 * __pyx_v_a.strides[1]) ) + __pyx_t_18 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_19 * __pyx_v_b.strides[0]) ) + __pyx_t_20 * __pyx_v_b.strides[1]) ) + __pyx_t_21 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+                                __pyx_t_27 = __pyx_v_i;
+                                *((double *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_27 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+                                /* "cyTV4D/anisotropic.pyx":210
+ *                                                      + b[i,j,k], clip)
+ *                 norm[i] += fabs(b_new)
+ *                 b[i,j,k] = b_new             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+                                __pyx_t_28 = __pyx_v_i;
+                                __pyx_t_29 = __pyx_v_j;
+                                __pyx_t_30 = __pyx_v_k;
+                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_28 * __pyx_v_b.strides[0]) ) + __pyx_t_29 * __pyx_v_b.strides[1]) ) + __pyx_t_30 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
                               }
                             }
                         }
@@ -8201,7 +8446,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
         #endif
       }
 
-      /* "cyTV4D/anisotropic.pyx":192
+      /* "cyTV4D/anisotropic.pyx":204
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -8220,7 +8465,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
       }
   }
 
-  /* "cyTV4D/anisotropic.pyx":204
+  /* "cyTV4D/anisotropic.pyx":219
  *     cdef int m,n,o
  *     cdef int stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -8229,7 +8474,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":205
+  /* "cyTV4D/anisotropic.pyx":220
  *     cdef int stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -8238,19 +8483,19 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTV4D/anisotropic.pyx":208
+  /* "cyTV4D/anisotropic.pyx":223
  * 
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  */
-  __pyx_t_25[0] = 0;
-  __pyx_t_25[1] = 0;
-  __pyx_t_25[2] = 0;
-  memcpy(&(__pyx_v_delta[0]), __pyx_t_25, sizeof(__pyx_v_delta[0]) * (3));
+  __pyx_t_31[0] = 0;
+  __pyx_t_31[1] = 0;
+  __pyx_t_31[2] = 0;
+  memcpy(&(__pyx_v_delta[0]), __pyx_t_31, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":209
+  /* "cyTV4D/anisotropic.pyx":224
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -8260,7 +8505,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTV4D/anisotropic.pyx":210
+    /* "cyTV4D/anisotropic.pyx":225
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -8269,7 +8514,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTV4D/anisotropic.pyx":209
+    /* "cyTV4D/anisotropic.pyx":224
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -8279,7 +8524,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
     break;
     case 1:
 
-    /* "cyTV4D/anisotropic.pyx":212
+    /* "cyTV4D/anisotropic.pyx":227
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -8288,7 +8533,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTV4D/anisotropic.pyx":211
+    /* "cyTV4D/anisotropic.pyx":226
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -8298,7 +8543,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
     break;
     case 2:
 
-    /* "cyTV4D/anisotropic.pyx":215
+    /* "cyTV4D/anisotropic.pyx":230
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -8307,7 +8552,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTV4D/anisotropic.pyx":213
+    /* "cyTV4D/anisotropic.pyx":228
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -8318,81 +8563,129 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
     default: break;
   }
 
-  /* "cyTV4D/anisotropic.pyx":217
+  /* "cyTV4D/anisotropic.pyx":232
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  */
-  __pyx_t_6 = (__pyx_v_stop[0]);
-  __pyx_t_5 = __pyx_t_6;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
-    __pyx_v_m = __pyx_t_4;
+  __pyx_t_11 = (__pyx_v_stop[0]);
+  __pyx_t_10 = __pyx_t_11;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9+=1) {
+    __pyx_v_m = __pyx_t_9;
 
-    /* "cyTV4D/anisotropic.pyx":218
+    /* "cyTV4D/anisotropic.pyx":233
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  */
     __pyx_t_3 = (__pyx_v_stop[1]);
-    __pyx_t_7 = __pyx_t_3;
-    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_n = __pyx_t_8;
+    __pyx_t_12 = __pyx_t_3;
+    for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
+      __pyx_v_n = __pyx_t_13;
 
-      /* "cyTV4D/anisotropic.pyx":219
+      /* "cyTV4D/anisotropic.pyx":234
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                         + b[m,n,o], clip)
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)
  */
-      __pyx_t_9 = (__pyx_v_stop[2]);
-      __pyx_t_10 = __pyx_t_9;
-      for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-        __pyx_v_o = __pyx_t_11;
+      __pyx_t_14 = (__pyx_v_stop[2]);
+      __pyx_t_15 = __pyx_t_14;
+      for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
+        __pyx_v_o = __pyx_t_16;
 
-        /* "cyTV4D/anisotropic.pyx":220
+        /* "cyTV4D/anisotropic.pyx":235
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                         + b[m,n,o], clip)
- * 
- */
-        __pyx_t_26 = __pyx_v_m;
-        __pyx_t_27 = __pyx_v_n;
-        __pyx_t_28 = __pyx_v_o;
-        __pyx_t_29 = (__pyx_v_m + (__pyx_v_delta[0]));
-        __pyx_t_30 = (__pyx_v_n + (__pyx_v_delta[1]));
-        __pyx_t_31 = (__pyx_v_o + (__pyx_v_delta[2]));
-
-        /* "cyTV4D/anisotropic.pyx":221
- *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                         + b[m,n,o], clip)             # <<<<<<<<<<<<<<
- * 
- * 
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
  */
         __pyx_t_32 = __pyx_v_m;
         __pyx_t_33 = __pyx_v_n;
         __pyx_t_34 = __pyx_v_o;
+        __pyx_t_35 = (__pyx_v_m + (__pyx_v_delta[0]));
+        __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
+        __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTV4D/anisotropic.pyx":220
+        /* "cyTV4D/anisotropic.pyx":236
+ *             for o in range(stop[2]):
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
+ *                 norm[m] += fabs(b_new)
+ *                 b[m,n,o] = b_new
+ */
+        __pyx_t_38 = __pyx_v_m;
+        __pyx_t_39 = __pyx_v_n;
+        __pyx_t_40 = __pyx_v_o;
+
+        /* "cyTV4D/anisotropic.pyx":235
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                         + b[m,n,o], clip)
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
+ */
+        __pyx_v_b_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+        /* "cyTV4D/anisotropic.pyx":237
+ *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 b[m,n,o] = b_new
  * 
  */
-        __pyx_t_35 = __pyx_v_m;
-        __pyx_t_36 = __pyx_v_n;
-        __pyx_t_37 = __pyx_v_o;
-        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_35 * __pyx_v_b.strides[0]) ) + __pyx_t_36 * __pyx_v_b.strides[1]) ) + __pyx_t_37 * __pyx_v_b.strides[2]) )) = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_26 * __pyx_v_a.strides[0]) ) + __pyx_t_27 * __pyx_v_a.strides[1]) ) + __pyx_t_28 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_29 * __pyx_v_a.strides[0]) ) + __pyx_t_30 * __pyx_v_a.strides[1]) ) + __pyx_t_31 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_32 * __pyx_v_b.strides[0]) ) + __pyx_t_33 * __pyx_v_b.strides[1]) ) + __pyx_t_34 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+        __pyx_t_41 = __pyx_v_m;
+        *((double *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_41 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+        /* "cyTV4D/anisotropic.pyx":238
+ *                                     + b[m,n,o], clip)
+ *                 norm[m] += fabs(b_new)
+ *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
+ * 
+ *     return norm_np.sum()
+ */
+        __pyx_t_42 = __pyx_v_m;
+        __pyx_t_43 = __pyx_v_n;
+        __pyx_t_44 = __pyx_v_o;
+        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_42 * __pyx_v_b.strides[0]) ) + __pyx_t_43 * __pyx_v_b.strides[1]) ) + __pyx_t_44 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
       }
     }
   }
+
+  /* "cyTV4D/anisotropic.pyx":240
+ *                 b[m,n,o] = b_new
+ * 
+ *     return norm_np.sum()             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_norm_np, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_7 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 240, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_r = __pyx_t_7;
+  __pyx_t_7 = 0;
+  goto __pyx_L0;
 
   /* "cyTV4D/anisotropic.pyx":170
  * @cython.boundscheck(False)
@@ -8403,7 +8696,18 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
+  __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_dtype);
+  __Pyx_XDECREF(__pyx_v_norm_np);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_norm, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_a, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_b, 1);
   __Pyx_XGIVEREF(__pyx_r);
@@ -8411,7 +8715,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_22accumulator_update_3D(CYTHON_U
   return __pyx_r;
 }
 
-/* "cyTV4D/anisotropic.pyx":226
+/* "cyTV4D/anisotropic.pyx":245
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -8458,23 +8762,23 @@ static PyObject *__pyx_pw_6cyTV4D_11anisotropic_7accumulator_update_3D_FISTA(PyO
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_args)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kwargs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_defaults)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 245, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 226, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 245, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -8491,7 +8795,7 @@ static PyObject *__pyx_pw_6cyTV4D_11anisotropic_7accumulator_update_3D_FISTA(PyO
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 226, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 245, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTV4D.anisotropic.__pyx_fused_cpdef", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8542,7 +8846,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
   int __pyx_t_18;
   __Pyx_RefNannySetupContext("accumulator_update_3D_FISTA", 0);
   __Pyx_INCREF(__pyx_v_kwargs);
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -8556,7 +8860,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     __pyx_t_2 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_t_3 = ((!__pyx_t_4) != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
@@ -8564,21 +8868,21 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     __Pyx_INCREF(Py_None);
     __Pyx_DECREF_SET(__pyx_v_kwargs, Py_None);
   }
-  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ndarray = ((PyTypeObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   __pyx_v_itemsize = -1L;
   if (unlikely(__pyx_v_args == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
-  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_t_2 = ((0 < __pyx_t_5) != 0);
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 245, __pyx_L1_error)
     }
     __pyx_t_1 = PyTuple_GET_ITEM(((PyObject*)__pyx_v_args), 0);
     __Pyx_INCREF(__pyx_t_1);
@@ -8595,18 +8899,18 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
   }
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
-  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_4 != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_kwargs == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 245, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_arg = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -8615,12 +8919,12 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
   /*else*/ {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 245, __pyx_L1_error)
     }
-    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_INCREF(__pyx_int_6);
     __Pyx_GIVEREF(__pyx_int_6);
@@ -8631,15 +8935,15 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
   __pyx_L6:;
   while (1) {
@@ -8649,7 +8953,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg, __pyx_v_ndarray); 
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_dtype = __pyx_t_6;
         __pyx_t_6 = 0;
@@ -8658,14 +8962,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_2 = __pyx_memoryview_check(__pyx_v_arg); 
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_arg_base = __pyx_t_6;
         __pyx_t_6 = 0;
         __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg_base, __pyx_v_ndarray); 
         __pyx_t_2 = (__pyx_t_3 != 0);
         if (__pyx_t_2) {
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_v_dtype = __pyx_t_6;
           __pyx_t_6 = 0;
@@ -8687,14 +8991,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_2 = (__pyx_v_dtype != Py_None);
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_itemsize = __pyx_t_5;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_kind = __pyx_t_7;
         __pyx_v_dtype_signed = (__pyx_v_kind == 'i');
@@ -8709,15 +9013,15 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L16_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L16_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           __pyx_t_2 = (((sizeof(double)) == __pyx_v_itemsize) != 0);
@@ -8726,15 +9030,15 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L19_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 226, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 245, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L19_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           break;
@@ -8761,7 +9065,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
@@ -8783,27 +9087,27 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
         PyErr_Clear(); 
       }
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
     goto __pyx_L10_break;
   }
   __pyx_L10_break:;
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_candidates = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
   if (unlikely(__pyx_v_signatures == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_6);
   __pyx_t_6 = __pyx_t_1;
@@ -8811,12 +9115,12 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_6, __pyx_t_9, &__pyx_t_5, &__pyx_t_1, NULL, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_sig, __pyx_t_1);
     __pyx_t_1 = 0;
     __pyx_v_match_found = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_14 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
@@ -8830,10 +9134,10 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     }
     __pyx_t_12 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_kp_s_) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s_);
     __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L1_error)
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -8848,12 +9152,12 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     }
     __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_12, __pyx_kp_s__2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s__2);
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __Pyx_XDECREF_SET(__pyx_v_src_sig, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
     __pyx_t_16 = __pyx_t_15;
     for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
       __pyx_v_i = __pyx_t_17;
@@ -8864,11 +9168,11 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
       __pyx_t_3 = (__pyx_v_dst_type != Py_None);
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 245, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         if (__pyx_t_2) {
           __pyx_v_match_found = 1;
@@ -8884,35 +9188,35 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_6accumulator_update_3D_FISTA(CYT
     __pyx_L32_break:;
     __pyx_t_2 = (__pyx_v_match_found != 0);
     if (__pyx_t_2) {
-      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
+      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_2 = (PyList_GET_SIZE(__pyx_v_candidates) != 0);
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
-  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 245, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_9 > 1) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 226, __pyx_L1_error)
+    __PYX_ERR(0, 245, __pyx_L1_error)
   }
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
     if (unlikely(__pyx_v_signatures == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 226, __pyx_L1_error)
+      __PYX_ERR(0, 245, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 226, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 245, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -8951,14 +9255,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_60__defaults__(CYTHON_UNUSED PyO
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults14, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults14, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -9030,31 +9334,31 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_11anisotropic_27accumulator_update
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_d)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_tk)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -9064,7 +9368,7 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_11anisotropic_27accumulator_update
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 226, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 245, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9080,21 +9384,21 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_11anisotropic_27accumulator_update
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_tk = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_tk == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_tk = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_tk == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 226, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 245, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9110,6 +9414,10 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTV4D_11anisotropic_27accumulator_update
 static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_a, __Pyx_memviewslice __pyx_v_b, __Pyx_memviewslice __pyx_v_d, float __pyx_v_tk, int __pyx_v_ax, float __pyx_v_clip, int __pyx_v_BC_mode) {
   int __pyx_v_shape[3];
   int __pyx_v_start[3];
+  PyObject *__pyx_v_dtype = NULL;
+  PyObject *__pyx_v_norm_np = NULL;
+  __Pyx_memviewslice __pyx_v_norm = { 0, 0, { 0 }, { 0 }, { 0 } };
+  float __pyx_v_b_new;
   int __pyx_v_i;
   int __pyx_v_j;
   int __pyx_v_k;
@@ -9124,20 +9432,20 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   int __pyx_t_1[3];
   int __pyx_t_2[3];
   int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
-  Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  int __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
@@ -9151,13 +9459,13 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   Py_ssize_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
   Py_ssize_t __pyx_t_30;
-  int __pyx_t_31[3];
+  Py_ssize_t __pyx_t_31;
   Py_ssize_t __pyx_t_32;
   Py_ssize_t __pyx_t_33;
   Py_ssize_t __pyx_t_34;
   Py_ssize_t __pyx_t_35;
   Py_ssize_t __pyx_t_36;
-  Py_ssize_t __pyx_t_37;
+  int __pyx_t_37[3];
   Py_ssize_t __pyx_t_38;
   Py_ssize_t __pyx_t_39;
   Py_ssize_t __pyx_t_40;
@@ -9170,9 +9478,16 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   Py_ssize_t __pyx_t_47;
   Py_ssize_t __pyx_t_48;
   Py_ssize_t __pyx_t_49;
+  Py_ssize_t __pyx_t_50;
+  Py_ssize_t __pyx_t_51;
+  Py_ssize_t __pyx_t_52;
+  Py_ssize_t __pyx_t_53;
+  Py_ssize_t __pyx_t_54;
+  Py_ssize_t __pyx_t_55;
+  Py_ssize_t __pyx_t_56;
   __Pyx_RefNannySetupContext("__pyx_fuse_0accumulator_update_3D_FISTA", 0);
 
-  /* "cyTV4D/anisotropic.pyx":238
+  /* "cyTV4D/anisotropic.pyx":257
  *     # shape of the 4-D array
  *     cdef int shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -9184,7 +9499,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":242
+  /* "cyTV4D/anisotropic.pyx":261
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef int start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -9196,17 +9511,79 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":243
+  /* "cyTV4D/anisotropic.pyx":262
  *     cdef int start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
  * 
- *     # index variables for the 4D loop
+ *     # keep track of the norm of the accumulator
  */
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTV4D/anisotropic.pyx":249
+  /* "cyTV4D/anisotropic.pyx":266
+ *     # keep track of the norm of the accumulator
+ *     if _float is float:
+ *         dtype = np.float32             # <<<<<<<<<<<<<<
+ *     if _float is double:
+ *         dtype = np.double
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_float32); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 266, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_dtype = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":269
+ *     if _float is double:
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)             # <<<<<<<<<<<<<<
+ *     cdef _float[:] norm = norm_np
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_a.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_v_norm_np = __pyx_t_7;
+  __pyx_t_7 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":270
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np             # <<<<<<<<<<<<<<
+ * 
+ *     cdef _float b_new
+ */
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_ds_float(__pyx_v_norm_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 270, __pyx_L1_error)
+  __pyx_v_norm = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
+
+  /* "cyTV4D/anisotropic.pyx":278
  * 
  *     # temporary holder for updated d value
  *     cdef _float d_new = 0.0             # <<<<<<<<<<<<<<
@@ -9215,7 +9592,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
   __pyx_v_d_new = 0.0;
 
-  /* "cyTV4D/anisotropic.pyx":252
+  /* "cyTV4D/anisotropic.pyx":281
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -9230,7 +9607,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
       #endif
       /*try:*/ {
         __pyx_t_3 = (__pyx_v_start[0]);
-        __pyx_t_4 = (__pyx_v_shape[0]);
+        __pyx_t_9 = (__pyx_v_shape[0]);
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -9239,108 +9616,128 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_6 = (__pyx_t_4 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_6 > 0)
+            __pyx_t_11 = (__pyx_t_9 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_11 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_7, __pyx_t_8, __pyx_t_9)
+                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
-                    #pragma omp for lastprivate(__pyx_v_d_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
+                    #pragma omp for lastprivate(__pyx_v_b_new) lastprivate(__pyx_v_d_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
                     #endif /* _OPENMP */
-                    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
+                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
                         {
-                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_5);
+                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_10);
                             /* Initialize private variables to invalid values */
+                            __pyx_v_b_new = ((float)__PYX_NAN());
                             __pyx_v_d_new = ((float)__PYX_NAN());
                             __pyx_v_j = ((int)0xbad0bad0);
                             __pyx_v_k = ((int)0xbad0bad0);
 
-                            /* "cyTV4D/anisotropic.pyx":253
+                            /* "cyTV4D/anisotropic.pyx":282
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):             # <<<<<<<<<<<<<<
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  */
-                            __pyx_t_7 = (__pyx_v_shape[1]);
-                            __pyx_t_8 = __pyx_t_7;
-                            for (__pyx_t_9 = (__pyx_v_start[1]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-                              __pyx_v_j = __pyx_t_9;
+                            __pyx_t_12 = (__pyx_v_shape[1]);
+                            __pyx_t_13 = __pyx_t_12;
+                            for (__pyx_t_14 = (__pyx_v_start[1]); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+                              __pyx_v_j = __pyx_t_14;
 
-                              /* "cyTV4D/anisotropic.pyx":254
+                              /* "cyTV4D/anisotropic.pyx":283
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)
  */
-                              __pyx_t_10 = (__pyx_v_shape[2]);
-                              __pyx_t_11 = __pyx_t_10;
-                              for (__pyx_t_12 = (__pyx_v_start[2]); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
-                                __pyx_v_k = __pyx_t_12;
+                              __pyx_t_15 = (__pyx_v_shape[2]);
+                              __pyx_t_16 = __pyx_t_15;
+                              for (__pyx_t_17 = (__pyx_v_start[2]); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+                                __pyx_v_k = __pyx_t_17;
 
-                                /* "cyTV4D/anisotropic.pyx":255
+                                /* "cyTV4D/anisotropic.pyx":284
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
  */
-                                __pyx_t_13 = __pyx_v_i;
-                                __pyx_t_14 = __pyx_v_j;
-                                __pyx_t_15 = __pyx_v_k;
-                                __pyx_t_16 = (__pyx_v_i - (__pyx_v_start[0]));
-                                __pyx_t_17 = (__pyx_v_j - (__pyx_v_start[1]));
-                                __pyx_t_18 = (__pyx_v_k - (__pyx_v_start[2]));
+                                __pyx_t_18 = __pyx_v_i;
+                                __pyx_t_19 = __pyx_v_j;
+                                __pyx_t_20 = __pyx_v_k;
+                                __pyx_t_21 = (__pyx_v_i - (__pyx_v_start[0]));
+                                __pyx_t_22 = (__pyx_v_j - (__pyx_v_start[1]));
+                                __pyx_t_23 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                                /* "cyTV4D/anisotropic.pyx":256
+                                /* "cyTV4D/anisotropic.pyx":285
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
- *                     d[i,j,k] = d_new
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)             # <<<<<<<<<<<<<<
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new
  */
-                                __pyx_t_19 = __pyx_v_i;
-                                __pyx_t_20 = __pyx_v_j;
-                                __pyx_t_21 = __pyx_v_k;
+                                __pyx_t_24 = __pyx_v_i;
+                                __pyx_t_25 = __pyx_v_j;
+                                __pyx_t_26 = __pyx_v_k;
 
-                                /* "cyTV4D/anisotropic.pyx":255
+                                /* "cyTV4D/anisotropic.pyx":284
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
  */
-                                __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_16 * __pyx_v_a.strides[0]) ) + __pyx_t_17 * __pyx_v_a.strides[1]) ) + __pyx_t_18 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_19 * __pyx_v_b.strides[0]) ) + __pyx_t_20 * __pyx_v_b.strides[1]) ) + __pyx_t_21 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+                                __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_21 * __pyx_v_a.strides[0]) ) + __pyx_t_22 * __pyx_v_a.strides[1]) ) + __pyx_t_23 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_24 * __pyx_v_b.strides[0]) ) + __pyx_t_25 * __pyx_v_b.strides[1]) ) + __pyx_t_26 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                                /* "cyTV4D/anisotropic.pyx":257
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
- *                     d[i,j,k] = d_new
+                                /* "cyTV4D/anisotropic.pyx":286
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)
+ */
+                                __pyx_t_27 = __pyx_v_i;
+                                __pyx_t_28 = __pyx_v_j;
+                                __pyx_t_29 = __pyx_v_k;
+                                __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_27 * __pyx_v_d.strides[0]) ) + __pyx_t_28 * __pyx_v_d.strides[1]) ) + __pyx_t_29 * __pyx_v_d.strides[2]) ))))));
+
+                                /* "cyTV4D/anisotropic.pyx":287
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new             # <<<<<<<<<<<<<<
+ *                 norm[i] += fabs(b_new)
+ *                 d[i,j,k] = d_new
+ */
+                                __pyx_t_30 = __pyx_v_i;
+                                __pyx_t_31 = __pyx_v_j;
+                                __pyx_t_32 = __pyx_v_k;
+                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_30 * __pyx_v_b.strides[0]) ) + __pyx_t_31 * __pyx_v_b.strides[1]) ) + __pyx_t_32 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
+
+                                /* "cyTV4D/anisotropic.pyx":288
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 d[i,j,k] = d_new
  * 
  */
-                                __pyx_t_22 = __pyx_v_i;
-                                __pyx_t_23 = __pyx_v_j;
-                                __pyx_t_24 = __pyx_v_k;
-                                __pyx_t_25 = __pyx_v_i;
-                                __pyx_t_26 = __pyx_v_j;
-                                __pyx_t_27 = __pyx_v_k;
-                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_25 * __pyx_v_b.strides[0]) ) + __pyx_t_26 * __pyx_v_b.strides[1]) ) + __pyx_t_27 * __pyx_v_b.strides[2]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_22 * __pyx_v_d.strides[0]) ) + __pyx_t_23 * __pyx_v_d.strides[1]) ) + __pyx_t_24 * __pyx_v_d.strides[2]) ))))));
+                                __pyx_t_33 = __pyx_v_i;
+                                *((float *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_33 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
 
-                                /* "cyTV4D/anisotropic.pyx":258
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
- *                     d[i,j,k] = d_new             # <<<<<<<<<<<<<<
+                                /* "cyTV4D/anisotropic.pyx":289
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)
+ *                 d[i,j,k] = d_new             # <<<<<<<<<<<<<<
  * 
- *     # perform the final hyperslab
+ * 
  */
-                                __pyx_t_28 = __pyx_v_i;
-                                __pyx_t_29 = __pyx_v_j;
-                                __pyx_t_30 = __pyx_v_k;
-                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_28 * __pyx_v_d.strides[0]) ) + __pyx_t_29 * __pyx_v_d.strides[1]) ) + __pyx_t_30 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
+                                __pyx_t_34 = __pyx_v_i;
+                                __pyx_t_35 = __pyx_v_j;
+                                __pyx_t_36 = __pyx_v_k;
+                                *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_34 * __pyx_v_d.strides[0]) ) + __pyx_t_35 * __pyx_v_d.strides[1]) ) + __pyx_t_36 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
                               }
                             }
                         }
@@ -9356,7 +9753,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
         #endif
       }
 
-      /* "cyTV4D/anisotropic.pyx":252
+      /* "cyTV4D/anisotropic.pyx":281
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -9375,7 +9772,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
       }
   }
 
-  /* "cyTV4D/anisotropic.pyx":266
+  /* "cyTV4D/anisotropic.pyx":298
  *     cdef int m,n,o
  *     cdef int stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -9384,7 +9781,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":267
+  /* "cyTV4D/anisotropic.pyx":299
  *     cdef int stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -9393,19 +9790,19 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTV4D/anisotropic.pyx":270
+  /* "cyTV4D/anisotropic.pyx":302
  * 
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  */
-  __pyx_t_31[0] = 0;
-  __pyx_t_31[1] = 0;
-  __pyx_t_31[2] = 0;
-  memcpy(&(__pyx_v_delta[0]), __pyx_t_31, sizeof(__pyx_v_delta[0]) * (3));
+  __pyx_t_37[0] = 0;
+  __pyx_t_37[1] = 0;
+  __pyx_t_37[2] = 0;
+  memcpy(&(__pyx_v_delta[0]), __pyx_t_37, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":271
+  /* "cyTV4D/anisotropic.pyx":303
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -9415,7 +9812,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTV4D/anisotropic.pyx":272
+    /* "cyTV4D/anisotropic.pyx":304
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -9424,7 +9821,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTV4D/anisotropic.pyx":271
+    /* "cyTV4D/anisotropic.pyx":303
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -9434,7 +9831,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
     break;
     case 1:
 
-    /* "cyTV4D/anisotropic.pyx":274
+    /* "cyTV4D/anisotropic.pyx":306
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -9443,7 +9840,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTV4D/anisotropic.pyx":273
+    /* "cyTV4D/anisotropic.pyx":305
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -9453,7 +9850,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
     break;
     case 2:
 
-    /* "cyTV4D/anisotropic.pyx":277
+    /* "cyTV4D/anisotropic.pyx":309
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -9462,7 +9859,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTV4D/anisotropic.pyx":275
+    /* "cyTV4D/anisotropic.pyx":307
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -9473,104 +9870,153 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
     default: break;
   }
 
-  /* "cyTV4D/anisotropic.pyx":279
+  /* "cyTV4D/anisotropic.pyx":311
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  */
-  __pyx_t_6 = (__pyx_v_stop[0]);
-  __pyx_t_5 = __pyx_t_6;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
-    __pyx_v_m = __pyx_t_4;
+  __pyx_t_11 = (__pyx_v_stop[0]);
+  __pyx_t_10 = __pyx_t_11;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9+=1) {
+    __pyx_v_m = __pyx_t_9;
 
-    /* "cyTV4D/anisotropic.pyx":280
+    /* "cyTV4D/anisotropic.pyx":312
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  */
     __pyx_t_3 = (__pyx_v_stop[1]);
-    __pyx_t_7 = __pyx_t_3;
-    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_n = __pyx_t_8;
+    __pyx_t_12 = __pyx_t_3;
+    for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
+      __pyx_v_n = __pyx_t_13;
 
-      /* "cyTV4D/anisotropic.pyx":281
+      /* "cyTV4D/anisotropic.pyx":313
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)
  */
-      __pyx_t_9 = (__pyx_v_stop[2]);
-      __pyx_t_10 = __pyx_t_9;
-      for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-        __pyx_v_o = __pyx_t_11;
+      __pyx_t_14 = (__pyx_v_stop[2]);
+      __pyx_t_15 = __pyx_t_14;
+      for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
+        __pyx_v_o = __pyx_t_16;
 
-        /* "cyTV4D/anisotropic.pyx":282
+        /* "cyTV4D/anisotropic.pyx":314
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- */
-        __pyx_t_32 = __pyx_v_m;
-        __pyx_t_33 = __pyx_v_n;
-        __pyx_t_34 = __pyx_v_o;
-        __pyx_t_35 = (__pyx_v_m + (__pyx_v_delta[0]));
-        __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
-        __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
-
-        /* "cyTV4D/anisotropic.pyx":283
- *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- *                     d[m,n,o] = d_new
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
  */
         __pyx_t_38 = __pyx_v_m;
         __pyx_t_39 = __pyx_v_n;
         __pyx_t_40 = __pyx_v_o;
+        __pyx_t_41 = (__pyx_v_m + (__pyx_v_delta[0]));
+        __pyx_t_42 = (__pyx_v_n + (__pyx_v_delta[1]));
+        __pyx_t_43 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTV4D/anisotropic.pyx":282
- *         for n in range(stop[1]):
+        /* "cyTV4D/anisotropic.pyx":315
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)             # <<<<<<<<<<<<<<
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new
  */
-        __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
-
-        /* "cyTV4D/anisotropic.pyx":284
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
- *                     d[m,n,o] = d_new
- */
-        __pyx_t_41 = __pyx_v_m;
-        __pyx_t_42 = __pyx_v_n;
-        __pyx_t_43 = __pyx_v_o;
         __pyx_t_44 = __pyx_v_m;
         __pyx_t_45 = __pyx_v_n;
         __pyx_t_46 = __pyx_v_o;
-        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_41 * __pyx_v_d.strides[0]) ) + __pyx_t_42 * __pyx_v_d.strides[1]) ) + __pyx_t_43 * __pyx_v_d.strides[2]) ))))));
 
-        /* "cyTV4D/anisotropic.pyx":285
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- *                     d[m,n,o] = d_new             # <<<<<<<<<<<<<<
+        /* "cyTV4D/anisotropic.pyx":314
+ *         for n in range(stop[1]):
+ *             for o in range(stop[2]):
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ */
+        __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTV4D_11anisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_38 * __pyx_v_a.strides[0]) ) + __pyx_t_39 * __pyx_v_a.strides[1]) ) + __pyx_t_40 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_41 * __pyx_v_a.strides[0]) ) + __pyx_t_42 * __pyx_v_a.strides[1]) ) + __pyx_t_43 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+        /* "cyTV4D/anisotropic.pyx":316
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)
  */
         __pyx_t_47 = __pyx_v_m;
         __pyx_t_48 = __pyx_v_n;
         __pyx_t_49 = __pyx_v_o;
-        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_47 * __pyx_v_d.strides[0]) ) + __pyx_t_48 * __pyx_v_d.strides[1]) ) + __pyx_t_49 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
+        __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_47 * __pyx_v_d.strides[0]) ) + __pyx_t_48 * __pyx_v_d.strides[1]) ) + __pyx_t_49 * __pyx_v_d.strides[2]) ))))));
+
+        /* "cyTV4D/anisotropic.pyx":317
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
+ *                 norm[m] += fabs(b_new)
+ *                 d[m,n,o] = d_new
+ */
+        __pyx_t_50 = __pyx_v_m;
+        __pyx_t_51 = __pyx_v_n;
+        __pyx_t_52 = __pyx_v_o;
+        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_50 * __pyx_v_b.strides[0]) ) + __pyx_t_51 * __pyx_v_b.strides[1]) ) + __pyx_t_52 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
+
+        /* "cyTV4D/anisotropic.pyx":318
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 d[m,n,o] = d_new
+ * 
+ */
+        __pyx_t_53 = __pyx_v_m;
+        *((float *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_53 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+        /* "cyTV4D/anisotropic.pyx":319
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)
+ *                 d[m,n,o] = d_new             # <<<<<<<<<<<<<<
+ * 
+ *     return norm_np.sum()
+ */
+        __pyx_t_54 = __pyx_v_m;
+        __pyx_t_55 = __pyx_v_n;
+        __pyx_t_56 = __pyx_v_o;
+        *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_54 * __pyx_v_d.strides[0]) ) + __pyx_t_55 * __pyx_v_d.strides[1]) ) + __pyx_t_56 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
       }
     }
   }
 
-  /* "cyTV4D/anisotropic.pyx":226
+  /* "cyTV4D/anisotropic.pyx":321
+ *                 d[m,n,o] = d_new
+ * 
+ *     return norm_np.sum()             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_norm_np, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_7 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_r = __pyx_t_7;
+  __pyx_t_7 = 0;
+  goto __pyx_L0;
+
+  /* "cyTV4D/anisotropic.pyx":245
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -9579,7 +10025,18 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_26accumulator_update_3D_FISTA(CY
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
+  __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_dtype);
+  __Pyx_XDECREF(__pyx_v_norm_np);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_norm, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_a, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_b, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_d, 1);
@@ -9595,14 +10052,14 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_62__defaults__(CYTHON_UNUSED PyO
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults15, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults15, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -9674,31 +10131,31 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_11anisotropic_29accumulator_update
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_d)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_tk)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 226, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 245, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -9708,7 +10165,7 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_11anisotropic_29accumulator_update
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 226, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 245, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9724,21 +10181,21 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_11anisotropic_29accumulator_update
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 226, __pyx_L3_error)
-    __pyx_v_tk = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_tk == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 245, __pyx_L3_error)
+    __pyx_v_tk = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_tk == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 227, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 246, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 226, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 245, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9754,6 +10211,10 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTV4D_11anisotropic_29accumulator_update
 static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CYTHON_UNUSED PyObject *__pyx_self, __Pyx_memviewslice __pyx_v_a, __Pyx_memviewslice __pyx_v_b, __Pyx_memviewslice __pyx_v_d, double __pyx_v_tk, int __pyx_v_ax, double __pyx_v_clip, int __pyx_v_BC_mode) {
   int __pyx_v_shape[3];
   int __pyx_v_start[3];
+  PyObject *__pyx_v_dtype = NULL;
+  PyObject *__pyx_v_norm_np = NULL;
+  __Pyx_memviewslice __pyx_v_norm = { 0, 0, { 0 }, { 0 }, { 0 } };
+  double __pyx_v_b_new;
   int __pyx_v_i;
   int __pyx_v_j;
   int __pyx_v_k;
@@ -9768,20 +10229,20 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   int __pyx_t_1[3];
   int __pyx_t_2[3];
   int __pyx_t_3;
-  int __pyx_t_4;
-  int __pyx_t_5;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
+  __Pyx_memviewslice __pyx_t_8 = { 0, 0, { 0 }, { 0 }, { 0 } };
   int __pyx_t_9;
   int __pyx_t_10;
   int __pyx_t_11;
   int __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
-  Py_ssize_t __pyx_t_14;
-  Py_ssize_t __pyx_t_15;
-  Py_ssize_t __pyx_t_16;
-  Py_ssize_t __pyx_t_17;
+  int __pyx_t_13;
+  int __pyx_t_14;
+  int __pyx_t_15;
+  int __pyx_t_16;
+  int __pyx_t_17;
   Py_ssize_t __pyx_t_18;
   Py_ssize_t __pyx_t_19;
   Py_ssize_t __pyx_t_20;
@@ -9795,13 +10256,13 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   Py_ssize_t __pyx_t_28;
   Py_ssize_t __pyx_t_29;
   Py_ssize_t __pyx_t_30;
-  int __pyx_t_31[3];
+  Py_ssize_t __pyx_t_31;
   Py_ssize_t __pyx_t_32;
   Py_ssize_t __pyx_t_33;
   Py_ssize_t __pyx_t_34;
   Py_ssize_t __pyx_t_35;
   Py_ssize_t __pyx_t_36;
-  Py_ssize_t __pyx_t_37;
+  int __pyx_t_37[3];
   Py_ssize_t __pyx_t_38;
   Py_ssize_t __pyx_t_39;
   Py_ssize_t __pyx_t_40;
@@ -9814,9 +10275,16 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   Py_ssize_t __pyx_t_47;
   Py_ssize_t __pyx_t_48;
   Py_ssize_t __pyx_t_49;
+  Py_ssize_t __pyx_t_50;
+  Py_ssize_t __pyx_t_51;
+  Py_ssize_t __pyx_t_52;
+  Py_ssize_t __pyx_t_53;
+  Py_ssize_t __pyx_t_54;
+  Py_ssize_t __pyx_t_55;
+  Py_ssize_t __pyx_t_56;
   __Pyx_RefNannySetupContext("__pyx_fuse_1accumulator_update_3D_FISTA", 0);
 
-  /* "cyTV4D/anisotropic.pyx":238
+  /* "cyTV4D/anisotropic.pyx":257
  *     # shape of the 4-D array
  *     cdef int shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -9828,7 +10296,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":242
+  /* "cyTV4D/anisotropic.pyx":261
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef int start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -9840,17 +10308,79 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":243
+  /* "cyTV4D/anisotropic.pyx":262
  *     cdef int start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
  * 
- *     # index variables for the 4D loop
+ *     # keep track of the norm of the accumulator
  */
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTV4D/anisotropic.pyx":249
+  /* "cyTV4D/anisotropic.pyx":268
+ *         dtype = np.float32
+ *     if _float is double:
+ *         dtype = np.double             # <<<<<<<<<<<<<<
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_double); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 268, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __pyx_v_dtype = __pyx_t_5;
+  __pyx_t_5 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":269
+ *     if _float is double:
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)             # <<<<<<<<<<<<<<
+ *     cdef _float[:] norm = norm_np
+ * 
+ */
+  __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_zeros); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_4);
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __pyx_t_5 = PyInt_FromSsize_t((__pyx_v_a.shape[0])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_GIVEREF(__pyx_t_5);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
+  __pyx_t_5 = 0;
+  __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_5);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_6);
+  __pyx_t_6 = 0;
+  __pyx_t_6 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (PyDict_SetItem(__pyx_t_6, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 269, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_5, __pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 269, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+  __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_v_norm_np = __pyx_t_7;
+  __pyx_t_7 = 0;
+
+  /* "cyTV4D/anisotropic.pyx":270
+ *         dtype = np.double
+ *     norm_np = np.zeros((a.shape[0],),dtype=dtype)
+ *     cdef _float[:] norm = norm_np             # <<<<<<<<<<<<<<
+ * 
+ *     cdef _float b_new
+ */
+  __pyx_t_8 = __Pyx_PyObject_to_MemoryviewSlice_ds_double(__pyx_v_norm_np, PyBUF_WRITABLE); if (unlikely(!__pyx_t_8.memview)) __PYX_ERR(0, 270, __pyx_L1_error)
+  __pyx_v_norm = __pyx_t_8;
+  __pyx_t_8.memview = NULL;
+  __pyx_t_8.data = NULL;
+
+  /* "cyTV4D/anisotropic.pyx":278
  * 
  *     # temporary holder for updated d value
  *     cdef _float d_new = 0.0             # <<<<<<<<<<<<<<
@@ -9859,7 +10389,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
   __pyx_v_d_new = 0.0;
 
-  /* "cyTV4D/anisotropic.pyx":252
+  /* "cyTV4D/anisotropic.pyx":281
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -9874,7 +10404,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
       #endif
       /*try:*/ {
         __pyx_t_3 = (__pyx_v_start[0]);
-        __pyx_t_4 = (__pyx_v_shape[0]);
+        __pyx_t_9 = (__pyx_v_shape[0]);
         if (1 == 0) abort();
         {
             #if ((defined(__APPLE__) || defined(__OSX__)) && (defined(__GNUC__) && (__GNUC__ > 2 || (__GNUC__ == 2 && (__GNUC_MINOR__ > 95)))))
@@ -9883,108 +10413,128 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
                 #define likely(x)   (x)
                 #define unlikely(x) (x)
             #endif
-            __pyx_t_6 = (__pyx_t_4 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
-            if (__pyx_t_6 > 0)
+            __pyx_t_11 = (__pyx_t_9 - __pyx_t_3 + 1 - 1/abs(1)) / 1;
+            if (__pyx_t_11 > 0)
             {
                 #ifdef _OPENMP
-                #pragma omp parallel private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_7, __pyx_t_8, __pyx_t_9)
+                #pragma omp parallel private(__pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36)
                 #endif /* _OPENMP */
                 {
                     #ifdef _OPENMP
-                    #pragma omp for lastprivate(__pyx_v_d_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
+                    #pragma omp for lastprivate(__pyx_v_b_new) lastprivate(__pyx_v_d_new) firstprivate(__pyx_v_i) lastprivate(__pyx_v_i) lastprivate(__pyx_v_j) lastprivate(__pyx_v_k)
                     #endif /* _OPENMP */
-                    for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_6; __pyx_t_5++){
+                    for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_11; __pyx_t_10++){
                         {
-                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_5);
+                            __pyx_v_i = (int)(__pyx_t_3 + 1 * __pyx_t_10);
                             /* Initialize private variables to invalid values */
+                            __pyx_v_b_new = ((double)__PYX_NAN());
                             __pyx_v_d_new = ((double)__PYX_NAN());
                             __pyx_v_j = ((int)0xbad0bad0);
                             __pyx_v_k = ((int)0xbad0bad0);
 
-                            /* "cyTV4D/anisotropic.pyx":253
+                            /* "cyTV4D/anisotropic.pyx":282
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):             # <<<<<<<<<<<<<<
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  */
-                            __pyx_t_7 = (__pyx_v_shape[1]);
-                            __pyx_t_8 = __pyx_t_7;
-                            for (__pyx_t_9 = (__pyx_v_start[1]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
-                              __pyx_v_j = __pyx_t_9;
+                            __pyx_t_12 = (__pyx_v_shape[1]);
+                            __pyx_t_13 = __pyx_t_12;
+                            for (__pyx_t_14 = (__pyx_v_start[1]); __pyx_t_14 < __pyx_t_13; __pyx_t_14+=1) {
+                              __pyx_v_j = __pyx_t_14;
 
-                              /* "cyTV4D/anisotropic.pyx":254
+                              /* "cyTV4D/anisotropic.pyx":283
  *     for i in prange(start[0],shape[0],nogil=True):
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)
  */
-                              __pyx_t_10 = (__pyx_v_shape[2]);
-                              __pyx_t_11 = __pyx_t_10;
-                              for (__pyx_t_12 = (__pyx_v_start[2]); __pyx_t_12 < __pyx_t_11; __pyx_t_12+=1) {
-                                __pyx_v_k = __pyx_t_12;
+                              __pyx_t_15 = (__pyx_v_shape[2]);
+                              __pyx_t_16 = __pyx_t_15;
+                              for (__pyx_t_17 = (__pyx_v_start[2]); __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
+                                __pyx_v_k = __pyx_t_17;
 
-                                /* "cyTV4D/anisotropic.pyx":255
+                                /* "cyTV4D/anisotropic.pyx":284
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
  */
-                                __pyx_t_13 = __pyx_v_i;
-                                __pyx_t_14 = __pyx_v_j;
-                                __pyx_t_15 = __pyx_v_k;
-                                __pyx_t_16 = (__pyx_v_i - (__pyx_v_start[0]));
-                                __pyx_t_17 = (__pyx_v_j - (__pyx_v_start[1]));
-                                __pyx_t_18 = (__pyx_v_k - (__pyx_v_start[2]));
+                                __pyx_t_18 = __pyx_v_i;
+                                __pyx_t_19 = __pyx_v_j;
+                                __pyx_t_20 = __pyx_v_k;
+                                __pyx_t_21 = (__pyx_v_i - (__pyx_v_start[0]));
+                                __pyx_t_22 = (__pyx_v_j - (__pyx_v_start[1]));
+                                __pyx_t_23 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                                /* "cyTV4D/anisotropic.pyx":256
+                                /* "cyTV4D/anisotropic.pyx":285
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)             # <<<<<<<<<<<<<<
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
- *                     d[i,j,k] = d_new
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)             # <<<<<<<<<<<<<<
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new
  */
-                                __pyx_t_19 = __pyx_v_i;
-                                __pyx_t_20 = __pyx_v_j;
-                                __pyx_t_21 = __pyx_v_k;
+                                __pyx_t_24 = __pyx_v_i;
+                                __pyx_t_25 = __pyx_v_j;
+                                __pyx_t_26 = __pyx_v_k;
 
-                                /* "cyTV4D/anisotropic.pyx":255
+                                /* "cyTV4D/anisotropic.pyx":284
  *         for j in range(start[1],shape[1]):
  *             for k in range(start[2],shape[2]):
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
  */
-                                __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_16 * __pyx_v_a.strides[0]) ) + __pyx_t_17 * __pyx_v_a.strides[1]) ) + __pyx_t_18 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_19 * __pyx_v_b.strides[0]) ) + __pyx_t_20 * __pyx_v_b.strides[1]) ) + __pyx_t_21 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+                                __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_21 * __pyx_v_a.strides[0]) ) + __pyx_t_22 * __pyx_v_a.strides[1]) ) + __pyx_t_23 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_24 * __pyx_v_b.strides[0]) ) + __pyx_t_25 * __pyx_v_b.strides[1]) ) + __pyx_t_26 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                                /* "cyTV4D/anisotropic.pyx":257
- *                     d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
- *                     d[i,j,k] = d_new
+                                /* "cyTV4D/anisotropic.pyx":286
+ *                 d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)
+ */
+                                __pyx_t_27 = __pyx_v_i;
+                                __pyx_t_28 = __pyx_v_j;
+                                __pyx_t_29 = __pyx_v_k;
+                                __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_27 * __pyx_v_d.strides[0]) ) + __pyx_t_28 * __pyx_v_d.strides[1]) ) + __pyx_t_29 * __pyx_v_d.strides[2]) ))))));
+
+                                /* "cyTV4D/anisotropic.pyx":287
+ *                                  + b[i,j,k], clip)
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new             # <<<<<<<<<<<<<<
+ *                 norm[i] += fabs(b_new)
+ *                 d[i,j,k] = d_new
+ */
+                                __pyx_t_30 = __pyx_v_i;
+                                __pyx_t_31 = __pyx_v_j;
+                                __pyx_t_32 = __pyx_v_k;
+                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_30 * __pyx_v_b.strides[0]) ) + __pyx_t_31 * __pyx_v_b.strides[1]) ) + __pyx_t_32 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
+
+                                /* "cyTV4D/anisotropic.pyx":288
+ *                 b_new = d_new + tk*(d_new - d[i,j,k])
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 d[i,j,k] = d_new
  * 
  */
-                                __pyx_t_22 = __pyx_v_i;
-                                __pyx_t_23 = __pyx_v_j;
-                                __pyx_t_24 = __pyx_v_k;
-                                __pyx_t_25 = __pyx_v_i;
-                                __pyx_t_26 = __pyx_v_j;
-                                __pyx_t_27 = __pyx_v_k;
-                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_25 * __pyx_v_b.strides[0]) ) + __pyx_t_26 * __pyx_v_b.strides[1]) ) + __pyx_t_27 * __pyx_v_b.strides[2]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_22 * __pyx_v_d.strides[0]) ) + __pyx_t_23 * __pyx_v_d.strides[1]) ) + __pyx_t_24 * __pyx_v_d.strides[2]) ))))));
+                                __pyx_t_33 = __pyx_v_i;
+                                *((double *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_33 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
 
-                                /* "cyTV4D/anisotropic.pyx":258
- *                                      + b[i,j,k], clip)
- *                     b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
- *                     d[i,j,k] = d_new             # <<<<<<<<<<<<<<
+                                /* "cyTV4D/anisotropic.pyx":289
+ *                 b[i,j,k] = b_new
+ *                 norm[i] += fabs(b_new)
+ *                 d[i,j,k] = d_new             # <<<<<<<<<<<<<<
  * 
- *     # perform the final hyperslab
+ * 
  */
-                                __pyx_t_28 = __pyx_v_i;
-                                __pyx_t_29 = __pyx_v_j;
-                                __pyx_t_30 = __pyx_v_k;
-                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_28 * __pyx_v_d.strides[0]) ) + __pyx_t_29 * __pyx_v_d.strides[1]) ) + __pyx_t_30 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
+                                __pyx_t_34 = __pyx_v_i;
+                                __pyx_t_35 = __pyx_v_j;
+                                __pyx_t_36 = __pyx_v_k;
+                                *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_34 * __pyx_v_d.strides[0]) ) + __pyx_t_35 * __pyx_v_d.strides[1]) ) + __pyx_t_36 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
                               }
                             }
                         }
@@ -10000,7 +10550,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
         #endif
       }
 
-      /* "cyTV4D/anisotropic.pyx":252
+      /* "cyTV4D/anisotropic.pyx":281
  * 
  *     # perform the main loop
  *     for i in prange(start[0],shape[0],nogil=True):             # <<<<<<<<<<<<<<
@@ -10019,7 +10569,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
       }
   }
 
-  /* "cyTV4D/anisotropic.pyx":266
+  /* "cyTV4D/anisotropic.pyx":298
  *     cdef int m,n,o
  *     cdef int stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -10028,7 +10578,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":267
+  /* "cyTV4D/anisotropic.pyx":299
  *     cdef int stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -10037,19 +10587,19 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTV4D/anisotropic.pyx":270
+  /* "cyTV4D/anisotropic.pyx":302
  * 
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  */
-  __pyx_t_31[0] = 0;
-  __pyx_t_31[1] = 0;
-  __pyx_t_31[2] = 0;
-  memcpy(&(__pyx_v_delta[0]), __pyx_t_31, sizeof(__pyx_v_delta[0]) * (3));
+  __pyx_t_37[0] = 0;
+  __pyx_t_37[1] = 0;
+  __pyx_t_37[2] = 0;
+  memcpy(&(__pyx_v_delta[0]), __pyx_t_37, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTV4D/anisotropic.pyx":271
+  /* "cyTV4D/anisotropic.pyx":303
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -10059,7 +10609,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTV4D/anisotropic.pyx":272
+    /* "cyTV4D/anisotropic.pyx":304
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -10068,7 +10618,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTV4D/anisotropic.pyx":271
+    /* "cyTV4D/anisotropic.pyx":303
  *     cdef int delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -10078,7 +10628,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
     break;
     case 1:
 
-    /* "cyTV4D/anisotropic.pyx":274
+    /* "cyTV4D/anisotropic.pyx":306
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -10087,7 +10637,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTV4D/anisotropic.pyx":273
+    /* "cyTV4D/anisotropic.pyx":305
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -10097,7 +10647,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
     break;
     case 2:
 
-    /* "cyTV4D/anisotropic.pyx":277
+    /* "cyTV4D/anisotropic.pyx":309
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -10106,7 +10656,7 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTV4D/anisotropic.pyx":275
+    /* "cyTV4D/anisotropic.pyx":307
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -10117,104 +10667,153 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
     default: break;
   }
 
-  /* "cyTV4D/anisotropic.pyx":279
+  /* "cyTV4D/anisotropic.pyx":311
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  */
-  __pyx_t_6 = (__pyx_v_stop[0]);
-  __pyx_t_5 = __pyx_t_6;
-  for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
-    __pyx_v_m = __pyx_t_4;
+  __pyx_t_11 = (__pyx_v_stop[0]);
+  __pyx_t_10 = __pyx_t_11;
+  for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_10; __pyx_t_9+=1) {
+    __pyx_v_m = __pyx_t_9;
 
-    /* "cyTV4D/anisotropic.pyx":280
+    /* "cyTV4D/anisotropic.pyx":312
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  */
     __pyx_t_3 = (__pyx_v_stop[1]);
-    __pyx_t_7 = __pyx_t_3;
-    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_n = __pyx_t_8;
+    __pyx_t_12 = __pyx_t_3;
+    for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
+      __pyx_v_n = __pyx_t_13;
 
-      /* "cyTV4D/anisotropic.pyx":281
+      /* "cyTV4D/anisotropic.pyx":313
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)
  */
-      __pyx_t_9 = (__pyx_v_stop[2]);
-      __pyx_t_10 = __pyx_t_9;
-      for (__pyx_t_11 = 0; __pyx_t_11 < __pyx_t_10; __pyx_t_11+=1) {
-        __pyx_v_o = __pyx_t_11;
+      __pyx_t_14 = (__pyx_v_stop[2]);
+      __pyx_t_15 = __pyx_t_14;
+      for (__pyx_t_16 = 0; __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
+        __pyx_v_o = __pyx_t_16;
 
-        /* "cyTV4D/anisotropic.pyx":282
+        /* "cyTV4D/anisotropic.pyx":314
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- */
-        __pyx_t_32 = __pyx_v_m;
-        __pyx_t_33 = __pyx_v_n;
-        __pyx_t_34 = __pyx_v_o;
-        __pyx_t_35 = (__pyx_v_m + (__pyx_v_delta[0]));
-        __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
-        __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
-
-        /* "cyTV4D/anisotropic.pyx":283
- *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- *                     d[m,n,o] = d_new
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
  */
         __pyx_t_38 = __pyx_v_m;
         __pyx_t_39 = __pyx_v_n;
         __pyx_t_40 = __pyx_v_o;
+        __pyx_t_41 = (__pyx_v_m + (__pyx_v_delta[0]));
+        __pyx_t_42 = (__pyx_v_n + (__pyx_v_delta[1]));
+        __pyx_t_43 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTV4D/anisotropic.pyx":282
- *         for n in range(stop[1]):
+        /* "cyTV4D/anisotropic.pyx":315
  *             for o in range(stop[2]):
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)             # <<<<<<<<<<<<<<
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new
  */
-        __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
-
-        /* "cyTV4D/anisotropic.pyx":284
- *                     d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
- *                     d[m,n,o] = d_new
- */
-        __pyx_t_41 = __pyx_v_m;
-        __pyx_t_42 = __pyx_v_n;
-        __pyx_t_43 = __pyx_v_o;
         __pyx_t_44 = __pyx_v_m;
         __pyx_t_45 = __pyx_v_n;
         __pyx_t_46 = __pyx_v_o;
-        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )) = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_41 * __pyx_v_d.strides[0]) ) + __pyx_t_42 * __pyx_v_d.strides[1]) ) + __pyx_t_43 * __pyx_v_d.strides[2]) ))))));
 
-        /* "cyTV4D/anisotropic.pyx":285
- *                                     + b[m,n,o], clip)
- *                     b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
- *                     d[m,n,o] = d_new             # <<<<<<<<<<<<<<
+        /* "cyTV4D/anisotropic.pyx":314
+ *         for n in range(stop[1]):
+ *             for o in range(stop[2]):
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ */
+        __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTV4D_11anisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_38 * __pyx_v_a.strides[0]) ) + __pyx_t_39 * __pyx_v_a.strides[1]) ) + __pyx_t_40 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_41 * __pyx_v_a.strides[0]) ) + __pyx_t_42 * __pyx_v_a.strides[1]) ) + __pyx_t_43 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
+
+        /* "cyTV4D/anisotropic.pyx":316
+ *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)
  */
         __pyx_t_47 = __pyx_v_m;
         __pyx_t_48 = __pyx_v_n;
         __pyx_t_49 = __pyx_v_o;
-        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_47 * __pyx_v_d.strides[0]) ) + __pyx_t_48 * __pyx_v_d.strides[1]) ) + __pyx_t_49 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
+        __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_47 * __pyx_v_d.strides[0]) ) + __pyx_t_48 * __pyx_v_d.strides[1]) ) + __pyx_t_49 * __pyx_v_d.strides[2]) ))))));
+
+        /* "cyTV4D/anisotropic.pyx":317
+ *                                 + b[m,n,o], clip)
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
+ *                 norm[m] += fabs(b_new)
+ *                 d[m,n,o] = d_new
+ */
+        __pyx_t_50 = __pyx_v_m;
+        __pyx_t_51 = __pyx_v_n;
+        __pyx_t_52 = __pyx_v_o;
+        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_50 * __pyx_v_b.strides[0]) ) + __pyx_t_51 * __pyx_v_b.strides[1]) ) + __pyx_t_52 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
+
+        /* "cyTV4D/anisotropic.pyx":318
+ *                 b_new = d_new + tk*(d_new - d[m,n,o])
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)             # <<<<<<<<<<<<<<
+ *                 d[m,n,o] = d_new
+ * 
+ */
+        __pyx_t_53 = __pyx_v_m;
+        *((double *) ( /* dim=0 */ (__pyx_v_norm.data + __pyx_t_53 * __pyx_v_norm.strides[0]) )) += fabs(__pyx_v_b_new);
+
+        /* "cyTV4D/anisotropic.pyx":319
+ *                 b[m,n,o] = b_new
+ *                 norm[m] += fabs(b_new)
+ *                 d[m,n,o] = d_new             # <<<<<<<<<<<<<<
+ * 
+ *     return norm_np.sum()
+ */
+        __pyx_t_54 = __pyx_v_m;
+        __pyx_t_55 = __pyx_v_n;
+        __pyx_t_56 = __pyx_v_o;
+        *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_54 * __pyx_v_d.strides[0]) ) + __pyx_t_55 * __pyx_v_d.strides[1]) ) + __pyx_t_56 * __pyx_v_d.strides[2]) )) = __pyx_v_d_new;
       }
     }
   }
 
-  /* "cyTV4D/anisotropic.pyx":226
+  /* "cyTV4D/anisotropic.pyx":321
+ *                 d[m,n,o] = d_new
+ * 
+ *     return norm_np.sum()             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_norm_np, __pyx_n_s_sum); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_5 = NULL;
+  if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_6))) {
+    __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_6);
+    if (likely(__pyx_t_5)) {
+      PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_6);
+      __Pyx_INCREF(__pyx_t_5);
+      __Pyx_INCREF(function);
+      __Pyx_DECREF_SET(__pyx_t_6, function);
+    }
+  }
+  __pyx_t_7 = (__pyx_t_5) ? __Pyx_PyObject_CallOneArg(__pyx_t_6, __pyx_t_5) : __Pyx_PyObject_CallNoArg(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+  if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 321, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+  __pyx_r = __pyx_t_7;
+  __pyx_t_7 = 0;
+  goto __pyx_L0;
+
+  /* "cyTV4D/anisotropic.pyx":245
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -10223,7 +10822,18 @@ static PyObject *__pyx_pf_6cyTV4D_11anisotropic_28accumulator_update_3D_FISTA(CY
  */
 
   /* function exit code */
-  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
+  __PYX_XDEC_MEMVIEW(&__pyx_t_8, 1);
+  __Pyx_AddTraceback("cyTV4D.anisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XDECREF(__pyx_v_dtype);
+  __Pyx_XDECREF(__pyx_v_norm_np);
+  __PYX_XDEC_MEMVIEW(&__pyx_v_norm, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_a, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_b, 1);
   __PYX_XDEC_MEMVIEW(&__pyx_v_d, 1);
@@ -24206,22 +24816,22 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
-  __pyx_tuple__27 = PyTuple_Pack(15, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(19, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_dtype, __pyx_n_s_norm_np, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 170, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(5, 0, 15, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTV4D_anisotropic_pyx, __pyx_n_s_accumulator_update_3D, 170, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 170, __pyx_L1_error)
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(5, 0, 19, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTV4D_anisotropic_pyx, __pyx_n_s_accumulator_update_3D, 170, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 170, __pyx_L1_error)
 
-  /* "cyTV4D/anisotropic.pyx":226
+  /* "cyTV4D/anisotropic.pyx":245
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
  *     _float tk, int ax, _float clip, int BC_mode=2):
  *     '''
  */
-  __pyx_tuple__29 = PyTuple_Pack(18, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_d, __pyx_n_s_tk, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_d_new, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(22, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_d, __pyx_n_s_tk, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_dtype, __pyx_n_s_norm_np, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_d_new, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTV4D_anisotropic_pyx, __pyx_n_s_accumulator_update_3D_FISTA, 226, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 22, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTV4D_anisotropic_pyx, __pyx_n_s_accumulator_update_3D_FISTA, 245, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 245, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -24790,52 +25400,52 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
   __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-  /* "cyTV4D/anisotropic.pyx":227
+  /* "cyTV4D/anisotropic.pyx":246
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,
  *     _float tk, int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
-  __pyx_t_10 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 227, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 246, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
 
-  /* "cyTV4D/anisotropic.pyx":226
+  /* "cyTV4D/anisotropic.pyx":245
  * @cython.boundscheck(False)
  * @cython.wraparound(False)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
  *     _float tk, int ax, _float clip, int BC_mode=2):
  *     '''
  */
-  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_11 = PyTuple_New(1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_11);
   __Pyx_GIVEREF(__pyx_t_10);
   PyTuple_SET_ITEM(__pyx_t_11, 0, __pyx_t_10);
   __pyx_t_10 = 0;
-  __pyx_t_10 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_10 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTV4D_11anisotropic_27accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTV4D_11anisotropic_27accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_12, sizeof(__pyx_defaults14), 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_12, sizeof(__pyx_defaults14), 0)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults14, __pyx_t_12)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_12, __pyx_t_11);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_12, __pyx_pf_6cyTV4D_11anisotropic_60__defaults__);
-  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_float, __pyx_t_12) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_float, __pyx_t_12) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTV4D_11anisotropic_29accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTV4D_11anisotropic_29accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_12, sizeof(__pyx_defaults15), 0)) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_12, sizeof(__pyx_defaults15), 0)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults15, __pyx_t_12)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_12, __pyx_t_11);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_12, __pyx_pf_6cyTV4D_11anisotropic_62__defaults__);
-  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_double, __pyx_t_12) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_10, __pyx_n_s_double, __pyx_t_12) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTV4D_11anisotropic_7accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 226, __pyx_L1_error)
+  __pyx_t_12 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTV4D_11anisotropic_7accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTV4D_anisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_12);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_12, __pyx_t_11);
   ((__pyx_FusedFunctionObject *) __pyx_t_12)->__signatures__ = __pyx_t_10;
   __Pyx_GIVEREF(__pyx_t_10);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D_FISTA, __pyx_t_12) < 0) __PYX_ERR(0, 226, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D_FISTA, __pyx_t_12) < 0) __PYX_ERR(0, 245, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
   __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
 

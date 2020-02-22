@@ -185,6 +185,18 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     start[:] = [0,0,0]
     start[ax] += 1
 
+    # keep track of the norm of the accumulators
+
+    # keep track of the norm of the accumulator
+    if _float is float:
+        dtype = np.float32
+    if _float is double:
+        dtype = np.double
+    norm_np = np.zeros((a.shape[0],),dtype=dtype)
+    cdef _float[:] norm = norm_np
+
+    cdef _float b_new
+
     # index variables for the 4D loop
     cdef int i,j,k
     
@@ -192,8 +204,11 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     for i in prange(start[0],shape[0],nogil=True):
         for j in range(start[1],shape[1]):
             for k in range(start[2],shape[2]):
-                    b[i,j,k] = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
-                                     + b[i,j,k], clip)
+                b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+                                                     + b[i,j,k], clip)
+                norm[i] += fabs(b_new)
+                b[i,j,k] = b_new
+
                     
     # perform the final hyperslab
     # in principle we can use index wraparound to make this easier
@@ -217,8 +232,12 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     for m in range(stop[0]):
         for n in range(stop[1]):
             for o in range(stop[2]):
-                    b[m,n,o] = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
-                                        + b[m,n,o], clip)
+                b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+                                    + b[m,n,o], clip)
+                norm[m] += fabs(b_new)
+                b[m,n,o] = b_new
+
+    return norm_np.sum()
     
 
 @cython.boundscheck(False)
@@ -242,6 +261,16 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     start[:] = [0,0,0]
     start[ax] += 1
 
+    # keep track of the norm of the accumulator
+    if _float is float:
+        dtype = np.float32
+    if _float is double:
+        dtype = np.double
+    norm_np = np.zeros((a.shape[0],),dtype=dtype)
+    cdef _float[:] norm = norm_np
+
+    cdef _float b_new
+
     # index variables for the 4D loop
     cdef int i,j,k
 
@@ -252,10 +281,13 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     for i in prange(start[0],shape[0],nogil=True):
         for j in range(start[1],shape[1]):
             for k in range(start[2],shape[2]):
-                    d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
-                                     + b[i,j,k], clip)
-                    b[i,j,k] = d_new + tk*(d_new - d[i,j,k])
-                    d[i,j,k] = d_new
+                d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+                                 + b[i,j,k], clip)
+                b_new = d_new + tk*(d_new - d[i,j,k])
+                b[i,j,k] = b_new
+                norm[i] += fabs(b_new)
+                d[i,j,k] = d_new
+
                     
     # perform the final hyperslab
     # in principle we can use index wraparound to make this easier
@@ -279,7 +311,11 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     for m in range(stop[0]):
         for n in range(stop[1]):
             for o in range(stop[2]):
-                    d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
-                                    + b[m,n,o], clip)
-                    b[m,n,o] = d_new + tk*(d_new - d[m,n,o])
-                    d[m,n,o] = d_new
+                d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
+                                + b[m,n,o], clip)
+                b_new = d_new + tk*(d_new - d[m,n,o])
+                b[m,n,o] = b_new
+                norm[m] += fabs(b_new)
+                d[m,n,o] = d_new
+
+    return norm_np.sum()
