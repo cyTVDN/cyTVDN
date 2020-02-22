@@ -13,23 +13,19 @@ ctypedef fused _float:
 def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
     cdef Py_ssize_t i,j,k,l
     
-    if _float is float:
-        dtype = np.float32
-    if _float is double:
-        dtype = np.double
-    mserr_np = np.zeros((a.shape[0],),dtype=dtype)
-    cdef _float[:] mserr = mserr_np
+    cdef _float mserr = 0.0
     
-    cdef _float tmp = 0.0
+    cdef _float tmp
     
     for i in prange(a.shape[0],nogil=True):
         for j in range(a.shape[1]):
             for k in range(a.shape[2]):
                 for l in range(a.shape[3]):
                     tmp = a[i,j,k,l] - b[i,j,k,l]
-                    mserr[i] = mserr[i] + (tmp*tmp)
+                    mserr += (tmp*tmp)
                     
-    return mserr_np.sum()
+    #return mserr_np.sum()
+    return mserr
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -37,12 +33,7 @@ def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
 def sum_square_error_3D(_float[:,:,::] a, _float[:,:,::] b):
     cdef Py_ssize_t i,j,k
     
-    if _float is float:
-        dtype = np.float32
-    if _float is double:
-        dtype = np.double
-    mserr_np = np.zeros((a.shape[0],),dtype=dtype)
-    cdef _float[:] mserr = mserr_np
+    cdef _float mserr = 0.0
     
     cdef _float tmp
     
@@ -50,9 +41,9 @@ def sum_square_error_3D(_float[:,:,::] a, _float[:,:,::] b):
         for j in range(a.shape[1]):
             for k in range(a.shape[2]):
                     tmp = a[i,j,k] - b[i,j,k]
-                    mserr[i] = mserr[i] + (tmp*tmp)
+                    mserr += (tmp*tmp)
                     
-    return mserr_np.sum()
+    return mserr
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
