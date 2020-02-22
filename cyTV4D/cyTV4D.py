@@ -49,9 +49,9 @@ def denoise4D(
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
 
-    assert np.all(lam_mu < (1.0 / 8.0)) & np.all(
+    assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
         lam_mu > 0
-    ), "Parameters must satisfy 0 < λ/μ < 1/8"
+    ), "Parameters must satisfy 0 < λ/μ <= 1/8"
     try:
         print(
             f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1/{mu/lam[3]:.0f}]"
@@ -197,9 +197,9 @@ def denoise3D(
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
 
-    assert np.all(lam_mu < (1.0 / 8.0)) & np.all(
+    assert np.all(lam_mu <= (1.0 / 16.0)) & np.all(
         lam_mu > 0
-    ), "Parameters must satisfy 0 < λ/μ < 1/8"
+    ), "Parameters must satisfy 0 < λ/μ <= 1/8"
     try:
         print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}]")
     except Exception:
