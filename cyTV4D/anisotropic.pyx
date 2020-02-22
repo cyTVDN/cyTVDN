@@ -23,16 +23,16 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
     '''
     
     # shape of the 4-D array
-    cdef int shape[4]
+    cdef Py_ssize_t shape[4]
     shape[:] = [a.shape[0],a.shape[1],a.shape[2],a.shape[3]]
     
     # start point on each axis. this is zero for all axes but the rolling direction
-    cdef int start[4]
+    cdef Py_ssize_t start[4]
     start[:] = [0,0,0,0]
     start[ax] += 1
 
     # index variables for the 4D loop
-    cdef int i,j,k,l
+    cdef Py_ssize_t i,j,k,l
 
     # keep track of the norm of the accumulator
     if _float is float:
@@ -58,12 +58,12 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
     # in principle we can use index wraparound to make this easier
     # but that would have a speed penalty on every iteration in the 
     # main loop, so we do this explicitly for zero overhead
-    cdef int m,n,o,p
-    cdef int stop[4]
+    cdef Py_ssize_t m,n,o,p
+    cdef Py_ssize_t stop[4]
     stop = shape
     stop[ax] = 1
     
-    cdef int delta[4]
+    cdef Py_ssize_t delta[4]
     delta[:] = [0,0,0,0]
     if BC_mode == 0:
         delta[ax] = shape[ax] - 1
@@ -97,16 +97,16 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
     '''
     
     # shape of the 4-D array
-    cdef int shape[4]
+    cdef Py_ssize_t shape[4]
     shape[:] = [a.shape[0],a.shape[1],a.shape[2],a.shape[3]]
     
     # start point on each axis. this is zero for all axes but the rolling direction
-    cdef int start[4]
+    cdef Py_ssize_t start[4]
     start[:] = [0,0,0,0]
     start[ax] += 1
 
     # index variables for the 4D loop
-    cdef int i,j,k,l
+    cdef Py_ssize_t i,j,k,l
 
     # temporary holder for updated d value
     cdef _float d_new = 0.0
@@ -137,12 +137,12 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
     # in principle we can use index wraparound to make this easier
     # but that would have a speed penalty on every iteration in the 
     # main loop, so we do this explicitly for zero overhead
-    cdef int m,n,o,p
-    cdef int stop[4]
+    cdef Py_ssize_t m,n,o,p
+    cdef Py_ssize_t stop[4]
     stop = shape
     stop[ax] = 1
     
-    cdef int delta[4]
+    cdef Py_ssize_t delta[4]
     delta[:] = [0,0,0,0]
     if BC_mode == 0:
         delta[ax] = shape[ax] - 1
@@ -177,11 +177,11 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     '''
     
     # shape of the 4-D array
-    cdef int shape[3]
+    cdef Py_ssize_t shape[3]
     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]
     
     # start point on each axis. this is zero for all axes but the rolling direction
-    cdef int start[3]
+    cdef Py_ssize_t start[3]
     start[:] = [0,0,0]
     start[ax] += 1
 
@@ -198,7 +198,7 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     cdef _float b_new
 
     # index variables for the 4D loop
-    cdef int i,j,k
+    cdef Py_ssize_t i,j,k
     
     # perform the main loop
     for i in prange(start[0],shape[0],nogil=True):
@@ -214,12 +214,12 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     # in principle we can use index wraparound to make this easier
     # but that would have a speed penalty on every iteration in the 
     # main loop, so we do this explicitly for zero overhead
-    cdef int m,n,o
-    cdef int stop[3]
+    cdef Py_ssize_t m,n,o
+    cdef Py_ssize_t stop[3]
     stop = shape
     stop[ax] = 1
     
-    cdef int delta[3]
+    cdef Py_ssize_t delta[3]
     delta[:] = [0,0,0]
     if BC_mode == 0:
         delta[ax] = shape[ax] - 1
@@ -253,11 +253,11 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     '''
     
     # shape of the 4-D array
-    cdef int shape[3]
+    cdef Py_ssize_t shape[3]
     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]
     
     # start point on each axis. this is zero for all axes but the rolling direction
-    cdef int start[3]
+    cdef Py_ssize_t start[3]
     start[:] = [0,0,0]
     start[ax] += 1
 
@@ -272,7 +272,7 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     cdef _float b_new
 
     # index variables for the 4D loop
-    cdef int i,j,k
+    cdef Py_ssize_t i,j,k
 
     # temporary holder for updated d value
     cdef _float d_new = 0.0
@@ -293,12 +293,12 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     # in principle we can use index wraparound to make this easier
     # but that would have a speed penalty on every iteration in the 
     # main loop, so we do this explicitly for zero overhead
-    cdef int m,n,o
-    cdef int stop[3]
+    cdef Py_ssize_t m,n,o
+    cdef Py_ssize_t stop[3]
     stop = shape
     stop[ax] = 1
     
-    cdef int delta[3]
+    cdef Py_ssize_t delta[3]
     delta[:] = [0,0,0]
     if BC_mode == 0:
         delta[ax] = shape[ax] - 1

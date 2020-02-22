@@ -11,7 +11,7 @@ ctypedef fused _float:
 @cython.wraparound(False)
 @cython.cdivision(True)
 def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
-    cdef int i,j,k,l
+    cdef Py_ssize_t i,j,k,l
     
     if _float is float:
         dtype = np.float32
@@ -20,7 +20,7 @@ def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
     mserr_np = np.zeros((a.shape[0],),dtype=dtype)
     cdef _float[:] mserr = mserr_np
     
-    cdef _float tmp
+    cdef _float tmp = 0.0
     
     for i in prange(a.shape[0],nogil=True):
         for j in range(a.shape[1]):
@@ -35,7 +35,7 @@ def sum_square_error_4D(_float[:,:,:,::] a, _float[:,:,:,::] b):
 @cython.wraparound(False)
 @cython.cdivision(True)
 def sum_square_error_3D(_float[:,:,::] a, _float[:,:,::] b):
-    cdef int i,j,k
+    cdef Py_ssize_t i,j,k
     
     if _float is float:
         dtype = np.float32
@@ -75,7 +75,7 @@ def datacube_update_4D(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:
     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2],orig.shape[3]]
     
     # index variables for the main 4D loop
-    cdef int i,j,k,l
+    cdef Py_ssize_t i,j,k,l
 
     # index limits for the mirror boundary condition
     # (In Cython these can't be defined inside the conditional)
@@ -134,11 +134,11 @@ def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::]
             boundary conditions, such that there are zeros in all the right places
     '''
     # shape of the 3-D array
-    cdef int shape[3]
+    cdef Py_ssize_t shape[3]
     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2]]
     
     # index variables for the main 3D loop
-    cdef int i,j,k,
+    cdef Py_ssize_t i,j,k,
 
     # index limits for the mirror boundary condition
     # (In Cython these can't be defined inside the conditional)
