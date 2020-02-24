@@ -16,8 +16,12 @@ elif platform.system() == "Darwin":
     # we are on a Mac, link to the Homebrew installation of llvm
     extra_link_args.append("-lgomp")
     extra_link_args.append("-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/")
-    # use the Homebrew gcc
-    os.environ["CC"] = "gcc-9"
+    
+    # Previously, I used Homebrew-installed gcc...
+    # However, it has been giving me unexpected behavior in parallel code
+    # os.environ["CC"] = "gcc-9"
+    # LLVM Clang seems to work correctly:
+    os.environ['CC'] = '/usr/local/Cellar/llvm/9.0.0_1/bin/clang'
 else:
     extra_compile_args = ["-fopenmp"]
     extra_link_args = ["-fopenmp"]
