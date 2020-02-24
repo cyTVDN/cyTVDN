@@ -2957,21 +2957,12 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_8sum_square_error_4D(CYTHON_UNUSED PyOb
  * 
  *     cdef _float mserr = 0.0             # <<<<<<<<<<<<<<
  * 
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  */
   __pyx_v_mserr = 0.0;
 
-  /* "cyTV4D/utils.pyx":18
- *     cdef _float mserr = 0.0
- * 
- *     cdef _float tmp = 0.0             # <<<<<<<<<<<<<<
- * 
- *     for i in prange(a.shape[0],nogil=True):
- */
-  __pyx_v_tmp = 0.0;
-
   /* "cyTV4D/utils.pyx":20
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  * 
  *     for i in prange(a.shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *         for j in range(a.shape[1]):
@@ -3091,7 +3082,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_8sum_square_error_4D(CYTHON_UNUSED PyOb
       }
 
       /* "cyTV4D/utils.pyx":20
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  * 
  *     for i in prange(a.shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *         for j in range(a.shape[1]):
@@ -3250,21 +3241,12 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10sum_square_error_4D(CYTHON_UNUSED PyO
  * 
  *     cdef _float mserr = 0.0             # <<<<<<<<<<<<<<
  * 
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  */
   __pyx_v_mserr = 0.0;
 
-  /* "cyTV4D/utils.pyx":18
- *     cdef _float mserr = 0.0
- * 
- *     cdef _float tmp = 0.0             # <<<<<<<<<<<<<<
- * 
- *     for i in prange(a.shape[0],nogil=True):
- */
-  __pyx_v_tmp = 0.0;
-
   /* "cyTV4D/utils.pyx":20
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  * 
  *     for i in prange(a.shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *         for j in range(a.shape[1]):
@@ -3384,7 +3366,7 @@ static PyObject *__pyx_pf_6cyTV4D_5utils_10sum_square_error_4D(CYTHON_UNUSED PyO
       }
 
       /* "cyTV4D/utils.pyx":20
- *     cdef _float tmp = 0.0
+ *     cdef _float tmp
  * 
  *     for i in prange(a.shape[0],nogil=True):             # <<<<<<<<<<<<<<
  *         for j in range(a.shape[1]):
