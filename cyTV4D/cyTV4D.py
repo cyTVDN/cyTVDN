@@ -65,6 +65,18 @@ def denoise4D(
         f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
         flush=True,
     )
+
+    unaccelerated = not FISTA
+    if type(iterations) in (list, tuple):
+        FISTA = True
+        unaccelerated = True
+
+        iterations_FISTA = iterations[0]
+        iterations_unacc = iterations[1]
+    else:
+        iterations_FISTA = iterations * FISTA
+        iterations_unacc = iterations * (not FISTA)
+
     if FISTA:
         print(
             f"FISTA Accelerated TV denoising will require {size(datacube.nbytes*9,system=alternative)} of RAM...",
@@ -78,10 +90,10 @@ def denoise4D(
 
     calculate_MSE = reference_data is not None
     if calculate_MSE:
-        MSE = np.zeros((iterations + 1,), dtype=datacube.dtype)
+        MSE = np.zeros((iterations_FISTA + iterations_unacc + 1,), dtype=datacube.dtype)
         MSE[0] = sum_square_error_4D(datacube, reference_data)
 
-    error = np.zeros((iterations), dtype=datacube.dtype)
+    b_norm = np.zeros((iterations_FISTA + iterations_unacc), dtype=datacube.dtype)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -101,23 +113,25 @@ def denoise4D(
     recon = datacube.copy()
 
     if FISTA:
-        for i in tqdm(range(int(iterations)), desc="FISTA Accelerated TV Denoising"):
+        for i in tqdm(
+            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising"
+        ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
             tk_ratio = tk / tk_new
             tk = tk_new
 
             # update accumulators
-            error[i] += accumulator_update_4D_FISTA(
+            b_norm[i] += accumulator_update_4D_FISTA(
                 recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D_FISTA(
+            b_norm[i] += accumulator_update_4D_FISTA(
                 recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D_FISTA(
+            b_norm[i] += accumulator_update_4D_FISTA(
                 recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D_FISTA(
+            b_norm[i] += accumulator_update_4D_FISTA(
                 recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode
             )
 
@@ -127,19 +141,20 @@ def denoise4D(
 
             if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
-    else:
-        for i in tqdm(range(int(iterations)), desc="Unaccelerated TV Denoising"):
+    if unaccelerated:
+        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
+            i = j + iterations_FISTA
             # update accumulators
-            error[i] += accumulator_update_4D(
+            b_norm[i] += accumulator_update_4D(
                 recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D(
+            b_norm[i] += accumulator_update_4D(
                 recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D(
+            b_norm[i] += accumulator_update_4D(
                 recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_4D(
+            b_norm[i] += accumulator_update_4D(
                 recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode
             )
 
@@ -152,9 +167,9 @@ def denoise4D(
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
 
     if calculate_MSE:
-        return recon, error, MSE
+        return recon, b_norm, MSE
     else:
-        return recon, error
+        return recon, b_norm
 
 
 def denoise3D(
@@ -239,7 +254,7 @@ def denoise3D(
         MSE = np.zeros((iterations_FISTA + iterations_unacc + 1,), dtype=datacube.dtype)
         MSE[0] = sum_square_error_3D(datacube, reference_data)
 
-    error = np.zeros((iterations_FISTA + iterations_unacc), dtype=datacube.dtype)
+    b_norm = np.zeros((iterations_FISTA + iterations_unacc), dtype=datacube.dtype)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -266,13 +281,13 @@ def denoise3D(
             tk = tk_new
 
             # update accumulators
-            error[i] += accumulator_update_3D_FISTA(
+            b_norm[i] += accumulator_update_3D_FISTA(
                 recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_3D_FISTA(
+            b_norm[i] += accumulator_update_3D_FISTA(
                 recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_3D_FISTA(
+            b_norm[i] += accumulator_update_3D_FISTA(
                 recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode
             )
 
@@ -286,13 +301,13 @@ def denoise3D(
         for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
             i = j + iterations_FISTA
             # update accumulators
-            error[i] += accumulator_update_3D(
+            b_norm[i] += accumulator_update_3D(
                 recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_3D(
+            b_norm[i] += accumulator_update_3D(
                 recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode
             )
-            error[i] += accumulator_update_3D(
+            b_norm[i] += accumulator_update_3D(
                 recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode
             )
 
@@ -305,9 +320,9 @@ def denoise3D(
                 MSE[i + 1] = sum_square_error_3D(reference_data, recon)
 
     if calculate_error:
-        return recon, error, MSE
+        return recon, b_norm, MSE
     else:
-        return recon, error
+        return recon, b_norm
 
 
 def check_memory(datacube):
