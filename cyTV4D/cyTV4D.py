@@ -118,7 +118,7 @@ def denoise4D(
         ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
-            tk_ratio = tk / tk_new
+            tk_ratio = (tk - 1.0) / tk_new
             tk = tk_new
 
             # update accumulators
@@ -277,7 +277,7 @@ def denoise3D(
         ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
-            tk_ratio = tk / tk_new
+            tk_ratio = (tk - 1.0) / tk_new
             tk = tk_new
 
             # update accumulators
