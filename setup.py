@@ -55,4 +55,5 @@ setup(
     ext_modules=cythonize(ext_modules),
     install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
     setup_requires=["Cython"],
+    entry_points={"console_scripts": ["cyTVMPI=cyTV4D.mpi:run_MPI"]},
 )
