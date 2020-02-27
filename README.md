@@ -30,6 +30,17 @@ module load PrgEnv-Intel # this is loaded by default
 CC=icc LDSHARED="icc -shared" python setup.py build_ext
 ```
 
+#### MPI
+For datasets that are too large to fit in RAM on a single machine, an MPI implementation is provided. The implementation is roughly as follows:
+* Divide the work across a 2D grid along the real-space axes. (*This is not necessarily the most efficient division of labor, but it makes I/O easier.*)
+* Each worker loads a chunk of the data, with one unit of overlap in scan position in each direction. At the edges of the scan there is no "overlap." 
+* Each worker performs an acuumulator update step using only its local hunk. *Some of the computed values at the boundaries are invalid because they do not respect the global boundary conditions of the problem.*
+* The overlap regions are synchronized by inter-worker communication over MPI. The accumulators (which are backward differences) shift data "right". This fixes the boundary condition errors from the previous step.
+* Each worker performs a reconstruction update step. *Again, the global boundary condition is not respected, so synchronization is needed.*
+* The boundary regions of the reconstruction are propagated via MPI. The reconstruction (which uses a forward difference) shifts data "left".
+
+> It's probably best to have one MPI worker per node, and to set OpenMP to use all (or maybe all-1 to leave some resources for async communication?) of the node's threads. This needs testing. 
+
 ## Usage
 Example usage for EELS:
 ```python
