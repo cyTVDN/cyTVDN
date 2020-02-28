@@ -46,8 +46,11 @@ def run_MPI():
     )
     parser.add_argument("-L", "--lambda", type=float, nargs="+")
     parser.add_argument("-m", "--mu", type=float, nargs="+")
+    parser.add_argument("-v", "--verbose", type=bool, default=False)
 
     args = vars(parser.parse_args())
+
+    VERBOSE = args["verbose"]
 
     if HEAD_WORKER:
         print(f"Running MPI denoising with arguments: {args}")
@@ -57,7 +60,10 @@ def run_MPI():
         # load EELS SI data using ncempy
         dmf = fileDM(args["input"][0])
         data = dmf.getMemmap(2)
-        size = data.shape[2:]
+        # squeeze while retaining memmap (native numpy squeeze) tries to load the array in RAM
+        while data.shape[0] == 1:
+            data = data.reshape(data.shape[1:])
+        size = data.shape[:2]
     elif args["dimensions"][0] == 4:
         # load 4D data using py4DSTEM
 
@@ -107,7 +113,51 @@ def run_MPI():
         print(f"Dividing work over a {wx} by {wy} grid...")
 
     # Figure out the slices that this worker is responsible for:
+    tile_x, tile_y = np.unravel_index(rank, (wx, wy))
+
+    if VERBOSE:
+        print(f"Worker {rank} is doing tile {tile_x},{tile_y}.")
 
     # first get the size in each direction
-    nx = np.ceil(size[0] / wx)
-    ny = np.ceil(size[1] / wy)
+    nx = int(np.ceil(size[0] / wx))
+    ny = int(np.ceil(size[1] / wy))
+
+    # get the slices for which this worker's data is valid (i.e. the slice before adding overlaps)
+    valid_slice_x = slice(
+        tile_x * nx, (tile_x + 1) * nx if (tile_x + 1) * nx <= size[0] else size[0]
+    )
+    valid_slice_y = slice(
+        tile_y * ny, (tile_y + 1) * ny if (tile_y + 1) * ny <= size[1] else size[1]
+    )
+
+    # now get the slices to actually read
+    read_slice_x = slice(
+        valid_slice_x.start - 1 if valid_slice_x.start > 0 else 0,
+        valid_slice_x.stop + 1 if valid_slice_x.stop + 1 <= size[0] else size[0],
+    )
+    read_slice_y = slice(
+        valid_slice_y.start - 1 if valid_slice_y.start > 0 else 0,
+        valid_slice_y.stop + 1 if valid_slice_y.stop + 1 <= size[1] else size[1],
+    )
+
+    if VERBOSE:
+        print(f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}...")
+
+    # set some flags for determining if this worker should shift data at each step:
+    SHIFT_X_POS = tile_x < (wx - 1)
+    SHIFT_X_NEG = tile_x > 0
+
+    SHIFT_Y_POS = tile_y < (wy - 1)
+    SHIFT_Y_NEG = tile_y > 0
+
+    # load in the data and make it contiguous
+    if args["dimensions"][0] == 3:
+        raw = np.ascontiguousarray(data[read_slice_x, read_slice_x, :]).astype(
+            np.float32
+        )
+    elif args["dimensions"][0] == 4:
+        raw = np.ascontiguousarray(data[read_slice_x, read_slice_y, :, :]).astype(
+            np.float32
+        )  # TODO: make dtype a flag
+
+    recon = np.zeros_like(raw)
