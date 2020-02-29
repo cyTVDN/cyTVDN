@@ -173,7 +173,7 @@ def denoise4D(
 
 
 def denoise3D(
-    datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, reference_data=None
+    datacube, lam, mu, iterations=7_500, BC_mode=2, FISTA=False, reference_data=None
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 3D datacube

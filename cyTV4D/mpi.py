@@ -2,6 +2,7 @@
 import cyTV4D as tv
 from mpi4py import MPI
 import numpy as np
+from tqdm import tqdm
 
 try:
     import py4DSTEM
@@ -51,12 +52,18 @@ def run_MPI():
     args = vars(parser.parse_args())
 
     VERBOSE = args["verbose"]
+    ndim = args["dimensions"][0]
+    FISTA = args["fista"]
+    niter = args["iterations"]
+    BC_mode = 2
+    lam = np.array(args["lambda"])
+    mu = np.array(args["mu"])
 
     if HEAD_WORKER:
         print(f"Running MPI denoising with arguments: {args}")
 
     # each worker must load a memory map into the data:
-    if args["dimensions"][0] == 3:
+    if ndim == 3:
         # load EELS SI data using ncempy
         dmf = fileDM(args["input"][0])
         data = dmf.getMemmap(2)
@@ -64,7 +71,7 @@ def run_MPI():
         while data.shape[0] == 1:
             data = data.reshape(data.shape[1:])
         size = data.shape[:2]
-    elif args["dimensions"][0] == 4:
+    elif ndim == 4:
         # load 4D data using py4DSTEM
 
         # load DM data:
@@ -141,7 +148,9 @@ def run_MPI():
     )
 
     if VERBOSE:
-        print(f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}...")
+        print(
+            f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}..."
+        )
 
     # set some flags for determining if this worker should shift data at each step:
     SHIFT_X_POS = tile_x < (wx - 1)
@@ -150,8 +159,22 @@ def run_MPI():
     SHIFT_Y_POS = tile_y < (wy - 1)
     SHIFT_Y_NEG = tile_y > 0
 
+    # figure out the sources and destinations for each shift
+    RANK_X_POS = (
+        np.ravel_multi_index((tile_x + 1, tile_y), (wx, wy)) if SHIFT_X_POS else 0
+    )
+    RANK_X_NEG = (
+        np.ravel_multi_index((tile_x - 1, tile_y), (wx, wy)) if SHIFT_X_NEG else 0
+    )
+    RANK_Y_POS = (
+        np.ravel_multi_index((tile_x, tile_y + 1), (wx, wy)) if SHIFT_Y_POS else 0
+    )
+    RANK_Y_NEG = (
+        np.ravel_multi_index((tile_x, tile_y - 1), (wx, wy)) if SHIFT_Y_NEG else 0
+    )
+
     # load in the data and make it contiguous
-    if args["dimensions"][0] == 3:
+    if ndim == 3:
         raw = np.ascontiguousarray(data[read_slice_x, read_slice_x, :]).astype(
             np.float32
         )
@@ -160,4 +183,40 @@ def run_MPI():
             np.float32
         )  # TODO: make dtype a flag
 
-    recon = np.zeros_like(raw)
+    recon = raw.copy()
+
+    lambdaInv = (1.0 / lam).astype(recon.dtype)
+    lam_mu = (lam / mu).astype(recon.dtype)
+
+    # create the iterators (so that only the head spits out tqdm stuff)
+    iterator = tqdm(range(niter[0])) if HEAD_WORKER else range(niter[0])
+
+    if ndim == 3:
+        # 3D is boring, I'll implement it later...
+        if HEAD_WORKER:
+            print("Oops... Haven't implemented 3D yet. Sorry")
+
+    elif ndim == 4:
+        # allocate accumulators
+        b1 = np.zeros_like(recon)
+        b2 = np.zeros_like(recon)
+        b3 = np.zeros_like(recon)
+        b4 = np.zeros_like(recon)
+
+        if FISTA:
+            d1 = np.zeros_like(recon)
+            d2 = np.zeros_like(recon)
+            d3 = np.zeros_like(recon)
+            d4 = np.zeros_like(recon)
+
+            tk = 1.0
+
+        if FISTA:
+            print("Oops, haven't done FISTA yet...")
+
+        else:
+            tv.accumulator_update_4D(recon, b1, 0, lambdaInv[0], BC_mode=BC_mode)
+
+
+
+
