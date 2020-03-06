@@ -353,4 +353,5 @@ def check_memory(datacube):
             ["(Half-)Isotropic Unaccelerated", fmt(dcsize * 5), checkmark(dcsize * 5)],
         ]
 
+    print(f"Datacube size is {fmt(dcsize)} with dtype {datacube.dtype}")
     print(tabulate(algos, headers))

@@ -3,6 +3,10 @@ import cyTV4D as tv
 from mpi4py import MPI
 import numpy as np
 from tqdm import tqdm
+from time import time
+import h5py
+
+# from hurry.filesize import size, alternative
 
 try:
     import py4DSTEM
@@ -25,6 +29,16 @@ def run_MPI():
 
     HEAD_WORKER = rank == 0
 
+    def str2bool(v):
+        if isinstance(v, bool):
+            return v
+        if v.lower() in ("yes", "true", "t", "y", "1"):
+            return True
+        elif v.lower() in ("no", "false", "f", "n", "0"):
+            return False
+        else:
+            raise argparse.ArgumentTypeError("Boolean value expected.")
+
     parser = argparse.ArgumentParser(description="Launch TV Denoising using MPI.")
     parser.add_argument(
         "-i", "--input", type=os.path.abspath, nargs=1, help="input file"
@@ -36,7 +50,12 @@ def run_MPI():
         "-d", "--dimensions", type=int, nargs=1, help="Number of Dimensions (3 or 4)"
     )
     parser.add_argument(
-        "-f", "-fista", type=bool, nargs=1, help="Use acceleration? 0 or 1."
+        "-f",
+        "--fista",
+        type=str2bool,
+        nargs=1,
+        help="Use acceleration? 0 or 1.",
+        default=False,
     )
     parser.add_argument(
         "-n",
@@ -47,17 +66,19 @@ def run_MPI():
     )
     parser.add_argument("-L", "--lambda", type=float, nargs="+")
     parser.add_argument("-m", "--mu", type=float, nargs="+")
-    parser.add_argument("-v", "--verbose", type=bool, default=False)
+    parser.add_argument("-v", "--verbose", type=str2bool, default=False)
 
     args = vars(parser.parse_args())
 
     VERBOSE = args["verbose"]
+
     ndim = args["dimensions"][0]
-    FISTA = args["fista"]
-    niter = args["iterations"]
+    FISTA = args["fista"][0]
+    niter = args["niterations"]
     BC_mode = 2
     lam = np.array(args["lambda"])
     mu = np.array(args["mu"])
+    outfile = args["output"][0]
 
     if HEAD_WORKER:
         print(f"Running MPI denoising with arguments: {args}")
@@ -80,7 +101,7 @@ def run_MPI():
             size = data.shape[:2]
         # load EMD data:
         elif "h5" in args["input"][0][-2:]:
-            fb = py4DSTEM.file.io.FileBrowser(args["input"])
+            fb = py4DSTEM.file.io.FileBrowser(args["input"][0])
             dc = fb.get_dataobject(0, memory_map=True)
             data = dc.data
             size = data.shape[:2]
@@ -159,19 +180,29 @@ def run_MPI():
     SHIFT_Y_POS = tile_y < (wy - 1)
     SHIFT_Y_NEG = tile_y > 0
 
+    # get the slice *relative to the local chunk* that represents valid data
+    # (this is used later for deciding what data from the local chunk is saved)
+    local_valid_slice_x = slice(1 if SHIFT_X_NEG else 0, -1 if SHIFT_X_POS else None)
+    local_valid_slice_y = slice(1 if SHIFT_Y_NEG else 0, -1 if SHIFT_Y_POS else None)
+
     # figure out the sources and destinations for each shift
     RANK_X_POS = (
-        np.ravel_multi_index((tile_x + 1, tile_y), (wx, wy)) if SHIFT_X_POS else 0
+        np.ravel_multi_index((tile_x + 1, tile_y), (wx, wy)) if SHIFT_X_POS else None
     )
     RANK_X_NEG = (
-        np.ravel_multi_index((tile_x - 1, tile_y), (wx, wy)) if SHIFT_X_NEG else 0
+        np.ravel_multi_index((tile_x - 1, tile_y), (wx, wy)) if SHIFT_X_NEG else None
     )
     RANK_Y_POS = (
-        np.ravel_multi_index((tile_x, tile_y + 1), (wx, wy)) if SHIFT_Y_POS else 0
+        np.ravel_multi_index((tile_x, tile_y + 1), (wx, wy)) if SHIFT_Y_POS else None
     )
     RANK_Y_NEG = (
-        np.ravel_multi_index((tile_x, tile_y - 1), (wx, wy)) if SHIFT_Y_NEG else 0
+        np.ravel_multi_index((tile_x, tile_y - 1), (wx, wy)) if SHIFT_Y_NEG else None
     )
+
+    if VERBOSE:
+        print(
+            f"Rank {rank} has neighbors: +x {RANK_X_POS} \t -x: {RANK_X_NEG} \t +y: {RANK_Y_POS} \t -y: {RANK_Y_NEG}"
+        )
 
     # load in the data and make it contiguous
     if ndim == 3:
@@ -198,10 +229,10 @@ def run_MPI():
 
     elif ndim == 4:
         # allocate accumulators
-        b1 = np.zeros_like(recon)
-        b2 = np.zeros_like(recon)
-        b3 = np.zeros_like(recon)
-        b4 = np.zeros_like(recon)
+        acc0 = np.zeros_like(recon)
+        acc1 = np.zeros_like(recon)
+        acc2 = np.zeros_like(recon)
+        acc3 = np.zeros_like(recon)
 
         if FISTA:
             d1 = np.zeros_like(recon)
@@ -215,8 +246,102 @@ def run_MPI():
             print("Oops, haven't done FISTA yet...")
 
         else:
-            tv.accumulator_update_4D(recon, b1, 0, lambdaInv[0], BC_mode=BC_mode)
+            for i in iterator:
+                # perform an update step along dim 0
+                tv.accumulator_update_4D(recon, acc0, 0, lambdaInv[0], BC_mode=BC_mode)
+                # start comms to send data right, receive data left:
+                if SHIFT_X_POS:
+                    x_pos_buffer = np.ascontiguousarray(acc0[-1, :, :, :])
+                    mpi_send_x_pos = comm.Isend(x_pos_buffer, dest=RANK_X_POS,)
+                if SHIFT_X_NEG:  # shift x left <=> recieve data x left
+                    x_neg_buffer = np.zeros_like(acc0[0, :, :, :])
+                    mpi_recv_x_neg = comm.Irecv(x_neg_buffer, source=RANK_X_NEG,)
 
+                # perform an update step along dim 1
+                tv.accumulator_update_4D(recon, acc1, 1, lambdaInv[1], BC_mode=BC_mode)
+                # start comms to send data right, receive data left:
+                if SHIFT_Y_POS:
+                    y_pos_buffer = np.ascontiguousarray(acc1[:, -1, :, :])
+                    mpi_send_y_pos = comm.Isend(y_pos_buffer, dest=RANK_Y_POS,)
+                if SHIFT_Y_NEG:  # shift y left <=> recieve data y left
+                    y_neg_buffer = np.zeros_like(acc1[:, 0, :, :])
+                    mpi_recv_y_neg = comm.Irecv(y_neg_buffer, source=RANK_Y_NEG,)
 
+                # perform update steps on the non-communicating directions
+                if VERBOSE and HEAD_WORKER:
+                    print("Starting Qx/Qy acc update")
+                tv.accumulator_update_4D(recon, acc2, 2, lambdaInv[2], BC_mode=BC_mode)
+                tv.accumulator_update_4D(recon, acc3, 3, lambdaInv[3], BC_mode=BC_mode)
 
+                comm.Barrier()
+                # block until communication finishes. copy buffered data.
+                if VERBOSE and HEAD_WORKER:
+                    print("Passed accumulator barrier and entering sync block.")
+                t_comm_wait = time()
+                if SHIFT_X_NEG:
+                    mpi_recv_x_neg.Wait()
+                    acc0[0, :, :, :] = x_neg_buffer
+                if SHIFT_Y_NEG:
+                    mpi_recv_y_neg.Wait()
+                    acc1[:, 0, :, :] = y_neg_buffer
+                if SHIFT_X_POS:
+                    mpi_send_x_pos.Wait()
+                if SHIFT_Y_POS:
+                    mpi_send_y_pos.Wait()
 
+                if VERBOSE and HEAD_WORKER:
+                    print(
+                        f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for accumulator communication"
+                    )
+
+                # perform a datacube update step:
+                if VERBOSE and HEAD_WORKER:
+                    print("Starting datacube update")
+                tv.datacube_update_4D(
+                    raw, recon, acc0, acc1, acc2, acc3, lam_mu, BC_mode=BC_mode
+                )
+
+                t_comm_wait = time()
+                # start comms to send data left, receive data right
+                if SHIFT_X_NEG:
+                    x_neg_buffer = np.ascontiguousarray(recon[0, :, :, :])
+                    mpi_send_x_neg = comm.Isend(x_neg_buffer, dest=RANK_X_NEG,)
+                if SHIFT_X_POS:
+                    x_pos_buffer = np.zeros_like(recon[-1, :, :, :])
+                    mpi_recv_x_pos = comm.Irecv(x_pos_buffer, source=RANK_X_POS,)
+                if SHIFT_Y_NEG:
+                    y_neg_buffer = np.ascontiguousarray(recon[:, 0, :, :])
+                    mpi_send_y_neg = comm.Isend(y_neg_buffer, dest=RANK_Y_NEG,)
+                if SHIFT_Y_POS:
+                    y_pos_buffer = np.zeros_like(recon[:, -1, :, :])
+                    mpi_recv_y_pos = comm.Irecv(y_pos_buffer, source=RANK_Y_POS)
+
+                # Block until communication finishes
+                comm.Barrier()
+                if VERBOSE and HEAD_WORKER:
+                    print("Passed second barrier and entering sync block.")
+                t_comm_wait = time()
+                if SHIFT_X_POS:
+                    mpi_recv_x_pos.Wait()
+                    recon[-1, :, :, :] = x_pos_buffer
+                if SHIFT_Y_POS:
+                    mpi_recv_y_pos.Wait()
+                    recon[:, -1, :, :] = y_pos_buffer
+                if SHIFT_X_NEG:
+                    mpi_send_x_neg.Wait()
+                if SHIFT_Y_NEG:
+                    mpi_send_y_neg.Wait()
+                if VERBOSE and HEAD_WORKER:
+                    print(
+                        f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for reconstruction communication"
+                    )
+
+    # temporary kludge for writing output files
+    if VERBOSE:
+        print(f"Rank {rank} is saving data...")
+    fout = h5py.File(outfile.split('.')[-2] + str(rank) + ".h5", "w")
+    grp = fout.create_group("TV Output")
+    grp.create_dataset(
+        "TV", data=recon[local_valid_slice_x, local_valid_slice_y, :, :]
+    )
+    fout.close()
