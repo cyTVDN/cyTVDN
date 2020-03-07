@@ -339,9 +339,10 @@ def run_MPI():
     # temporary kludge for writing output files
     if VERBOSE:
         print(f"Rank {rank} is saving data...")
-    fout = h5py.File(outfile.split('.')[-2] + str(rank) + ".h5", "w")
+    fout = h5py.File(outfile.split('.')[-2]+ ".emd", "w", driver='mpio',comm=MPI.COMM_WORLD)
     grp = fout.create_group("TV Output")
-    grp.create_dataset(
-        "TV", data=recon[local_valid_slice_x, local_valid_slice_y, :, :]
+    dset = grp.create_dataset(
+        "TV", data.shape
     )
+    dset[valid_slice_x,valid_slice_y,:,:] = recon[local_valid_slice_x,local_valid_slice_y,:,:]
     fout.close()
