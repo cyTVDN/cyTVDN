@@ -54,6 +54,7 @@ setup(
     packages=["cyTV4D"],
     ext_modules=cythonize(ext_modules),
     install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
+    extras_require={"MPI": ["mpi4py", "h5py"]},
     setup_requires=["Cython"],
     entry_points={"console_scripts": ["cyTVMPI=cyTV4D.mpi:run_MPI"]},
 )
