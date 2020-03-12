@@ -54,7 +54,7 @@ def denoise4D(
     ), "Parameters must satisfy 0 < λ/μ <= 1/8"
     try:
         print(
-            f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}, 1/{mu/lam[3]:.0f}]"
+            f"λ/μ ≈ [1/{mu[0]/lam[0]:.0f}, 1/{mu[1]/lam[1]:.0f}, 1/{mu[2]/lam[2]:.0f}, 1/{mu[3]/lam[3]:.0f}]"
         )
     except Exception:
         print(

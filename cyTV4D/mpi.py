@@ -100,7 +100,7 @@ def run_MPI():
             data = py4DSTEM.file.io.read(args["input"][0], load="dmmmap")
             size = data.shape[:2]
         # load EMD data:
-        elif "h5" in args["input"][0][-2:]:
+        elif any(ftype in args["input"][0].split(".")[-1] for ftype in ("h5", "emd")):
             fb = py4DSTEM.file.io.FileBrowser(args["input"][0])
             dc = fb.get_dataobject(0, memory_map=True)
             data = dc.data

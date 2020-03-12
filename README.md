@@ -21,12 +21,12 @@ On NERSC, you must export the correct compiler as part of the `build_ext` comman
 
 For Cray compilers:
 ```bash
-module swap PrgEnv-Intel PrgEnv-Cray
+module swap PrgEnv-intel PrgEnv-cray
 CC=cc LDSHARED="cc -shared" python setup.py build_ext
 ```
 For Intel compilers, first edit `setup.py` to replace `-fopenmp` with `-qopenmp`, then run:
 ```bash
-module load PrgEnv-Intel # this is loaded by default
+module load PrgEnv-intel # this is loaded by default
 CC=icc LDSHARED="icc -shared" python setup.py build_ext
 ```
 
