@@ -13,6 +13,7 @@ cdef _float clipval(_float a, _float val) nogil:
     
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@cython.cdivision(True)
 def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float clip, int BC_mode=2):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
@@ -32,20 +33,25 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
     start[ax] += 1
 
     # index variables for the 4D loop
-    cdef Py_ssize_t i,j,k,l
+    cdef Py_ssize_t i,j,k,l, ij
 
     cdef _float norm = 0.0
     cdef _float b_new
     
+    # for better division of labor on systems with a lot of threads, 
+    # we roll the two outer loops together into one prange
+    cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])
+
     # perform the main loop
-    for i in prange(start[0],shape[0],nogil=True):
-        for j in range(start[1],shape[1]):
-            for k in range(start[2],shape[2]):
-                for l in range(start[3],shape[3]):
-                    b_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
-                                                         + b[i,j,k,l], clip)
-                    norm += fabs(b_new)
-                    b[i,j,k,l] = b_new
+    for ij in prange(outer_iterator,nogil=True):
+        i = ij / (shape[0] - start[0])
+        j = ij % (shape[0] - start[0])
+        for k in range(start[2],shape[2]):
+            for l in range(start[3],shape[3]):
+                b_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
+                                                     + b[i,j,k,l], clip)
+                norm += fabs(b_new)
+                b[i,j,k,l] = b_new
                     
     # perform the final hyperslab
     # in principle we can use index wraparound to make this easier
