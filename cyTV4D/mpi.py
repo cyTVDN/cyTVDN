@@ -6,17 +6,29 @@ from tqdm import tqdm
 from time import time
 import h5py
 
+import logging
+import sys
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+
 # from hurry.filesize import size, alternative
 
 try:
     import py4DSTEM
 except Exception:
-    print("Failed to import py4DSTEM. Cannot read 4D-STEM Data...")
+    logger.info("Failed to import py4DSTEM. Cannot read 4D-STEM Data...")
 
 try:
     from ncempy.io.dm import fileDM
 except Exception:
-    print("Failed to import ncempy. Cannot read EELS data...")
+    logger.info("Failed to import ncempy. Cannot read EELS data...")
 
 
 def run_MPI():
@@ -70,7 +82,8 @@ def run_MPI():
 
     args = vars(parser.parse_args())
 
-    VERBOSE = args["verbose"]
+    # VERBOSE = args["verbose"]
+    VERBOSE = True
 
     ndim = args["dimensions"][0]
     FISTA = args["fista"][0]
@@ -81,7 +94,7 @@ def run_MPI():
     outfile = args["output"][0]
 
     if HEAD_WORKER:
-        print(f"Running MPI denoising with arguments: {args}")
+        logger.info(f"Running MPI denoising with arguments: {args}")
 
     # each worker must load a memory map into the data:
     if ndim == 3:
@@ -113,7 +126,7 @@ def run_MPI():
             raise (AssertionError("Bad number of dimensions..."))
 
     if HEAD_WORKER:
-        print(f"Loaded memory map. Data size is: {data.shape}")
+        logger.info(f"Loaded memory map. Data size is: {data.shape}")
 
     # calculate the best division of labor:
     edges = np.zeros((Nworkers,))
@@ -138,13 +151,13 @@ def run_MPI():
     wy = int(Nworkers / wx)
 
     if HEAD_WORKER:
-        print(f"Dividing work over a {wx} by {wy} grid...")
+        logger.info(f"Dividing work over a {wx} by {wy} grid...")
 
     # Figure out the slices that this worker is responsible for:
     tile_x, tile_y = np.unravel_index(rank, (wx, wy))
 
     if VERBOSE:
-        print(f"Worker {rank} is doing tile {tile_x},{tile_y}.")
+        logger.info(f"Worker {rank} is doing tile {tile_x},{tile_y}.")
 
     # first get the size in each direction
     nx = int(np.ceil(size[0] / wx))
@@ -169,7 +182,7 @@ def run_MPI():
     )
 
     if VERBOSE:
-        print(
+        logger.info(
             f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}..."
         )
 
@@ -200,7 +213,7 @@ def run_MPI():
     )
 
     if VERBOSE:
-        print(
+        logger.info(
             f"Rank {rank} has neighbors: +x {RANK_X_POS} \t -x: {RANK_X_NEG} \t +y: {RANK_Y_POS} \t -y: {RANK_Y_NEG}"
         )
 
@@ -225,7 +238,7 @@ def run_MPI():
     if ndim == 3:
         # 3D is boring, I'll implement it later...
         if HEAD_WORKER:
-            print("Oops... Haven't implemented 3D yet. Sorry")
+            logger.info("Oops... Haven't implemented 3D yet. Sorry")
 
     elif ndim == 4:
         # allocate accumulators
@@ -243,7 +256,7 @@ def run_MPI():
             tk = 1.0
 
         if FISTA:
-            print("Oops, haven't done FISTA yet...")
+            logger.info("Oops, haven't done FISTA yet...")
 
         else:
             for i in iterator:
@@ -269,14 +282,14 @@ def run_MPI():
 
                 # perform update steps on the non-communicating directions
                 if VERBOSE and HEAD_WORKER:
-                    print("Starting Qx/Qy acc update")
+                    logger.info("Starting Qx/Qy acc update")
                 tv.accumulator_update_4D(recon, acc2, 2, lambdaInv[2], BC_mode=BC_mode)
                 tv.accumulator_update_4D(recon, acc3, 3, lambdaInv[3], BC_mode=BC_mode)
 
                 comm.Barrier()
                 # block until communication finishes. copy buffered data.
                 if VERBOSE and HEAD_WORKER:
-                    print("Passed accumulator barrier and entering sync block.")
+                    logger.info("Passed accumulator barrier and entering sync block.")
                 t_comm_wait = time()
                 if SHIFT_X_NEG:
                     mpi_recv_x_neg.Wait()
@@ -290,13 +303,13 @@ def run_MPI():
                     mpi_send_y_pos.Wait()
 
                 if VERBOSE and HEAD_WORKER:
-                    print(
+                    logger.info(
                         f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for accumulator communication"
                     )
 
                 # perform a datacube update step:
                 if VERBOSE and HEAD_WORKER:
-                    print("Starting datacube update")
+                    logger.info("Starting datacube update")
                 tv.datacube_update_4D(
                     raw, recon, acc0, acc1, acc2, acc3, lam_mu, BC_mode=BC_mode
                 )
@@ -319,7 +332,7 @@ def run_MPI():
                 # Block until communication finishes
                 comm.Barrier()
                 if VERBOSE and HEAD_WORKER:
-                    print("Passed second barrier and entering sync block.")
+                    logger.info("Passed second barrier and entering sync block.")
                 t_comm_wait = time()
                 if SHIFT_X_POS:
                     mpi_recv_x_pos.Wait()
@@ -332,13 +345,13 @@ def run_MPI():
                 if SHIFT_Y_NEG:
                     mpi_send_y_neg.Wait()
                 if VERBOSE and HEAD_WORKER:
-                    print(
+                    logger.info(
                         f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for reconstruction communication"
                     )
 
     # temporary kludge for writing output files
     if VERBOSE:
-        print(f"Rank {rank} is saving data...")
+        logger.info(f"Rank {rank} is saving data...")
     fout = h5py.File(
         outfile.split(".")[-2] + ".emd", "w", driver="mpio", comm=MPI.COMM_WORLD
     )
@@ -349,4 +362,4 @@ def run_MPI():
     ]
     fout.close()
 
-    print(f"Rank {rank} is done!")
+    logger.info(f"Rank {rank} is done!")
