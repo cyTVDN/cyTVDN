@@ -5,6 +5,7 @@ from setuptools import setup, Extension
 from Cython.Build import cythonize
 import platform
 import os
+from glob import glob
 
 if platform.system() == "Windows":
     extra_compile_args = ["/openmp"]
@@ -15,21 +16,23 @@ elif platform.system() == "Darwin":
 
     # we are on a Mac, link to the Homebrew installation of llvm
     extra_link_args.append("-lgomp")
-    extra_link_args.append("-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/")
+    extra_link_args.append("-Wl,-rpath,/usr/local/Cellar/llvm/9.0.1/lib/clang/9.0.1/include/")
+    #extra_link_args.append("-L/usr/local/opt/llvm/lib/")
 
     # Previously, I used Homebrew-installed gcc...
     # However, it has been giving me unexpected behavior in parallel code
     # os.environ["CC"] = "gcc-9"
-    # LLVM Clang seems to work correctly:
-    os.environ["CC"] = "/usr/local/Cellar/llvm/9.0.0_1/bin/clang"
+
+    # LLVM Clang seems to work correctly!
+    # If CC and LDSHARED are not set in the envoronment, try to find Homebrew LLVM clang...
+    if "CC" not in os.environ:
+        os.environ["CC"] = glob("/usr/local/Cellar/llvm/9*/bin/clang")[0]
+    if "LDSHARED" not in os.environ:
+        os.environ["LDSHARED"] = glob("/usr/local/Cellar/llvm/9*/bin/clang")[0] + " -bundle"
 else:
     extra_compile_args = ["-fopenmp"]
     extra_link_args = ["-fopenmp"]
 
-# NOTE: On NERSC Cori things are harder:
-# What worked for me is to run `module swap PrgEnv-intel PrgEnv-cray`
-# to use the Cray compilers and also specify the compiler
-# when running setup.py: `CC='cc' LDSHARED='cc -shared' python setup.py build_ext`
 
 ext_modules = [
     Extension(
@@ -52,7 +55,7 @@ setup(
     author="SE Zeltmann",
     author_email="steven.zeltmann@lbl.gov",
     packages=["cyTV4D"],
-    ext_modules=cythonize(ext_modules),
+    ext_modules=cythonize(ext_modules,compiler_directives={'language_level' : "3"}),
     install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
     extras_require={"MPI": ["mpi4py", "h5py"]},
     setup_requires=["Cython"],
