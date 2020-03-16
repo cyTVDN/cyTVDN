@@ -44,8 +44,8 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
 
     # perform the main loop
     for ij in prange(outer_iterator,nogil=True):
-        i = ij / (shape[0] - start[0])
-        j = ij % (shape[0] - start[0])
+        i = start[0] + (ij / (shape[1] - start[1]))
+        j = start[1] + (ij % (shape[1] - start[1]))
         for k in range(start[2],shape[2]):
             for l in range(start[3],shape[3]):
                 b_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
