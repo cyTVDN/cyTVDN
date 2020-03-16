@@ -16,8 +16,13 @@ elif platform.system() == "Darwin":
 
     # we are on a Mac, link to the Homebrew installation of llvm
     extra_link_args.append("-lgomp")
-    extra_link_args.append("-Wl,-rpath,/usr/local/Cellar/llvm/9.0.1/lib/clang/9.0.1/include/")
-    #extra_link_args.append("-L/usr/local/opt/llvm/lib/")
+    # extra_link_args.append(
+    #     "-Wl,-rpath," + glob("/usr/local/Cellar/llvm/*/lib/clang/*/include/")[0]
+    # )
+    extra_link_args.append(
+        "-Wl,-rpath," + glob("/usr/local/opt/gcc/lib/gcc/9/")[0]
+    )
+    # extra_link_args.append("-L/usr/local/opt/gcc/lib/gcc/9/")
 
     # Previously, I used Homebrew-installed gcc...
     # However, it has been giving me unexpected behavior in parallel code
@@ -27,8 +32,10 @@ elif platform.system() == "Darwin":
     # If CC and LDSHARED are not set in the envoronment, try to find Homebrew LLVM clang...
     if "CC" not in os.environ:
         os.environ["CC"] = glob("/usr/local/Cellar/llvm/9*/bin/clang")[0]
-    if "LDSHARED" not in os.environ:
-        os.environ["LDSHARED"] = glob("/usr/local/Cellar/llvm/9*/bin/clang")[0] + " -bundle"
+    # if "LDSHARED" not in os.environ:
+    #     os.environ["LDSHARED"] = (
+    #         glob("/usr/local/Cellar/llvm/9*/bin/clang")[0] + " -bundle"
+    #     )
 else:
     extra_compile_args = ["-fopenmp"]
     extra_link_args = ["-fopenmp"]
@@ -55,7 +62,7 @@ setup(
     author="SE Zeltmann",
     author_email="steven.zeltmann@lbl.gov",
     packages=["cyTV4D"],
-    ext_modules=cythonize(ext_modules,compiler_directives={'language_level' : "3"}),
+    ext_modules=cythonize(ext_modules, compiler_directives={"language_level": "3"}),
     install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
     extras_require={"MPI": ["mpi4py", "h5py"]},
     setup_requires=["Cython"],

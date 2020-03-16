@@ -85,6 +85,7 @@ def accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b,int ax, _float c
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@cython.cdivision(True)
 def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:,:,:,::] d,
     _float tk, int ax, _float clip, int BC_mode=2):
     '''
@@ -105,7 +106,7 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
     start[ax] += 1
 
     # index variables for the 4D loop
-    cdef Py_ssize_t i,j,k,l
+    cdef Py_ssize_t i,j,k,l, ij
 
     # temporary holder for updated d value
     cdef _float d_new = 0.0
@@ -113,17 +114,22 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
     cdef _float norm = 0.0
     cdef _float b_new
     
+    # for better division of labor on systems with a lot of threads, 
+    # we roll the two outer loops together into one prange
+    cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])
+
     # perform the main loop
-    for i in prange(start[0],shape[0],nogil=True):
-        for j in range(start[1],shape[1]):
-            for k in range(start[2],shape[2]):
-                for l in range(start[3],shape[3]):
-                    d_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
-                                     + b[i,j,k,l], clip)
-                    b_new = d_new + tk*(d_new - d[i,j,k,l])
-                    b[i,j,k,l] = b_new
-                    norm += fabs(b_new)
-                    d[i,j,k,l] = d_new
+    for ij in prange(outer_iterator,nogil=True):
+        i = start[0] + (ij / (shape[1] - start[1]))
+        j = start[1] + (ij % (shape[1] - start[1]))
+        for k in range(start[2],shape[2]):
+            for l in range(start[3],shape[3]):
+                d_new = clipval( a[i,j,k,l] - a[i-start[0],j-start[1],k-start[2],l-start[3]]
+                                 + b[i,j,k,l], clip)
+                b_new = d_new + tk*(d_new - d[i,j,k,l])
+                b[i,j,k,l] = b_new
+                norm += fabs(b_new)
+                d[i,j,k,l] = d_new
                     
     # perform the final hyperslab
     # in principle we can use index wraparound to make this easier
@@ -159,6 +165,7 @@ def accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b, _float[:
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@cython.cdivision(True)
 def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):
     '''
     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
@@ -183,16 +190,21 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
     cdef _float b_new
 
     # index variables for the 4D loop
-    cdef Py_ssize_t i,j,k
+    cdef Py_ssize_t i,j,k, ij
     
+    # for better division of labor on systems with a lot of threads, 
+    # we roll the two outer loops together into one prange
+    cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])
+
     # perform the main loop
-    for i in prange(start[0],shape[0],nogil=True):
-        for j in range(start[1],shape[1]):
-            for k in range(start[2],shape[2]):
-                b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
-                                                     + b[i,j,k], clip)
-                norm += fabs(b_new)
-                b[i,j,k] = b_new
+    for ij in prange(outer_iterator,nogil=True):
+        i = start[0] + (ij / (shape[1] - start[1]))
+        j = start[1] + (ij % (shape[1] - start[1]))
+        for k in range(start[2],shape[2]):
+            b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+                                                 + b[i,j,k], clip)
+            norm += fabs(b_new)
+            b[i,j,k] = b_new
 
                     
     # perform the final hyperslab
@@ -227,6 +239,7 @@ def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip,
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
+@cython.cdivision(True)
 def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,
     _float tk, int ax, _float clip, int BC_mode=2):
     '''
@@ -250,21 +263,26 @@ def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,:
     cdef _float b_new
 
     # index variables for the 4D loop
-    cdef Py_ssize_t i,j,k
+    cdef Py_ssize_t i,j,k, ij
 
     # temporary holder for updated d value
     cdef _float d_new = 0.0
     
+    # for better division of labor on systems with a lot of threads, 
+    # we roll the two outer loops together into one prange
+    cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])
+
     # perform the main loop
-    for i in prange(start[0],shape[0],nogil=True):
-        for j in range(start[1],shape[1]):
-            for k in range(start[2],shape[2]):
-                d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
-                                 + b[i,j,k], clip)
-                b_new = d_new + tk*(d_new - d[i,j,k])
-                b[i,j,k] = b_new
-                norm += fabs(b_new)
-                d[i,j,k] = d_new
+    for ij in prange(outer_iterator,nogil=True):
+        i = start[0] + (ij / (shape[1] - start[1]))
+        j = start[1] + (ij % (shape[1] - start[1]))
+        for k in range(start[2],shape[2]):
+            d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
+                             + b[i,j,k], clip)
+            b_new = d_new + tk*(d_new - d[i,j,k])
+            b[i,j,k] = b_new
+            norm += fabs(b_new)
+            d[i,j,k] = d_new
 
                     
     # perform the final hyperslab
