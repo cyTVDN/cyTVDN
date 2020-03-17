@@ -11,12 +11,12 @@ import psutil
 import logging
 import sys
 
-logger = logging.getLogger('cyTVDN')
+logger = logging.getLogger("cyTVDN")
 logger.setLevel(logging.DEBUG)
 
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 
@@ -223,13 +223,24 @@ def run_MPI():
             np.float32
         )
     elif args["dimensions"][0] == 4:
-        raw = np.ascontiguousarray(data[read_slice_x, read_slice_y, :, :]).astype(
-            np.float32
-        )  # TODO: make dtype a flag
+        raw = np.zeros(
+            (
+                read_slice_x.stop - read_slice_x.start,
+                read_slice_y.stop - read_slice_y.start,
+                data.shape[2],
+                data.shape[3],
+            ),
+            dtype=np.float32,
+        )
+        logger.debug(f"Raw is shape {raw.shape}")
+        data.read_direct(raw, source_sel=np.s_[read_slice_x, read_slice_y, :, :])
+        # TODO: make dtype a flag
 
     if HEAD_WORKER:
         logger.info(f"Head worker finished reading raw data...")
-        logger.info(f"Reading raw data took {time()-t_load_start} seconds. Data size is {filesize.size(raw.nbytes,system=filesize.alternative)}")
+        logger.info(
+            f"Reading raw data took {time()-t_load_start} seconds. Data size is {filesize.size(raw.nbytes,system=filesize.alternative)}"
+        )
 
     recon = raw.copy()
 
@@ -250,7 +261,9 @@ def run_MPI():
         acc3 = np.zeros_like(recon)
 
         if HEAD_WORKER:
-            logger.info(f"Allocating the main accumulators took {time() - t_accum_start} seconds")
+            logger.info(
+                f"Allocating the main accumulators took {time() - t_accum_start} seconds"
+            )
 
         if FISTA:
             d1 = np.zeros_like(recon)
@@ -261,7 +274,9 @@ def run_MPI():
             tk = 1.0
 
         if HEAD_WORKER:
-            logger.info(f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}.")
+            logger.info(
+                f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
+            )
 
         # create the iterators (so that only the head spits out tqdm stuff)
         iterator = tqdm(range(niter[0])) if HEAD_WORKER else range(niter[0])
@@ -300,9 +315,13 @@ def run_MPI():
                 comm.Barrier()
                 # block until communication finishes. copy buffered data.
                 if HEAD_WORKER:
-                    logger.info(f"Passed accumulator barrier on iteration {i} and entering sync block.")
+                    logger.info(
+                        f"Passed accumulator barrier on iteration {i} and entering sync block."
+                    )
                 else:
-                    logger.debug(f"Rank {rank} passed accumulator barrier and entering sync block.")
+                    logger.debug(
+                        f"Rank {rank} passed accumulator barrier and entering sync block."
+                    )
                 t_comm_wait = time()
                 if SHIFT_X_NEG:
                     mpi_recv_x_neg.Wait()
