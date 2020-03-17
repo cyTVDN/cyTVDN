@@ -5,11 +5,13 @@ import numpy as np
 from tqdm import tqdm
 from time import time
 import h5py
+from hurry import filesize
+import psutil
 
 import logging
 import sys
 
-logger = logging.getLogger()
+logger = logging.getLogger('cyTVDN')
 logger.setLevel(logging.DEBUG)
 
 handler = logging.StreamHandler(sys.stdout)
@@ -17,8 +19,6 @@ handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
-
-# from hurry.filesize import size, alternative
 
 try:
     import py4DSTEM
@@ -97,6 +97,7 @@ def run_MPI():
         logger.info(f"Running MPI denoising with arguments: {args}")
 
     # each worker must load a memory map into the data:
+    t_read_start = time()
     if ndim == 3:
         # load EELS SI data using ncempy
         dmf = fileDM(args["input"][0])
@@ -127,6 +128,7 @@ def run_MPI():
 
     if HEAD_WORKER:
         logger.info(f"Loaded memory map. Data size is: {data.shape}")
+        logger.info(f"Loading memory map took {time()-t_read_start} seconds.")
 
     # calculate the best division of labor:
     edges = np.zeros((Nworkers,))
@@ -156,8 +158,7 @@ def run_MPI():
     # Figure out the slices that this worker is responsible for:
     tile_x, tile_y = np.unravel_index(rank, (wx, wy))
 
-    if VERBOSE:
-        logger.info(f"Worker {rank} is doing tile {tile_x},{tile_y}.")
+    logger.debug(f"Worker {rank} is doing tile {tile_x},{tile_y}.")
 
     # first get the size in each direction
     nx = int(np.ceil(size[0] / wx))
@@ -181,10 +182,9 @@ def run_MPI():
         valid_slice_y.stop + 1 if valid_slice_y.stop + 1 <= size[1] else size[1],
     )
 
-    if VERBOSE:
-        logger.info(
-            f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}..."
-        )
+    logger.debug(
+        f"Worker {rank} at tile {tile_x},{tile_y} is reading slice {read_slice_x},{read_slice_y}..."
+    )
 
     # set some flags for determining if this worker should shift data at each step:
     SHIFT_X_POS = tile_x < (wx - 1)
@@ -212,12 +212,12 @@ def run_MPI():
         np.ravel_multi_index((tile_x, tile_y - 1), (wx, wy)) if SHIFT_Y_NEG else None
     )
 
-    if VERBOSE:
-        logger.info(
-            f"Rank {rank} has neighbors: +x {RANK_X_POS} \t -x: {RANK_X_NEG} \t +y: {RANK_Y_POS} \t -y: {RANK_Y_NEG}"
-        )
+    logger.debug(
+        f"Rank {rank} has neighbors: +x {RANK_X_POS} \t -x: {RANK_X_NEG} \t +y: {RANK_Y_POS} \t -y: {RANK_Y_NEG}"
+    )
 
     # load in the data and make it contiguous
+    t_load_start = time()
     if ndim == 3:
         raw = np.ascontiguousarray(data[read_slice_x, read_slice_x, :]).astype(
             np.float32
@@ -226,6 +226,10 @@ def run_MPI():
         raw = np.ascontiguousarray(data[read_slice_x, read_slice_y, :, :]).astype(
             np.float32
         )  # TODO: make dtype a flag
+
+    if HEAD_WORKER:
+        logger.info(f"Head worker finished reading raw data...")
+        logger.info(f"Reading raw data took {time()-t_load_start} seconds. Data size is {filesize.size(raw.nbytes,system=filesize.alternative)}")
 
     recon = raw.copy()
 
@@ -238,14 +242,18 @@ def run_MPI():
     if ndim == 3:
         # 3D is boring, I'll implement it later...
         if HEAD_WORKER:
-            logger.info("Oops... Haven't implemented 3D yet. Sorry")
+            logger.error("Oops... Haven't implemented 3D yet. Sorry")
 
     elif ndim == 4:
         # allocate accumulators
+        t_accum_start = time()
         acc0 = np.zeros_like(recon)
         acc1 = np.zeros_like(recon)
         acc2 = np.zeros_like(recon)
         acc3 = np.zeros_like(recon)
+
+        if HEAD_WORKER:
+            logger.info(f"Allocating the main accumulators took {time() - t_accum_start} seconds")
 
         if FISTA:
             d1 = np.zeros_like(recon)
@@ -255,8 +263,11 @@ def run_MPI():
 
             tk = 1.0
 
+        if HEAD_WORKER:
+            logger.info(f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}.")
+
         if FISTA:
-            logger.info("Oops, haven't done FISTA yet...")
+            logger.error("Oops, haven't done FISTA yet...")
 
         else:
             for i in iterator:
@@ -288,8 +299,10 @@ def run_MPI():
 
                 comm.Barrier()
                 # block until communication finishes. copy buffered data.
-                if VERBOSE and HEAD_WORKER:
-                    logger.info("Passed accumulator barrier and entering sync block.")
+                if HEAD_WORKER:
+                    logger.info(f"Passed accumulator barrier on iteration {i} and entering sync block.")
+                else:
+                    logger.debug(f"Rank {rank} passed accumulator barrier and entering sync block.")
                 t_comm_wait = time()
                 if SHIFT_X_NEG:
                     mpi_recv_x_neg.Wait()
@@ -302,8 +315,12 @@ def run_MPI():
                 if SHIFT_Y_POS:
                     mpi_send_y_pos.Wait()
 
-                if VERBOSE and HEAD_WORKER:
+                if HEAD_WORKER:
                     logger.info(
+                        f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for accumulator communication"
+                    )
+                else:
+                    logger.debug(
                         f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for accumulator communication"
                     )
 
@@ -350,8 +367,8 @@ def run_MPI():
                     )
 
     # temporary kludge for writing output files
-    if VERBOSE:
-        logger.info(f"Rank {rank} is saving data...")
+    t_save_start = time()
+    logger.info(f"Rank {rank} is saving data...")
     fout = h5py.File(
         outfile.split(".")[-2] + ".emd", "w", driver="mpio", comm=MPI.COMM_WORLD
     )
@@ -362,4 +379,4 @@ def run_MPI():
     ]
     fout.close()
 
-    logger.info(f"Rank {rank} is done!")
+    logger.info(f"Rank {rank} is done! Writing data took {time()-t_save_start} seconds")
