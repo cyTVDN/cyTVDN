@@ -116,6 +116,13 @@ def run_MPI():
         # load EMD data:
         elif any(ftype in args["input"][0].split(".")[-1] for ftype in ("h5", "emd")):
             fb = py4DSTEM.file.io.FileBrowser(args["input"][0])
+
+            # hack to swap out the HDF driver:
+            fb.file.close()
+            fb.file = h5py.File(
+                args["input"][0], "r", driver="mpio", comm=MPI.COMM_WORLD
+            )
+
             dc = fb.get_dataobject(0, memory_map=True)
             data = dc.data
             size = data.shape[:2]
@@ -223,6 +230,7 @@ def run_MPI():
             np.float32
         )
     elif args["dimensions"][0] == 4:
+        # TODO: fix this for non-py4DSTEM files!!!
         raw = np.zeros(
             (
                 read_slice_x.stop - read_slice_x.start,
