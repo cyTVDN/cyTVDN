@@ -95,6 +95,7 @@ def run_MPI():
 
     if HEAD_WORKER:
         logger.info(f"Running MPI denoising with arguments: {args}")
+        logger.info(f"Python sees OMP_NUM_THREADS as {os.environ['OMP_NUM_THREADS']}")
 
     # each worker must load a memory map into the data:
     t_read_start = time()
@@ -309,7 +310,13 @@ def run_MPI():
         else:
             for i in iterator:
                 # perform an update step along dim 0
+                t0 = time()
                 tv.accumulator_update_4D(recon, acc0, 0, lambdaInv[0], BC_mode=BC_mode)
+                logger.debug(
+                    f"X update step : rank {rank} : iteration {i} : took {time()-t0} sec"
+                )
+
+                t0 = time()
                 # start comms to send data right, receive data left:
                 if SHIFT_X_POS:
                     x_pos_buffer[:] = np.squeeze(acc0[-1, :, :, :])
@@ -317,9 +324,18 @@ def run_MPI():
                 if SHIFT_X_NEG:  # shift x left <=> recieve data x left
                     x_neg_buffer[:] = 0
                     mpi_recv_x_neg = comm.Irecv(x_neg_buffer, source=RANK_X_NEG,)
+                logger.debug(
+                    f"X MPI sync step : rank {rank} : iteration {i} : took {time()-t0} sec"
+                )
 
                 # perform an update step along dim 1
+                t0 = time()
                 tv.accumulator_update_4D(recon, acc1, 1, lambdaInv[1], BC_mode=BC_mode)
+                logger.debug(
+                    f"Y update step : rank {rank} : iteration {i} : took {time()-t0} sec"
+                )
+
+                t0 = time()
                 # start comms to send data right, receive data left:
                 if SHIFT_Y_POS:
                     y_pos_buffer[:] = np.squeeze(acc1[:, -1, :, :])
@@ -327,12 +343,19 @@ def run_MPI():
                 if SHIFT_Y_NEG:  # shift y left <=> recieve data y left
                     y_neg_buffer[:] = 0
                     mpi_recv_y_neg = comm.Irecv(y_neg_buffer, source=RANK_Y_NEG,)
+                logger.debug(
+                    f"X MPI sync step : rank {rank} : iteration {i} : took {time()-t0} sec"
+                )
 
                 # perform update steps on the non-communicating directions
                 if VERBOSE and HEAD_WORKER:
                     logger.info("Starting Qx/Qy acc update")
+                t0 = time()
                 tv.accumulator_update_4D(recon, acc2, 2, lambdaInv[2], BC_mode=BC_mode)
                 tv.accumulator_update_4D(recon, acc3, 3, lambdaInv[3], BC_mode=BC_mode)
+                logger.debug(
+                    f"Qx/Qy update step : rank {rank} : iteration {i} : took {time()-t0} sec"
+                )
 
                 comm.Barrier()
                 # block until communication finishes. copy buffered data.
@@ -368,8 +391,12 @@ def run_MPI():
                 # perform a datacube update step:
                 if VERBOSE and HEAD_WORKER:
                     logger.info("Starting datacube update")
+                t0 = time()
                 tv.datacube_update_4D(
                     raw, recon, acc0, acc1, acc2, acc3, lam_mu, BC_mode=BC_mode
+                )
+                logger.debug(
+                    f"Datacube update step : rank {rank} : iteration {i} : took {time()-t0} sec"
                 )
 
                 t_comm_wait = time()
