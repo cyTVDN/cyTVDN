@@ -236,9 +236,6 @@ def run_MPI():
     lambdaInv = (1.0 / lam).astype(recon.dtype)
     lam_mu = (lam / mu).astype(recon.dtype)
 
-    # create the iterators (so that only the head spits out tqdm stuff)
-    iterator = tqdm(range(niter[0])) if HEAD_WORKER else range(niter[0])
-
     if ndim == 3:
         # 3D is boring, I'll implement it later...
         if HEAD_WORKER:
@@ -265,6 +262,9 @@ def run_MPI():
 
         if HEAD_WORKER:
             logger.info(f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}.")
+
+        # create the iterators (so that only the head spits out tqdm stuff)
+        iterator = tqdm(range(niter[0])) if HEAD_WORKER else range(niter[0])
 
         if FISTA:
             logger.error("Oops, haven't done FISTA yet...")
