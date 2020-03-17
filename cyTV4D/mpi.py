@@ -118,7 +118,7 @@ def run_MPI():
             fb = py4DSTEM.file.io.FileBrowser(args["input"][0])
 
             # hack to swap out the HDF driver:
-            fb.file.close()
+            # fb.file.close()
             fb.file = h5py.File(
                 args["input"][0], "r", driver="mpio", comm=MPI.COMM_WORLD
             )
@@ -268,9 +268,19 @@ def run_MPI():
         acc2 = np.zeros_like(recon)
         acc3 = np.zeros_like(recon)
 
+        # allocate MPI sync buffers
+        x_pos_buffer = np.zeros(
+            (raw.shape[1], raw.shape[2], raw.shape[3]), dtype=np.float32
+        )
+        x_neg_buffer = np.zeros_like(x_pos_buffer)
+        y_pos_buffer = np.zeros(
+            (raw.shape[0], raw.shape[2], raw.shape[3]), dtype=np.float32
+        )
+        y_neg_buffer = np.zeros_like(y_pos_buffer)
+
         if HEAD_WORKER:
             logger.info(
-                f"Allocating the main accumulators took {time() - t_accum_start} seconds"
+                f"Allocating the main accumulators and buffers took {time() - t_accum_start} seconds"
             )
 
         if FISTA:
@@ -285,6 +295,10 @@ def run_MPI():
             logger.info(
                 f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
             )
+        else:
+            logger.debug(
+                f"With all accumulators allocated, free RAM on rank {rank} is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
+            )
 
         # create the iterators (so that only the head spits out tqdm stuff)
         iterator = tqdm(range(niter[0])) if HEAD_WORKER else range(niter[0])
@@ -298,20 +312,20 @@ def run_MPI():
                 tv.accumulator_update_4D(recon, acc0, 0, lambdaInv[0], BC_mode=BC_mode)
                 # start comms to send data right, receive data left:
                 if SHIFT_X_POS:
-                    x_pos_buffer = np.ascontiguousarray(acc0[-1, :, :, :])
+                    x_pos_buffer[:] = np.squeeze(acc0[-1, :, :, :])
                     mpi_send_x_pos = comm.Isend(x_pos_buffer, dest=RANK_X_POS,)
                 if SHIFT_X_NEG:  # shift x left <=> recieve data x left
-                    x_neg_buffer = np.zeros_like(acc0[0, :, :, :])
+                    x_neg_buffer[:] = 0
                     mpi_recv_x_neg = comm.Irecv(x_neg_buffer, source=RANK_X_NEG,)
 
                 # perform an update step along dim 1
                 tv.accumulator_update_4D(recon, acc1, 1, lambdaInv[1], BC_mode=BC_mode)
                 # start comms to send data right, receive data left:
                 if SHIFT_Y_POS:
-                    y_pos_buffer = np.ascontiguousarray(acc1[:, -1, :, :])
+                    y_pos_buffer[:] = np.squeeze(acc1[:, -1, :, :])
                     mpi_send_y_pos = comm.Isend(y_pos_buffer, dest=RANK_Y_POS,)
                 if SHIFT_Y_NEG:  # shift y left <=> recieve data y left
-                    y_neg_buffer = np.zeros_like(acc1[:, 0, :, :])
+                    y_neg_buffer[:] = 0
                     mpi_recv_y_neg = comm.Irecv(y_neg_buffer, source=RANK_Y_NEG,)
 
                 # perform update steps on the non-communicating directions
@@ -361,16 +375,16 @@ def run_MPI():
                 t_comm_wait = time()
                 # start comms to send data left, receive data right
                 if SHIFT_X_NEG:
-                    x_neg_buffer = np.ascontiguousarray(recon[0, :, :, :])
+                    x_neg_buffer[:] = np.squeeze(recon[0, :, :, :])
                     mpi_send_x_neg = comm.Isend(x_neg_buffer, dest=RANK_X_NEG,)
                 if SHIFT_X_POS:
-                    x_pos_buffer = np.zeros_like(recon[-1, :, :, :])
+                    x_pos_buffer[:] = 0
                     mpi_recv_x_pos = comm.Irecv(x_pos_buffer, source=RANK_X_POS,)
                 if SHIFT_Y_NEG:
-                    y_neg_buffer = np.ascontiguousarray(recon[:, 0, :, :])
+                    y_neg_buffer[:] = np.squeeze(recon[:, 0, :, :])
                     mpi_send_y_neg = comm.Isend(y_neg_buffer, dest=RANK_Y_NEG,)
                 if SHIFT_Y_POS:
-                    y_pos_buffer = np.zeros_like(recon[:, -1, :, :])
+                    y_pos_buffer[:] = 0
                     mpi_recv_y_pos = comm.Irecv(y_pos_buffer, source=RANK_Y_POS)
 
                 # Block until communication finishes
