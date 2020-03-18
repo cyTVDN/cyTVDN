@@ -13,6 +13,7 @@ import sys
 
 logger = logging.getLogger("cyTVDN")
 logger.setLevel(logging.DEBUG)
+logger.handlers = []
 
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
@@ -440,11 +441,58 @@ def run_MPI():
     fout = h5py.File(
         outfile.split(".")[-2] + ".emd", "w", driver="mpio", comm=MPI.COMM_WORLD
     )
-    grp = fout.create_group("TV Output")
-    dset = grp.create_dataset("TV", data.shape)
-    dset[valid_slice_x, valid_slice_y, :, :] = recon[
-        local_valid_slice_x, local_valid_slice_y, :, :
-    ]
+    group_toplevel = fout.create_group("4DSTEM_experiment")
+    group_toplevel.attrs.create("emd_group_type", 2)
+    group_toplevel.attrs.create("version_major", 0)
+    group_toplevel.attrs.create("version_minor", 7)
+
+    # Write data groups
+    group_toplevel.create_group("metadata")
+    group_data = group_toplevel.create_group("data")
+    group_datacubes = group_data.create_group("datacubes")
+    group_data.create_group("counted_datacubes")
+    group_data.create_group("diffractionslices")
+    group_data.create_group("realslices")
+    group_data.create_group("pointlists")
+    group_data.create_group("pointlistarrays")
+
+    grp_dc = group_datacubes.create_group("datacube_0")
+    dset = grp_dc.create_dataset("data", data.shape)
+
+    grp_dc.attrs.create("emd_group_type", 1)
+    grp_dc.attrs.create("metadata", -1)
+
+    data_datacube = grp_dc["data"]
+
+    R_Nx, R_Ny, Q_Nx, Q_Ny = data_datacube.shape
+    data_R_Nx = grp_dc.create_dataset("dim1", (R_Nx,))
+    data_R_Ny = grp_dc.create_dataset("dim2", (R_Ny,))
+    data_Q_Nx = grp_dc.create_dataset("dim3", (Q_Nx,))
+    data_Q_Ny = grp_dc.create_dataset("dim4", (Q_Ny,))
+
+    if rank == 0:
+        # Populate uncalibrated dimensional axes
+        data_R_Nx[...] = np.arange(0, R_Nx)
+        data_R_Nx.attrs.create("name", np.string_("R_x"))
+        data_R_Nx.attrs.create("units", np.string_("[pix]"))
+        data_R_Ny[...] = np.arange(0, R_Ny)
+        data_R_Ny.attrs.create("name", np.string_("R_y"))
+        data_R_Ny.attrs.create("units", np.string_("[pix]"))
+        data_Q_Nx[...] = np.arange(0, Q_Nx)
+        data_Q_Nx.attrs.create("name", np.string_("Q_x"))
+        data_Q_Nx.attrs.create("units", np.string_("[pix]"))
+        data_Q_Ny[...] = np.arange(0, Q_Ny)
+        data_Q_Ny.attrs.create("name", np.string_("Q_y"))
+        data_Q_Ny.attrs.create("units", np.string_("[pix]"))
+
+    dset.write_direct(
+        recon,
+        source_sel=np.s_[local_valid_slice_x, local_valid_slice_y, :, :],
+        dest_sel=np.s_[valid_slice_x, valid_slice_y, :, :],
+    )
+    # dset[valid_slice_x, valid_slice_y, :, :] = recon[
+    #     local_valid_slice_x, local_valid_slice_y, :, :
+    # ]
     fout.close()
 
     logger.info(f"Rank {rank} is done! Writing data took {time()-t_save_start} seconds")
