@@ -1,7 +1,7 @@
-from cyTV4D.utils import datacube_update_4D, datacube_update_3D
-from cyTV4D.utils import sum_square_error_4D, sum_square_error_3D
-from cyTV4D.anisotropic import accumulator_update_4D, accumulator_update_4D_FISTA
-from cyTV4D.anisotropic import accumulator_update_3D, accumulator_update_3D_FISTA
+from cyTVDN.utils import datacube_update_4D, datacube_update_3D
+from cyTVDN.utils import sum_square_error_4D, sum_square_error_3D
+from cyTVDN.anisotropic import accumulator_update_4D, accumulator_update_4D_FISTA
+from cyTVDN.anisotropic import accumulator_update_3D, accumulator_update_3D_FISTA
 
 import numpy as np
 from tqdm import tqdm

@@ -43,28 +43,28 @@ else:
 
 ext_modules = [
     Extension(
-        "cyTV4D.utils",
-        ["cyTV4D/utils.pyx"],
+        "cyTVDN.utils",
+        ["cyTVDN/utils.pyx"],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
     ),
     Extension(
-        "cyTV4D.anisotropic",
-        ["cyTV4D/anisotropic.pyx"],
+        "cyTVDN.anisotropic",
+        ["cyTVDN/anisotropic.pyx"],
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
     ),
 ]
 
 setup(
-    name="cyTV4D",
+    name="cyTVDN",
     version="0.0.1",
     author="SE Zeltmann",
     author_email="steven.zeltmann@lbl.gov",
-    packages=["cyTV4D"],
+    packages=["cyTVDN"],
     ext_modules=cythonize(ext_modules, compiler_directives={"language_level": "3"}),
     install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
     extras_require={"MPI": ["mpi4py", "h5py"]},
     setup_requires=["Cython"],
-    entry_points={"console_scripts": ["cyTVMPI=cyTV4D.mpi:run_MPI"]},
+    entry_points={"console_scripts": ["cyTVMPI=cyTVDN.mpi:run_MPI"]},
 )

@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-import cyTV4D as tv
+import cyTVDN as tv
 from mpi4py import MPI
 import numpy as np
 from tqdm import tqdm
