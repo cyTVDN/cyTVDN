@@ -4,7 +4,7 @@ Fast multi-threaded multi-dimensional total variational denoising
 ## Algorithm
 This module implements an extension of the TV denoising algorithm described in [Jia and Zhao, Advances in Computational Mathematics **33**, 231-241(2010)](https://link.springer.com/article/10.1007/s10444-009-9128-5) to 3- and 4-dimensional datasets. [FISTA](https://doi.org/10.1137/080716542) acceleration is also currently implemented.
 
-### Current Implementation Status
+### Current Implementation Status (as of v0.1)
 #### Module (OpenMP)
 - [x] Anisotropic Unaccelerated 4D
 - [x] Anisotropic Unaccelerated 3D
@@ -36,6 +36,8 @@ python setup.py install
 Naturally, you will need a C compiler in order for Cython to compile the module. On Macs this is somewhat complicated because the Apple-provided versions of `gcc` and `clang` do not support the `-fopenmp` option, which is used to enable multithreaded execution. To build with multithreading on a Mac you will need to use Homebrew to install `llvm`, and `libomp`. The `setup.py` script should figure out the right compiler and linker without intervention as long as they are installed in the usual Homebrew locations. 
 
 ### High-performance computing
+See the example job script for NERSC Cori for how to run on HPC
+
 When building on HPC, note that `gcc` and Cray compilers use `-fopenmp` while Intel compilers require `-qopenmp` to enable threading.
 
 On NERSC, you must export the correct compiler as part of the `build_ext` command:

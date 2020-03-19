@@ -30,7 +30,7 @@ MU="1 1 1 1" # Mu
 
 module load python
 module load h5py-parallel
-source activate tv
+source activate tv # <- this is the anaconda environment containing cyTVDN
 
 export OMP_NUM_THREADS=204
 export OMP_PLACES=threads
