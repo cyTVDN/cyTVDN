@@ -36,17 +36,17 @@ elif platform.system() == "Darwin":
     #     os.environ["LDSHARED"] = (
     #         glob("/usr/local/Cellar/llvm/9*/bin/clang")[0] + " -bundle"
     #     )
-
-# if we are on linux, check if we are using intel or Cray/gcc
-if "CC" not in os.environ:
-    extra_compile_args = ["-fopenmp"]
-    extra_link_args = ["-fopenmp"]
-elif "icc" in os.environ["CC"]:
-    extra_compile_args = ["-qopenmp"]
-    extra_link_args = ["-qopenmp"]
 else:
-    extra_compile_args = ["-fopenmp"]
-    extra_link_args = ["-fopenmp"]
+    # if we are on linux, check if we are using intel or Cray/gcc
+    if "CC" not in os.environ:
+        extra_compile_args = ["-fopenmp"]
+        extra_link_args = ["-fopenmp"]
+    elif "icc" in os.environ["CC"]:
+        extra_compile_args = ["-qopenmp"]
+        extra_link_args = ["-qopenmp"]
+    else:
+        extra_compile_args = ["-fopenmp"]
+        extra_link_args = ["-fopenmp"]
 
 
 ext_modules = [
