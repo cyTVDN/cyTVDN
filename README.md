@@ -1,5 +1,6 @@
 # cyTVDN
 Fast multi-threaded multi-dimensional total variational denoising
+[![DOI](https://zenodo.org/badge/248416421.svg)](https://zenodo.org/badge/latestdoi/248416421)
 
 ## Algorithm
 This module implements an extension of the TV denoising algorithm described in [Jia and Zhao, Advances in Computational Mathematics **33**, 231-241(2010)](https://link.springer.com/article/10.1007/s10444-009-9128-5) to 3- and 4-dimensional datasets. [FISTA](https://doi.org/10.1137/080716542) acceleration is also currently implemented.
