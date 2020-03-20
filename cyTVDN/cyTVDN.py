@@ -94,6 +94,7 @@ def denoise4D(
         MSE[0] = sum_square_error_4D(datacube, reference_data)
 
     b_norm = np.zeros((iterations_FISTA + iterations_unacc), dtype=datacube.dtype)
+    delta_recon = np.zeros_like(b_norm)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -135,7 +136,7 @@ def denoise4D(
                 recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode
             )
 
-            datacube_update_4D(
+            delta_recon[i] = datacube_update_4D(
                 datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode
             )
 
@@ -159,7 +160,7 @@ def denoise4D(
             )
 
             # update reconstruction
-            datacube_update_4D(
+            delta_recon[i] = datacube_update_4D(
                 datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode
             )
 
@@ -167,9 +168,9 @@ def denoise4D(
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
 
     if calculate_MSE:
-        return recon, b_norm, MSE
+        return recon, b_norm, delta_recon, MSE
     else:
-        return recon, b_norm
+        return recon, b_norm, delta_recon
 
 
 def denoise3D(
@@ -255,6 +256,7 @@ def denoise3D(
         MSE[0] = sum_square_error_3D(datacube, reference_data)
 
     b_norm = np.zeros((iterations_FISTA + iterations_unacc), dtype=datacube.dtype)
+    delta_recon = np.zeros_like(b_norm)
 
     # allocate memory for the accumulators and the output datacube
     acc1 = np.zeros_like(datacube)
@@ -291,7 +293,7 @@ def denoise3D(
                 recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode
             )
 
-            datacube_update_3D(
+            delta_recon[i] = datacube_update_3D(
                 datacube, recon, acc1, acc2, acc3, lam_mu, BC_mode=BC_mode
             )
 
@@ -312,7 +314,7 @@ def denoise3D(
             )
 
             # update reconstruction
-            datacube_update_3D(
+            delta_recon[i] = datacube_update_3D(
                 datacube, recon, acc1, acc2, acc3, lam_mu, BC_mode=BC_mode
             )
 
@@ -320,9 +322,9 @@ def denoise3D(
                 MSE[i + 1] = sum_square_error_3D(reference_data, recon)
 
     if calculate_error:
-        return recon, b_norm, MSE
+        return recon, b_norm, delta_recon, MSE
     else:
-        return recon, b_norm
+        return recon, b_norm, delta_recon
 
 
 def check_memory(datacube):

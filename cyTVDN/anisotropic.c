@@ -10,7 +10,7 @@
         "extra_link_args": [
             "-fopenmp",
             "-lgomp",
-            "-Wl,-rpath,/usr/local/Cellar/llvm/9.0.1/lib/clang/9.0.1/include/"
+            "-Wl,-rpath,/usr/local/opt/gcc/lib/gcc/9/"
         ],
         "name": "cyTVDN.anisotropic",
         "sources": [
