@@ -3,7 +3,10 @@ from cyTVDN.utils import sum_square_error_4D, sum_square_error_3D
 from cyTVDN.anisotropic import accumulator_update_4D, accumulator_update_4D_FISTA
 from cyTVDN.anisotropic import accumulator_update_3D, accumulator_update_3D_FISTA
 
-from cyTVDN.halfisotropic import iso_accumulator_update_4D
+from cyTVDN.halfisotropic import (
+    iso_accumulator_update_4D,
+    iso_accumulator_update_4D_FISTA,
+)
 
 import numpy as np
 from tqdm import tqdm
@@ -13,8 +16,15 @@ from tabulate import tabulate
 
 
 def denoise4D(
-    datacube, lam, mu, iterations=10, FISTA=True,
-    isotropic_R=False, isotropic_Q=False, reference_data=None, BC_mode=2,
+    datacube,
+    lam,
+    mu,
+    iterations=10,
+    FISTA=True,
+    isotropic_R=False,
+    isotropic_Q=False,
+    reference_data=None,
+    BC_mode=2,
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
@@ -53,7 +63,7 @@ def denoise4D(
 
     # If no lambda is given, default to mu/32
     if lam is None:
-        lam = mu / 32.
+        lam = mu / 32.0
 
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
@@ -133,18 +143,28 @@ def denoise4D(
             tk = tk_new
 
             # update accumulators
-            b_norm[i] += accumulator_update_4D_FISTA(
-                recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D_FISTA(
-                recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D_FISTA(
-                recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D_FISTA(
-                recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode
-            )
+            if isotropic_R:
+                b_norm[i] += iso_accumulator_update_4D_FISTA(
+                    recon, acc1, acc2, d1, d2, tk_ratio, 0, 1, lambdaInv[0]
+                )
+            else:
+                b_norm[i] += accumulator_update_4D_FISTA(
+                    recon, acc1, d1, tk_ratio, 0, lambdaInv[0], BC_mode=BC_mode
+                )
+                b_norm[i] += accumulator_update_4D_FISTA(
+                    recon, acc2, d2, tk_ratio, 1, lambdaInv[1], BC_mode=BC_mode
+                )
+            if isotropic_Q:
+                b_norm[i] += iso_accumulator_update_4D_FISTA(
+                    recon, acc3, acc4, d3, d4, tk_ratio, 2, 3, lambdaInv[2]
+                )
+            else:
+                b_norm[i] += accumulator_update_4D_FISTA(
+                    recon, acc3, d3, tk_ratio, 2, lambdaInv[2], BC_mode=BC_mode
+                )
+                b_norm[i] += accumulator_update_4D_FISTA(
+                    recon, acc4, d4, tk_ratio, 3, lambdaInv[3], BC_mode=BC_mode
+                )
 
             delta_recon[i] = datacube_update_4D(
                 datacube, recon, acc1, acc2, acc3, acc4, lam_mu, BC_mode=BC_mode
@@ -158,7 +178,9 @@ def denoise4D(
             # update accumulators
 
             if isotropic_R:
-                b_norm[i] += iso_accumulator_update_4D(recon, acc1, acc2, 0, 1, lambdaInv[0])
+                b_norm[i] += iso_accumulator_update_4D(
+                    recon, acc1, acc2, 0, 1, lambdaInv[0]
+                )
             else:
                 b_norm[i] += accumulator_update_4D(
                     recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode
@@ -167,7 +189,9 @@ def denoise4D(
                     recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode
                 )
             if isotropic_Q:
-                b_norm[i] += iso_accumulator_update_4D(recon, acc3, acc4, 2, 3, lambdaInv[2])
+                b_norm[i] += iso_accumulator_update_4D(
+                    recon, acc3, acc4, 2, 3, lambdaInv[2]
+                )
             else:
                 b_norm[i] += accumulator_update_4D(
                     recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode

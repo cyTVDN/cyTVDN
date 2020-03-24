@@ -12,11 +12,11 @@ This module implements an extension of the TV denoising algorithm described in [
 #### Module (OpenMP)
 - [x] Anisotropic Unaccelerated 4D
 - [x] Anisotropic Unaccelerated 3D
-- [ ] Semi-Isotropic Unaccelerated 4D
+- [x] Semi-Isotropic Unaccelerated 4D
 - [ ] Semi-Isotropic Unaccelerated 3D
 - [x] Anisotropic FISTA 4D
 - [x] Anisotropic FISTA 3D
-- [ ] Semi-Isotropic FISTA 4D
+- [x] Semi-Isotropic FISTA 4D
 - [ ] Semi-Isotropic FISTA 3D
 
 #### MPI/OpenMP
