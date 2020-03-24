@@ -34,15 +34,23 @@ def iso_accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b1, _float[:,:
     # start[ax2] += 1
 
     # strides for taking each separate gradient
+    cdef Py_ssize_t master_stride1[4]
+    master_stride1[:] = [0,0,0,0]
+    master_stride1[ax1] += 1
+    cdef Py_ssize_t master_stride2[4]
+    master_stride2[:] = [0,0,0,0]
+    master_stride2[ax2] += 1
+
+    # local strides that will be updated based on boundary conditions
     cdef Py_ssize_t stride1[4]
-    stride1[:] = [0,0,0,0]
-    stride1[ax1] += 1
     cdef Py_ssize_t stride2[4]
+    stride1[:] = [0,0,0,0]
     stride2[:] = [0,0,0,0]
-    stride2[ax2] += 1
 
     # index variables for the 4D loop
     cdef Py_ssize_t i,j,k,l, ij
+
+    # stride
 
     cdef _float norm = 0.0
     cdef _float delta1, delta2, b_mag
@@ -56,26 +64,22 @@ def iso_accumulator_update_4D(_float[:,:,:,::] a,_float[:,:,:,::] b1, _float[:,:
         i = start[0] + (ij / (shape[1] - start[1]))
         j = start[1] + (ij % (shape[1] - start[1]))
 
-        # reset the local strides
-        stride1[ax1] = 1
-        stride2[ax2] = 1
-
         # dynamically figure out strides to avoid multiple loops!
         # set stride to 1 if (a) it is a gradient axis and 
         # (b) we are not at the zero element
-        stride1[0] = 1 if (stride1[0] & (i > 0)) else 0
-        stride2[0] = 1 if (stride2[0] & (i > 0)) else 0
+        stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0
+        stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0
 
-        stride1[1] = 1 if (stride1[1] & (j > 0)) else 0
-        stride2[1] = 1 if (stride2[1] & (j > 0)) else 0
+        stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0
+        stride2[1] = 1 if (master_stride2[1] & (j > 0)) else 0
 
         for k in range(start[2],shape[2]):
-            stride1[2] = 1 if (stride1[2] & (k > 0)) else 0
-            stride2[2] = 1 if (stride2[2] & (k > 0)) else 0
+            stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0
+            stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0
 
             for l in range(start[3],shape[3]):
-                stride1[3] = 1 if (stride1[3] & (l > 0)) else 0
-                stride2[3] = 1 if (stride2[3] & (l > 0)) else 0
+                stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0
+                stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0
 
                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]
                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]
@@ -115,12 +119,18 @@ def iso_accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b1,
     start[:] = [0,0,0,0]
 
     # strides for taking each separate gradient
+    cdef Py_ssize_t master_stride1[4]
+    master_stride1[:] = [0,0,0,0]
+    master_stride1[ax1] += 1
+    cdef Py_ssize_t master_stride2[4]
+    master_stride2[:] = [0,0,0,0]
+    master_stride2[ax2] += 1
+
+    # local strides that will be updated based on boundary conditions
     cdef Py_ssize_t stride1[4]
-    stride1[:] = [0,0,0,0]
-    stride1[ax1] += 1
     cdef Py_ssize_t stride2[4]
+    stride1[:] = [0,0,0,0]
     stride2[:] = [0,0,0,0]
-    stride2[ax2] += 1
 
     # index variables for the 4D loop
     cdef Py_ssize_t i,j,k,l, ij
@@ -137,27 +147,23 @@ def iso_accumulator_update_4D_FISTA(_float[:,:,:,::] a, _float[:,:,:,::] b1,
         i = start[0] + (ij / (shape[1] - start[1]))
         j = start[1] + (ij % (shape[1] - start[1]))
 
-        # reset the local strides
-        stride1[ax1] = 1
-        stride2[ax2] = 1
-
         # dynamically figure out strides to avoid multiple loops!
         # set stride to 1 if (a) it is a gradient axis and 
         # (b) we are not at the zero element
-        stride1[0] = 1 if (stride1[0] & (i > 0)) else 0
-        stride2[0] = 1 if (stride2[0] & (i > 0)) else 0
+        stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0
+        stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0
 
-        stride1[1] = 1 if (stride1[1] & (j > 0)) else 0
-        stride2[1] = 1 if (stride2[1] & (j > 0)) else 0
+        stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0
+        stride2[1] = 1 if (master_stride2[1] & (j > 0)) else 0
 
 
         for k in range(start[2],shape[2]):
-            stride1[2] = 1 if (stride1[2] & (k > 0)) else 0
-            stride2[2] = 1 if (stride2[2] & (k > 0)) else 0
+            stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0
+            stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0
 
             for l in range(start[3],shape[3]):
-                stride1[3] = 1 if (stride1[3] & (l > 0)) else 0
-                stride2[3] = 1 if (stride2[3] & (l > 0)) else 0
+                stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0
+                stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0
 
                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]
                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]
