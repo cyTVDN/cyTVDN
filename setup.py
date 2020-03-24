@@ -62,6 +62,12 @@ ext_modules = [
         extra_compile_args=extra_compile_args,
         extra_link_args=extra_link_args,
     ),
+    Extension(
+        "cyTVDN.halfisotropic",
+        ["cyTVDN/halfisotropic.pyx"],
+        extra_compile_args=extra_compile_args,
+        extra_link_args=extra_link_args,
+    ),
 ]
 
 setup(

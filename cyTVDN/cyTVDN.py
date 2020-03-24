@@ -3,6 +3,8 @@ from cyTVDN.utils import sum_square_error_4D, sum_square_error_3D
 from cyTVDN.anisotropic import accumulator_update_4D, accumulator_update_4D_FISTA
 from cyTVDN.anisotropic import accumulator_update_3D, accumulator_update_3D_FISTA
 
+from cyTVDN.halfisotropic import iso_accumulator_update_4D
+
 import numpy as np
 from tqdm import tqdm
 from hurry.filesize import size, alternative
@@ -11,7 +13,8 @@ from tabulate import tabulate
 
 
 def denoise4D(
-    datacube, lam, mu, iterations=75, BC_mode=2, FISTA=False, reference_data=None
+    datacube, lam, mu, iterations=10, FISTA=True,
+    isotropic_R=False, isotropic_Q=False, reference_data=None, BC_mode=2,
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
@@ -19,16 +22,18 @@ def denoise4D(
     Arguments:
     datacube        (np.array) a C-contiguous 4D numpy array. Must be float32 or float64 dtype
     lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
-    mu              (float) TV weighting parameter
+    mu              (np.array) TV weighting parameter
     iterations      (int) number of iterations to perform TV update step
-    BC_mode         (int) boundary conditions for evaluating difference operators:
-                        0: Periodic
-                        1: Mirror
-                        2: Jia-Zhao Adv Comp Math 2010 33:231-241
     FISTA           (bool) whether to use FISTA Acceleration. Converges much faster,
                     but involves much more memory use
+    isotropic_R     (bool) Use half-isotropic algorithm on axes 0 and 1 (real space in py4DSTEM convention)
+    isotropic_Q     (bool) Use half-isotropic algorithm on axies 2 and 3 (reciprocal space in py4DSTEM convention)
     reference_data  (np.array) For testing convergence, pass an infinite signal dataset
                     and the mean square error will be calculated for each iteration
+    BC_mode         (int) boundary conditions for evaluating difference operators:
+                                    0: Periodic
+                                    1: Mirror
+                        (default)   2: Jia-Zhao Adv Comp Math 2010 33:231-241
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -46,12 +51,13 @@ def denoise4D(
         "C_CONTIGUOUS"
     ], "datacube must be C-contiguous. Try np.ascontiguousarray(datacube) on the array"
 
+    # If no lambda is given, default to mu/32
+    if lam is None:
+        lam = mu / 32.
+
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
 
-    assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
-        lam_mu > 0
-    ), "Parameters must satisfy 0 < λ/μ <= 1/8"
     try:
         print(
             f"λ/μ ≈ [1/{mu[0]/lam[0]:.0f}, 1/{mu[1]/lam[1]:.0f}, 1/{mu[2]/lam[2]:.0f}, 1/{mu[3]/lam[3]:.0f}]"
@@ -60,6 +66,10 @@ def denoise4D(
         print(
             "I tried to print with pretty characters but your system doesn't like Unicode..."
         )
+    assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
+        lam_mu > 0
+    ), "Parameters must satisfy 0 < λ/μ <= 1/32"
+
     # warn about memory requirements
     print(
         f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
@@ -146,18 +156,25 @@ def denoise4D(
         for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
             i = j + iterations_FISTA
             # update accumulators
-            b_norm[i] += accumulator_update_4D(
-                recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D(
-                recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D(
-                recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode
-            )
-            b_norm[i] += accumulator_update_4D(
-                recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode
-            )
+
+            if isotropic_R:
+                b_norm[i] += iso_accumulator_update_4D(recon, acc1, acc2, 0, 1, lambdaInv[0])
+            else:
+                b_norm[i] += accumulator_update_4D(
+                    recon, acc1, 0, lambdaInv[0], BC_mode=BC_mode
+                )
+                b_norm[i] += accumulator_update_4D(
+                    recon, acc2, 1, lambdaInv[1], BC_mode=BC_mode
+                )
+            if isotropic_Q:
+                b_norm[i] += iso_accumulator_update_4D(recon, acc3, acc4, 2, 3, lambdaInv[2])
+            else:
+                b_norm[i] += accumulator_update_4D(
+                    recon, acc3, 2, lambdaInv[2], BC_mode=BC_mode
+                )
+                b_norm[i] += accumulator_update_4D(
+                    recon, acc4, 3, lambdaInv[3], BC_mode=BC_mode
+                )
 
             # update reconstruction
             delta_recon[i] = datacube_update_4D(

@@ -291,6 +291,16 @@ def run_MPI():
             d3 = np.zeros_like(recon)
             d4 = np.zeros_like(recon)
 
+            # allocate MPI sync buffers
+            x_pos_buffer_FISTA = np.zeros(
+                (raw.shape[1], raw.shape[2], raw.shape[3]), dtype=np.float32
+            )
+            x_neg_buffer_FISTA = np.zeros_like(x_pos_buffer)
+            y_pos_buffer_FISTA = np.zeros(
+                (raw.shape[0], raw.shape[2], raw.shape[3]), dtype=np.float32
+            )
+            y_neg_buffer_FISTA = np.zeros_like(y_pos_buffer)
+
             tk = 1.0
 
         if HEAD_WORKER:
