@@ -25,6 +25,7 @@ def denoise4D(
     isotropic_Q=False,
     reference_data=None,
     BC_mode=2,
+    quiet=False,
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
@@ -44,6 +45,7 @@ def denoise4D(
                                     0: Periodic
                                     1: Mirror
                         (default)   2: Jia-Zhao Adv Comp Math 2010 33:231-241
+    quiet           (bool) Suppress informational messages and clear the progress bar after running.
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -68,23 +70,25 @@ def denoise4D(
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
 
-    try:
-        print(
-            f"λ/μ ≈ [1/{mu[0]/lam[0]:.0f}, 1/{mu[1]/lam[1]:.0f}, 1/{mu[2]/lam[2]:.0f}, 1/{mu[3]/lam[3]:.0f}]"
-        )
-    except Exception:
-        print(
-            "I tried to print with pretty characters but your system doesn't like Unicode..."
-        )
+    if not quiet:
+        try:
+            print(
+                f"λ/μ ≈ [1/{mu[0]/lam[0]:.0f}, 1/{mu[1]/lam[1]:.0f}, 1/{mu[2]/lam[2]:.0f}, 1/{mu[3]/lam[3]:.0f}]"
+            )
+        except Exception:
+            print(
+                "I tried to print with pretty characters but your system doesn't like Unicode..."
+            )
     assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
         lam_mu > 0
     ), "Parameters must satisfy 0 < λ/μ <= 1/32"
 
     # warn about memory requirements
-    print(
-        f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
-        flush=True,
-    )
+    if not quiet:
+        print(
+            f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
+            flush=True,
+        )
 
     unaccelerated = not FISTA
     if type(iterations) in (list, tuple):
@@ -97,16 +101,17 @@ def denoise4D(
         iterations_FISTA = iterations * FISTA
         iterations_unacc = iterations * (not FISTA)
 
-    if FISTA:
-        print(
-            f"FISTA Accelerated TV denoising will require {size(datacube.nbytes*9,system=alternative)} of RAM...",
-            flush=True,
-        )
-    else:
-        print(
-            f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...",
-            flush=True,
-        )
+    if not quiet:
+        if FISTA:
+            print(
+                f"FISTA Accelerated TV denoising will require {size(datacube.nbytes*9,system=alternative)} of RAM...",
+                flush=True,
+            )
+        else:
+            print(
+                f"Unaccelerated TV denoising will require {size(datacube.nbytes*5,system=alternative)} of RAM...",
+                flush=True,
+            )
 
     calculate_MSE = reference_data is not None
     if calculate_MSE:
@@ -135,7 +140,7 @@ def denoise4D(
 
     if FISTA:
         for i in tqdm(
-            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising"
+            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising", leave=not quiet,
         ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
@@ -173,7 +178,7 @@ def denoise4D(
             if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
     if unaccelerated:
-        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
+        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising", leave=not quiet):
             i = j + iterations_FISTA
             # update accumulators
 
