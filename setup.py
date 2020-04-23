@@ -19,9 +19,7 @@ elif platform.system() == "Darwin":
     # extra_link_args.append(
     #     "-Wl,-rpath," + glob("/usr/local/Cellar/llvm/*/lib/clang/*/include/")[0]
     # )
-    extra_link_args.append(
-        "-Wl,-rpath," + glob("/usr/local/opt/gcc/lib/gcc/9/")[0]
-    )
+    extra_link_args.append("-Wl,-rpath," + glob("/usr/local/opt/gcc/lib/gcc/9/")[0])
     # extra_link_args.append("-L/usr/local/opt/gcc/lib/gcc/9/")
 
     # Previously, I used Homebrew-installed gcc...

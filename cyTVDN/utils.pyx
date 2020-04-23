@@ -79,6 +79,7 @@ def datacube_update_4D(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:
         MBCend[q] -= 1
 
     cdef _float delta = 0.0
+    cdef _float recon_norm = 0.0
     cdef _float oldVal
     
     if (BC_mode == 0) | (BC_mode == 2):
@@ -100,6 +101,7 @@ def datacube_update_4D(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:
                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
                         )
                     delta += fabs(recon[i,j,k,l] - oldVal)
+                    recon_norm += fabs(oldVal)
     elif BC_mode == 1:
         # handling the mirror boundary condition 
         # simply requires different math for computing the indices.
@@ -118,8 +120,9 @@ def datacube_update_4D(_float[:,:,:,::] orig, _float[:,:,:,::] recon, _float[:,:
                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(l+1,MBCend[3])]))
                         )
                     delta += fabs(recon[i,j,k,l] - oldVal)
+                    recon_norm += fabs(oldVal)
 
-    return delta
+    return delta / recon_norm
 
 
 @cython.boundscheck(False)
@@ -154,6 +157,7 @@ def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::]
         MBCend[q] -= 1
 
     cdef _float delta = 0.0
+    cdef _float recon_norm = 0.0
     cdef _float oldVal
     
     if (BC_mode == 0) | (BC_mode == 2):
@@ -173,6 +177,7 @@ def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::]
                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,(k+1)%shape[2]]))
                     )
                 delta += fabs(recon[i,j,k] - oldVal)
+                recon_norm += fabs(oldVal)
     elif BC_mode == 1:
         # handling the mirror boundary condition 
         # simply requires different math for computing the indices.
@@ -189,5 +194,6 @@ def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::]
                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,max(i+1,MBCend[2])]))
                     )
                 delta += fabs(recon[i,j,k] - oldVal)
+                recon_norm += fabs(recon_norm)
 
-    return delta
+    return delta / recon_norm

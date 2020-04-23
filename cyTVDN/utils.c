@@ -2052,6 +2052,7 @@ static const char __pyx_k_IndexError[] = "IndexError";
 static const char __pyx_k_ValueError[] = "ValueError";
 static const char __pyx_k_pyx_result[] = "__pyx_result";
 static const char __pyx_k_pyx_vtable[] = "__pyx_vtable__";
+static const char __pyx_k_recon_norm[] = "recon_norm";
 static const char __pyx_k_signatures[] = "signatures";
 static const char __pyx_k_MemoryError[] = "MemoryError";
 static const char __pyx_k_PickleError[] = "PickleError";
@@ -2203,6 +2204,7 @@ static PyObject *__pyx_n_s_pyx_vtable;
 static PyObject *__pyx_n_s_q;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_recon;
+static PyObject *__pyx_n_s_recon_norm;
 static PyObject *__pyx_n_s_reduce;
 static PyObject *__pyx_n_s_reduce_cython;
 static PyObject *__pyx_n_s_reduce_ex;
@@ -5229,6 +5231,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
   int __pyx_v_MBCend[4];
   long __pyx_v_q;
   float __pyx_v_delta;
+  float __pyx_v_recon_norm;
   float __pyx_v_oldVal;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -5405,12 +5408,21 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
  *         MBCend[q] -= 1
  * 
  *     cdef _float delta = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float recon_norm = 0.0
  *     cdef _float oldVal
- * 
  */
   __pyx_v_delta = 0.0;
 
-  /* "cyTVDN/utils.pyx":84
+  /* "cyTVDN/utils.pyx":82
+ * 
+ *     cdef _float delta = 0.0
+ *     cdef _float recon_norm = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float oldVal
+ * 
+ */
+  __pyx_v_recon_norm = 0.0;
+
+  /* "cyTVDN/utils.pyx":85
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -5420,7 +5432,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
   __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":89
+    /* "cyTVDN/utils.pyx":90
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -5447,7 +5459,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
               if (__pyx_t_7 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_8, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_8, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -5463,7 +5475,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                               __pyx_v_l = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((float)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":90
+                              /* "cyTVDN/utils.pyx":91
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -5472,7 +5484,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / ((Py_ssize_t)(__pyx_v_shape[1])));
 
-                              /* "cyTVDN/utils.pyx":91
+                              /* "cyTVDN/utils.pyx":92
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -5481,7 +5493,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":92
+                              /* "cyTVDN/utils.pyx":93
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -5493,7 +5505,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":93
+                                /* "cyTVDN/utils.pyx":94
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -5505,7 +5517,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_l = __pyx_t_13;
 
-                                  /* "cyTVDN/utils.pyx":94
+                                  /* "cyTVDN/utils.pyx":95
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -5518,7 +5530,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_17 = __pyx_v_l;
                                   __pyx_v_oldVal = (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_14 * __pyx_v_recon.strides[0]) ) + __pyx_t_15 * __pyx_v_recon.strides[1]) ) + __pyx_t_16 * __pyx_v_recon.strides[2]) ) + __pyx_t_17 * __pyx_v_recon.strides[3]) )));
 
-                                  /* "cyTVDN/utils.pyx":95
+                                  /* "cyTVDN/utils.pyx":96
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5530,7 +5542,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_20 = __pyx_v_k;
                                   __pyx_t_21 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":97
+                                  /* "cyTVDN/utils.pyx":98
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +             # <<<<<<<<<<<<<<
@@ -5547,7 +5559,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_29 = __pyx_v_k;
                                   __pyx_t_30 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":98
+                                  /* "cyTVDN/utils.pyx":99
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +             # <<<<<<<<<<<<<<
@@ -5564,7 +5576,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_38 = __pyx_v_k;
                                   __pyx_t_39 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":99
+                                  /* "cyTVDN/utils.pyx":100
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +             # <<<<<<<<<<<<<<
@@ -5581,7 +5593,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_47 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
                                   __pyx_t_48 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":100
+                                  /* "cyTVDN/utils.pyx":101
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))             # <<<<<<<<<<<<<<
@@ -5598,7 +5610,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_56 = __pyx_v_k;
                                   __pyx_t_57 = ((__pyx_v_l + 1) % (__pyx_v_shape[3]));
 
-                                  /* "cyTVDN/utils.pyx":95
+                                  /* "cyTVDN/utils.pyx":96
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5611,18 +5623,27 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_61 = __pyx_v_l;
                                   *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_58 * __pyx_v_recon.strides[0]) ) + __pyx_t_59 * __pyx_v_recon.strides[1]) ) + __pyx_t_60 * __pyx_v_recon.strides[2]) ) + __pyx_t_61 * __pyx_v_recon.strides[3]) )) = ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_18 * __pyx_v_orig.strides[0]) ) + __pyx_t_19 * __pyx_v_orig.strides[1]) ) + __pyx_t_20 * __pyx_v_orig.strides[2]) ) + __pyx_t_21 * __pyx_v_orig.strides[3]) ))) - (((((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_22 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_23 * __pyx_v_b1.strides[0]) ) + __pyx_t_24 * __pyx_v_b1.strides[1]) ) + __pyx_t_25 * __pyx_v_b1.strides[2]) ) + __pyx_t_26 * __pyx_v_b1.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_27 * __pyx_v_b1.strides[0]) ) + __pyx_t_28 * __pyx_v_b1.strides[1]) ) + __pyx_t_29 * __pyx_v_b1.strides[2]) ) + __pyx_t_30 * __pyx_v_b1.strides[3]) ))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_31 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_32 * __pyx_v_b2.strides[0]) ) + __pyx_t_33 * __pyx_v_b2.strides[1]) ) + __pyx_t_34 * __pyx_v_b2.strides[2]) ) + __pyx_t_35 * __pyx_v_b2.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_36 * __pyx_v_b2.strides[0]) ) + __pyx_t_37 * __pyx_v_b2.strides[1]) ) + __pyx_t_38 * __pyx_v_b2.strides[2]) ) + __pyx_t_39 * __pyx_v_b2.strides[3]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_40 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_41 * __pyx_v_b3.strides[0]) ) + __pyx_t_42 * __pyx_v_b3.strides[1]) ) + __pyx_t_43 * __pyx_v_b3.strides[2]) ) + __pyx_t_44 * __pyx_v_b3.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_45 * __pyx_v_b3.strides[0]) ) + __pyx_t_46 * __pyx_v_b3.strides[1]) ) + __pyx_t_47 * __pyx_v_b3.strides[2]) ) + __pyx_t_48 * __pyx_v_b3.strides[3]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_49 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_50 * __pyx_v_b4.strides[0]) ) + __pyx_t_51 * __pyx_v_b4.strides[1]) ) + __pyx_t_52 * __pyx_v_b4.strides[2]) ) + __pyx_t_53 * __pyx_v_b4.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_54 * __pyx_v_b4.strides[0]) ) + __pyx_t_55 * __pyx_v_b4.strides[1]) ) + __pyx_t_56 * __pyx_v_b4.strides[2]) ) + __pyx_t_57 * __pyx_v_b4.strides[3]) )))))));
 
-                                  /* "cyTVDN/utils.pyx":102
+                                  /* "cyTVDN/utils.pyx":103
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
  *                         )
  *                     delta += fabs(recon[i,j,k,l] - oldVal)             # <<<<<<<<<<<<<<
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:
- *         # handling the mirror boundary condition
  */
                                   __pyx_t_62 = __pyx_v_i;
                                   __pyx_t_63 = __pyx_v_j;
                                   __pyx_t_64 = __pyx_v_k;
                                   __pyx_t_65 = __pyx_v_l;
                                   __pyx_v_delta = (__pyx_v_delta + fabs(((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_62 * __pyx_v_recon.strides[0]) ) + __pyx_t_63 * __pyx_v_recon.strides[1]) ) + __pyx_t_64 * __pyx_v_recon.strides[2]) ) + __pyx_t_65 * __pyx_v_recon.strides[3]) ))) - __pyx_v_oldVal)));
+
+                                  /* "cyTVDN/utils.pyx":104
+ *                         )
+ *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ *     elif BC_mode == 1:
+ *         # handling the mirror boundary condition
+ */
+                                  __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                                 }
                               }
                           }
@@ -5638,7 +5659,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":89
+        /* "cyTVDN/utils.pyx":90
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -5657,7 +5678,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":84
+    /* "cyTVDN/utils.pyx":85
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -5667,9 +5688,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
     goto __pyx_L5;
   }
 
-  /* "cyTVDN/utils.pyx":103
- *                         )
+  /* "cyTVDN/utils.pyx":105
  *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -5677,7 +5698,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
   __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":107
+    /* "cyTVDN/utils.pyx":109
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -5704,7 +5725,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
               if (__pyx_t_6 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_13, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_9, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_13, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_9, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -5720,7 +5741,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                               __pyx_v_l = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((float)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":108
+                              /* "cyTVDN/utils.pyx":110
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -5729,7 +5750,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / ((Py_ssize_t)(__pyx_v_shape[1])));
 
-                              /* "cyTVDN/utils.pyx":109
+                              /* "cyTVDN/utils.pyx":111
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -5738,7 +5759,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":110
+                              /* "cyTVDN/utils.pyx":112
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -5750,7 +5771,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":111
+                                /* "cyTVDN/utils.pyx":113
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -5762,7 +5783,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_l = __pyx_t_13;
 
-                                  /* "cyTVDN/utils.pyx":112
+                                  /* "cyTVDN/utils.pyx":114
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -5775,7 +5796,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_69 = __pyx_v_l;
                                   __pyx_v_oldVal = (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_66 * __pyx_v_recon.strides[0]) ) + __pyx_t_67 * __pyx_v_recon.strides[1]) ) + __pyx_t_68 * __pyx_v_recon.strides[2]) ) + __pyx_t_69 * __pyx_v_recon.strides[3]) )));
 
-                                  /* "cyTVDN/utils.pyx":113
+                                  /* "cyTVDN/utils.pyx":115
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5787,7 +5808,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_72 = __pyx_v_k;
                                   __pyx_t_73 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":115
+                                  /* "cyTVDN/utils.pyx":117
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +             # <<<<<<<<<<<<<<
@@ -5811,7 +5832,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_84 = __pyx_v_k;
                                   __pyx_t_85 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":116
+                                  /* "cyTVDN/utils.pyx":118
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +             # <<<<<<<<<<<<<<
@@ -5835,7 +5856,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_94 = __pyx_v_k;
                                   __pyx_t_95 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":117
+                                  /* "cyTVDN/utils.pyx":119
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(k+1,MBCend[2]),l])) +             # <<<<<<<<<<<<<<
@@ -5859,7 +5880,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_104 = __pyx_t_101;
                                   __pyx_t_105 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":118
+                                  /* "cyTVDN/utils.pyx":120
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(k+1,MBCend[2]),l])) +
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(l+1,MBCend[3])]))             # <<<<<<<<<<<<<<
@@ -5883,7 +5904,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_114 = __pyx_v_k;
                                   __pyx_t_115 = __pyx_t_111;
 
-                                  /* "cyTVDN/utils.pyx":113
+                                  /* "cyTVDN/utils.pyx":115
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -5896,18 +5917,27 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_119 = __pyx_v_l;
                                   *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_116 * __pyx_v_recon.strides[0]) ) + __pyx_t_117 * __pyx_v_recon.strides[1]) ) + __pyx_t_118 * __pyx_v_recon.strides[2]) ) + __pyx_t_119 * __pyx_v_recon.strides[3]) )) = ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_70 * __pyx_v_orig.strides[0]) ) + __pyx_t_71 * __pyx_v_orig.strides[1]) ) + __pyx_t_72 * __pyx_v_orig.strides[2]) ) + __pyx_t_73 * __pyx_v_orig.strides[3]) ))) - (((((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_74 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_75 * __pyx_v_b1.strides[0]) ) + __pyx_t_76 * __pyx_v_b1.strides[1]) ) + __pyx_t_77 * __pyx_v_b1.strides[2]) ) + __pyx_t_78 * __pyx_v_b1.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_82 * __pyx_v_b1.strides[0]) ) + __pyx_t_83 * __pyx_v_b1.strides[1]) ) + __pyx_t_84 * __pyx_v_b1.strides[2]) ) + __pyx_t_85 * __pyx_v_b1.strides[3]) ))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_86 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_87 * __pyx_v_b2.strides[0]) ) + __pyx_t_88 * __pyx_v_b2.strides[1]) ) + __pyx_t_89 * __pyx_v_b2.strides[2]) ) + __pyx_t_90 * __pyx_v_b2.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_92 * __pyx_v_b2.strides[0]) ) + __pyx_t_93 * __pyx_v_b2.strides[1]) ) + __pyx_t_94 * __pyx_v_b2.strides[2]) ) + __pyx_t_95 * __pyx_v_b2.strides[3]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_96 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_97 * __pyx_v_b3.strides[0]) ) + __pyx_t_98 * __pyx_v_b3.strides[1]) ) + __pyx_t_99 * __pyx_v_b3.strides[2]) ) + __pyx_t_100 * __pyx_v_b3.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_102 * __pyx_v_b3.strides[0]) ) + __pyx_t_103 * __pyx_v_b3.strides[1]) ) + __pyx_t_104 * __pyx_v_b3.strides[2]) ) + __pyx_t_105 * __pyx_v_b3.strides[3]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_106 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_107 * __pyx_v_b4.strides[0]) ) + __pyx_t_108 * __pyx_v_b4.strides[1]) ) + __pyx_t_109 * __pyx_v_b4.strides[2]) ) + __pyx_t_110 * __pyx_v_b4.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_112 * __pyx_v_b4.strides[0]) ) + __pyx_t_113 * __pyx_v_b4.strides[1]) ) + __pyx_t_114 * __pyx_v_b4.strides[2]) ) + __pyx_t_115 * __pyx_v_b4.strides[3]) )))))));
 
-                                  /* "cyTVDN/utils.pyx":120
+                                  /* "cyTVDN/utils.pyx":122
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(l+1,MBCend[3])]))
  *                         )
  *                     delta += fabs(recon[i,j,k,l] - oldVal)             # <<<<<<<<<<<<<<
+ *                     recon_norm += fabs(oldVal)
  * 
- *     return delta
  */
                                   __pyx_t_120 = __pyx_v_i;
                                   __pyx_t_121 = __pyx_v_j;
                                   __pyx_t_122 = __pyx_v_k;
                                   __pyx_t_123 = __pyx_v_l;
                                   __pyx_v_delta = (__pyx_v_delta + fabs(((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_120 * __pyx_v_recon.strides[0]) ) + __pyx_t_121 * __pyx_v_recon.strides[1]) ) + __pyx_t_122 * __pyx_v_recon.strides[2]) ) + __pyx_t_123 * __pyx_v_recon.strides[3]) ))) - __pyx_v_oldVal)));
+
+                                  /* "cyTVDN/utils.pyx":123
+ *                         )
+ *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ * 
+ *     return delta / recon_norm
+ */
+                                  __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                                 }
                               }
                           }
@@ -5923,7 +5953,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":107
+        /* "cyTVDN/utils.pyx":109
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -5942,9 +5972,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":103
- *                         )
+    /* "cyTVDN/utils.pyx":105
  *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -5952,15 +5982,15 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_20datacube_update_4D(CYTHON_UNUSED PyOb
   }
   __pyx_L5:;
 
-  /* "cyTVDN/utils.pyx":122
- *                     delta += fabs(recon[i,j,k,l] - oldVal)
+  /* "cyTVDN/utils.pyx":125
+ *                     recon_norm += fabs(oldVal)
  * 
- *     return delta             # <<<<<<<<<<<<<<
+ *     return delta / recon_norm             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_124 = PyFloat_FromDouble(__pyx_v_delta); if (unlikely(!__pyx_t_124)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_124 = PyFloat_FromDouble((__pyx_v_delta / __pyx_v_recon_norm)); if (unlikely(!__pyx_t_124)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_124);
   __pyx_r = __pyx_t_124;
   __pyx_t_124 = 0;
@@ -6176,6 +6206,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
   int __pyx_v_MBCend[4];
   long __pyx_v_q;
   double __pyx_v_delta;
+  double __pyx_v_recon_norm;
   double __pyx_v_oldVal;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -6352,12 +6383,21 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
  *         MBCend[q] -= 1
  * 
  *     cdef _float delta = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float recon_norm = 0.0
  *     cdef _float oldVal
- * 
  */
   __pyx_v_delta = 0.0;
 
-  /* "cyTVDN/utils.pyx":84
+  /* "cyTVDN/utils.pyx":82
+ * 
+ *     cdef _float delta = 0.0
+ *     cdef _float recon_norm = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float oldVal
+ * 
+ */
+  __pyx_v_recon_norm = 0.0;
+
+  /* "cyTVDN/utils.pyx":85
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -6367,7 +6407,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
   __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":89
+    /* "cyTVDN/utils.pyx":90
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -6394,7 +6434,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
               if (__pyx_t_7 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_8, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_8, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -6410,7 +6450,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                               __pyx_v_l = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((double)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":90
+                              /* "cyTVDN/utils.pyx":91
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -6419,7 +6459,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / ((Py_ssize_t)(__pyx_v_shape[1])));
 
-                              /* "cyTVDN/utils.pyx":91
+                              /* "cyTVDN/utils.pyx":92
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -6428,7 +6468,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":92
+                              /* "cyTVDN/utils.pyx":93
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -6440,7 +6480,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":93
+                                /* "cyTVDN/utils.pyx":94
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -6452,7 +6492,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_l = __pyx_t_13;
 
-                                  /* "cyTVDN/utils.pyx":94
+                                  /* "cyTVDN/utils.pyx":95
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -6465,7 +6505,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_17 = __pyx_v_l;
                                   __pyx_v_oldVal = (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_14 * __pyx_v_recon.strides[0]) ) + __pyx_t_15 * __pyx_v_recon.strides[1]) ) + __pyx_t_16 * __pyx_v_recon.strides[2]) ) + __pyx_t_17 * __pyx_v_recon.strides[3]) )));
 
-                                  /* "cyTVDN/utils.pyx":95
+                                  /* "cyTVDN/utils.pyx":96
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -6477,7 +6517,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_20 = __pyx_v_k;
                                   __pyx_t_21 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":97
+                                  /* "cyTVDN/utils.pyx":98
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +             # <<<<<<<<<<<<<<
@@ -6494,7 +6534,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_29 = __pyx_v_k;
                                   __pyx_t_30 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":98
+                                  /* "cyTVDN/utils.pyx":99
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +             # <<<<<<<<<<<<<<
@@ -6511,7 +6551,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_38 = __pyx_v_k;
                                   __pyx_t_39 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":99
+                                  /* "cyTVDN/utils.pyx":100
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[(i+1)%shape[0],j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +             # <<<<<<<<<<<<<<
@@ -6528,7 +6568,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_47 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
                                   __pyx_t_48 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":100
+                                  /* "cyTVDN/utils.pyx":101
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,(j+1)%shape[1],k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,(k+1)%shape[2],l])) +
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))             # <<<<<<<<<<<<<<
@@ -6545,7 +6585,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_56 = __pyx_v_k;
                                   __pyx_t_57 = ((__pyx_v_l + 1) % (__pyx_v_shape[3]));
 
-                                  /* "cyTVDN/utils.pyx":95
+                                  /* "cyTVDN/utils.pyx":96
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -6558,18 +6598,27 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_61 = __pyx_v_l;
                                   *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_58 * __pyx_v_recon.strides[0]) ) + __pyx_t_59 * __pyx_v_recon.strides[1]) ) + __pyx_t_60 * __pyx_v_recon.strides[2]) ) + __pyx_t_61 * __pyx_v_recon.strides[3]) )) = ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_18 * __pyx_v_orig.strides[0]) ) + __pyx_t_19 * __pyx_v_orig.strides[1]) ) + __pyx_t_20 * __pyx_v_orig.strides[2]) ) + __pyx_t_21 * __pyx_v_orig.strides[3]) ))) - (((((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_22 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_23 * __pyx_v_b1.strides[0]) ) + __pyx_t_24 * __pyx_v_b1.strides[1]) ) + __pyx_t_25 * __pyx_v_b1.strides[2]) ) + __pyx_t_26 * __pyx_v_b1.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_27 * __pyx_v_b1.strides[0]) ) + __pyx_t_28 * __pyx_v_b1.strides[1]) ) + __pyx_t_29 * __pyx_v_b1.strides[2]) ) + __pyx_t_30 * __pyx_v_b1.strides[3]) ))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_31 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_32 * __pyx_v_b2.strides[0]) ) + __pyx_t_33 * __pyx_v_b2.strides[1]) ) + __pyx_t_34 * __pyx_v_b2.strides[2]) ) + __pyx_t_35 * __pyx_v_b2.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_36 * __pyx_v_b2.strides[0]) ) + __pyx_t_37 * __pyx_v_b2.strides[1]) ) + __pyx_t_38 * __pyx_v_b2.strides[2]) ) + __pyx_t_39 * __pyx_v_b2.strides[3]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_40 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_41 * __pyx_v_b3.strides[0]) ) + __pyx_t_42 * __pyx_v_b3.strides[1]) ) + __pyx_t_43 * __pyx_v_b3.strides[2]) ) + __pyx_t_44 * __pyx_v_b3.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_45 * __pyx_v_b3.strides[0]) ) + __pyx_t_46 * __pyx_v_b3.strides[1]) ) + __pyx_t_47 * __pyx_v_b3.strides[2]) ) + __pyx_t_48 * __pyx_v_b3.strides[3]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_49 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_50 * __pyx_v_b4.strides[0]) ) + __pyx_t_51 * __pyx_v_b4.strides[1]) ) + __pyx_t_52 * __pyx_v_b4.strides[2]) ) + __pyx_t_53 * __pyx_v_b4.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_54 * __pyx_v_b4.strides[0]) ) + __pyx_t_55 * __pyx_v_b4.strides[1]) ) + __pyx_t_56 * __pyx_v_b4.strides[2]) ) + __pyx_t_57 * __pyx_v_b4.strides[3]) )))))));
 
-                                  /* "cyTVDN/utils.pyx":102
+                                  /* "cyTVDN/utils.pyx":103
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,(l+1)%shape[3]]))
  *                         )
  *                     delta += fabs(recon[i,j,k,l] - oldVal)             # <<<<<<<<<<<<<<
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:
- *         # handling the mirror boundary condition
  */
                                   __pyx_t_62 = __pyx_v_i;
                                   __pyx_t_63 = __pyx_v_j;
                                   __pyx_t_64 = __pyx_v_k;
                                   __pyx_t_65 = __pyx_v_l;
                                   __pyx_v_delta = (__pyx_v_delta + fabs(((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_62 * __pyx_v_recon.strides[0]) ) + __pyx_t_63 * __pyx_v_recon.strides[1]) ) + __pyx_t_64 * __pyx_v_recon.strides[2]) ) + __pyx_t_65 * __pyx_v_recon.strides[3]) ))) - __pyx_v_oldVal)));
+
+                                  /* "cyTVDN/utils.pyx":104
+ *                         )
+ *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ *     elif BC_mode == 1:
+ *         # handling the mirror boundary condition
+ */
+                                  __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                                 }
                               }
                           }
@@ -6585,7 +6634,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":89
+        /* "cyTVDN/utils.pyx":90
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -6604,7 +6653,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":84
+    /* "cyTVDN/utils.pyx":85
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -6614,9 +6663,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
     goto __pyx_L5;
   }
 
-  /* "cyTVDN/utils.pyx":103
- *                         )
+  /* "cyTVDN/utils.pyx":105
  *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -6624,7 +6673,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
   __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":107
+    /* "cyTVDN/utils.pyx":109
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -6651,7 +6700,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
               if (__pyx_t_6 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_13, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_9, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_100, __pyx_t_101, __pyx_t_102, __pyx_t_103, __pyx_t_104, __pyx_t_105, __pyx_t_106, __pyx_t_107, __pyx_t_108, __pyx_t_109, __pyx_t_11, __pyx_t_110, __pyx_t_111, __pyx_t_112, __pyx_t_113, __pyx_t_114, __pyx_t_115, __pyx_t_116, __pyx_t_117, __pyx_t_118, __pyx_t_119, __pyx_t_12, __pyx_t_120, __pyx_t_121, __pyx_t_122, __pyx_t_123, __pyx_t_13, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_82, __pyx_t_83, __pyx_t_84, __pyx_t_85, __pyx_t_86, __pyx_t_87, __pyx_t_88, __pyx_t_89, __pyx_t_9, __pyx_t_90, __pyx_t_91, __pyx_t_92, __pyx_t_93, __pyx_t_94, __pyx_t_95, __pyx_t_96, __pyx_t_97, __pyx_t_98, __pyx_t_99)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -6667,7 +6716,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                               __pyx_v_l = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((double)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":108
+                              /* "cyTVDN/utils.pyx":110
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -6676,7 +6725,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / ((Py_ssize_t)(__pyx_v_shape[1])));
 
-                              /* "cyTVDN/utils.pyx":109
+                              /* "cyTVDN/utils.pyx":111
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -6685,7 +6734,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":110
+                              /* "cyTVDN/utils.pyx":112
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -6697,7 +6746,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":111
+                                /* "cyTVDN/utils.pyx":113
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):             # <<<<<<<<<<<<<<
@@ -6709,7 +6758,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                 for (__pyx_t_13 = 0; __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                                   __pyx_v_l = __pyx_t_13;
 
-                                  /* "cyTVDN/utils.pyx":112
+                                  /* "cyTVDN/utils.pyx":114
  *             for k in range(shape[2]):
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -6722,7 +6771,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_69 = __pyx_v_l;
                                   __pyx_v_oldVal = (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_66 * __pyx_v_recon.strides[0]) ) + __pyx_t_67 * __pyx_v_recon.strides[1]) ) + __pyx_t_68 * __pyx_v_recon.strides[2]) ) + __pyx_t_69 * __pyx_v_recon.strides[3]) )));
 
-                                  /* "cyTVDN/utils.pyx":113
+                                  /* "cyTVDN/utils.pyx":115
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -6734,7 +6783,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_72 = __pyx_v_k;
                                   __pyx_t_73 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":115
+                                  /* "cyTVDN/utils.pyx":117
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +             # <<<<<<<<<<<<<<
@@ -6758,7 +6807,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_84 = __pyx_v_k;
                                   __pyx_t_85 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":116
+                                  /* "cyTVDN/utils.pyx":118
  *                         (
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +             # <<<<<<<<<<<<<<
@@ -6782,7 +6831,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_94 = __pyx_v_k;
                                   __pyx_t_95 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":117
+                                  /* "cyTVDN/utils.pyx":119
  *                             (lambda_mu[0] * ( b1[i,j,k,l] - b1[max(i+1,MBCend[0]),j,k,l])) +
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(k+1,MBCend[2]),l])) +             # <<<<<<<<<<<<<<
@@ -6806,7 +6855,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_104 = __pyx_t_101;
                                   __pyx_t_105 = __pyx_v_l;
 
-                                  /* "cyTVDN/utils.pyx":118
+                                  /* "cyTVDN/utils.pyx":120
  *                             (lambda_mu[1] * ( b2[i,j,k,l] - b2[i,max(j+1,MBCend[1]),k,l])) +
  *                             (lambda_mu[2] * ( b3[i,j,k,l] - b3[i,j,max(k+1,MBCend[2]),l])) +
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(l+1,MBCend[3])]))             # <<<<<<<<<<<<<<
@@ -6830,7 +6879,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_114 = __pyx_v_k;
                                   __pyx_t_115 = __pyx_t_111;
 
-                                  /* "cyTVDN/utils.pyx":113
+                                  /* "cyTVDN/utils.pyx":115
  *                 for l in range(shape[3]):
  *                     oldVal = recon[i,j,k,l]
  *                     recon[i,j,k,l] = orig[i,j,k,l] - \             # <<<<<<<<<<<<<<
@@ -6843,18 +6892,27 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
                                   __pyx_t_119 = __pyx_v_l;
                                   *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_116 * __pyx_v_recon.strides[0]) ) + __pyx_t_117 * __pyx_v_recon.strides[1]) ) + __pyx_t_118 * __pyx_v_recon.strides[2]) ) + __pyx_t_119 * __pyx_v_recon.strides[3]) )) = ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_70 * __pyx_v_orig.strides[0]) ) + __pyx_t_71 * __pyx_v_orig.strides[1]) ) + __pyx_t_72 * __pyx_v_orig.strides[2]) ) + __pyx_t_73 * __pyx_v_orig.strides[3]) ))) - (((((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_74 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_75 * __pyx_v_b1.strides[0]) ) + __pyx_t_76 * __pyx_v_b1.strides[1]) ) + __pyx_t_77 * __pyx_v_b1.strides[2]) ) + __pyx_t_78 * __pyx_v_b1.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_82 * __pyx_v_b1.strides[0]) ) + __pyx_t_83 * __pyx_v_b1.strides[1]) ) + __pyx_t_84 * __pyx_v_b1.strides[2]) ) + __pyx_t_85 * __pyx_v_b1.strides[3]) ))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_86 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_87 * __pyx_v_b2.strides[0]) ) + __pyx_t_88 * __pyx_v_b2.strides[1]) ) + __pyx_t_89 * __pyx_v_b2.strides[2]) ) + __pyx_t_90 * __pyx_v_b2.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_92 * __pyx_v_b2.strides[0]) ) + __pyx_t_93 * __pyx_v_b2.strides[1]) ) + __pyx_t_94 * __pyx_v_b2.strides[2]) ) + __pyx_t_95 * __pyx_v_b2.strides[3]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_96 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_97 * __pyx_v_b3.strides[0]) ) + __pyx_t_98 * __pyx_v_b3.strides[1]) ) + __pyx_t_99 * __pyx_v_b3.strides[2]) ) + __pyx_t_100 * __pyx_v_b3.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_102 * __pyx_v_b3.strides[0]) ) + __pyx_t_103 * __pyx_v_b3.strides[1]) ) + __pyx_t_104 * __pyx_v_b3.strides[2]) ) + __pyx_t_105 * __pyx_v_b3.strides[3]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_106 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_107 * __pyx_v_b4.strides[0]) ) + __pyx_t_108 * __pyx_v_b4.strides[1]) ) + __pyx_t_109 * __pyx_v_b4.strides[2]) ) + __pyx_t_110 * __pyx_v_b4.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b4.data + __pyx_t_112 * __pyx_v_b4.strides[0]) ) + __pyx_t_113 * __pyx_v_b4.strides[1]) ) + __pyx_t_114 * __pyx_v_b4.strides[2]) ) + __pyx_t_115 * __pyx_v_b4.strides[3]) )))))));
 
-                                  /* "cyTVDN/utils.pyx":120
+                                  /* "cyTVDN/utils.pyx":122
  *                             (lambda_mu[3] * ( b4[i,j,k,l] - b4[i,j,k,max(l+1,MBCend[3])]))
  *                         )
  *                     delta += fabs(recon[i,j,k,l] - oldVal)             # <<<<<<<<<<<<<<
+ *                     recon_norm += fabs(oldVal)
  * 
- *     return delta
  */
                                   __pyx_t_120 = __pyx_v_i;
                                   __pyx_t_121 = __pyx_v_j;
                                   __pyx_t_122 = __pyx_v_k;
                                   __pyx_t_123 = __pyx_v_l;
                                   __pyx_v_delta = (__pyx_v_delta + fabs(((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_120 * __pyx_v_recon.strides[0]) ) + __pyx_t_121 * __pyx_v_recon.strides[1]) ) + __pyx_t_122 * __pyx_v_recon.strides[2]) ) + __pyx_t_123 * __pyx_v_recon.strides[3]) ))) - __pyx_v_oldVal)));
+
+                                  /* "cyTVDN/utils.pyx":123
+ *                         )
+ *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ * 
+ *     return delta / recon_norm
+ */
+                                  __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                                 }
                               }
                           }
@@ -6870,7 +6928,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":107
+        /* "cyTVDN/utils.pyx":109
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -6889,9 +6947,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":103
- *                         )
+    /* "cyTVDN/utils.pyx":105
  *                     delta += fabs(recon[i,j,k,l] - oldVal)
+ *                     recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -6899,15 +6957,15 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
   }
   __pyx_L5:;
 
-  /* "cyTVDN/utils.pyx":122
- *                     delta += fabs(recon[i,j,k,l] - oldVal)
+  /* "cyTVDN/utils.pyx":125
+ *                     recon_norm += fabs(oldVal)
  * 
- *     return delta             # <<<<<<<<<<<<<<
+ *     return delta / recon_norm             # <<<<<<<<<<<<<<
  * 
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_124 = PyFloat_FromDouble(__pyx_v_delta); if (unlikely(!__pyx_t_124)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_124 = PyFloat_FromDouble((__pyx_v_delta / __pyx_v_recon_norm)); if (unlikely(!__pyx_t_124)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_124);
   __pyx_r = __pyx_t_124;
   __pyx_t_124 = 0;
@@ -6939,7 +6997,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_22datacube_update_4D(CYTHON_UNUSED PyOb
   return __pyx_r;
 }
 
-/* "cyTVDN/utils.pyx":128
+/* "cyTVDN/utils.pyx":131
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,             # <<<<<<<<<<<<<<
@@ -6986,23 +7044,23 @@ static PyObject *__pyx_pw_6cyTVDN_5utils_7datacube_update_3D(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_args)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kwargs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_defaults)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 131, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -7019,7 +7077,7 @@ static PyObject *__pyx_pw_6cyTVDN_5utils_7datacube_update_3D(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.utils.__pyx_fused_cpdef", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7070,7 +7128,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
   int __pyx_t_18;
   __Pyx_RefNannySetupContext("datacube_update_3D", 0);
   __Pyx_INCREF(__pyx_v_kwargs);
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -7084,7 +7142,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     __pyx_t_2 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   __pyx_t_3 = ((!__pyx_t_4) != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
@@ -7092,21 +7150,21 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     __Pyx_INCREF(Py_None);
     __Pyx_DECREF_SET(__pyx_v_kwargs, Py_None);
   }
-  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ndarray = ((PyTypeObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   __pyx_v_itemsize = -1L;
   if (unlikely(__pyx_v_args == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
-  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
   __pyx_t_2 = ((0 < __pyx_t_5) != 0);
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
     __pyx_t_1 = PyTuple_GET_ITEM(((PyObject*)__pyx_v_args), 0);
     __Pyx_INCREF(__pyx_t_1);
@@ -7123,18 +7181,18 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
   }
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
-  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_orig, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_orig, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_4 != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_kwargs == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_orig); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_orig); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_arg = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -7143,12 +7201,12 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
   /*else*/ {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
-    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_INCREF(__pyx_int_6);
     __Pyx_GIVEREF(__pyx_int_6);
@@ -7159,15 +7217,15 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
   __pyx_L6:;
   while (1) {
@@ -7177,7 +7235,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg, __pyx_v_ndarray); 
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_dtype = __pyx_t_6;
         __pyx_t_6 = 0;
@@ -7186,14 +7244,14 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_2 = __pyx_memoryview_check(__pyx_v_arg); 
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_arg_base = __pyx_t_6;
         __pyx_t_6 = 0;
         __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg_base, __pyx_v_ndarray); 
         __pyx_t_2 = (__pyx_t_3 != 0);
         if (__pyx_t_2) {
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_v_dtype = __pyx_t_6;
           __pyx_t_6 = 0;
@@ -7215,14 +7273,14 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_2 = (__pyx_v_dtype != Py_None);
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_itemsize = __pyx_t_5;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_kind = __pyx_t_7;
         __pyx_v_dtype_signed = (__pyx_v_kind == 'i');
@@ -7237,15 +7295,15 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L16_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L16_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           __pyx_t_2 = (((sizeof(double)) == __pyx_v_itemsize) != 0);
@@ -7254,15 +7312,15 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L19_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 131, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L19_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           break;
@@ -7289,7 +7347,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
@@ -7311,27 +7369,27 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
         PyErr_Clear(); 
       }
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
     goto __pyx_L10_break;
   }
   __pyx_L10_break:;
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_candidates = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
   if (unlikely(__pyx_v_signatures == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_6);
   __pyx_t_6 = __pyx_t_1;
@@ -7339,12 +7397,12 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_6, __pyx_t_9, &__pyx_t_5, &__pyx_t_1, NULL, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_sig, __pyx_t_1);
     __pyx_t_1 = 0;
     __pyx_v_match_found = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_14 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
@@ -7358,10 +7416,10 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     }
     __pyx_t_12 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_kp_s_) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s_);
     __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -7376,12 +7434,12 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     }
     __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_12, __pyx_kp_s__2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s__2);
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __Pyx_XDECREF_SET(__pyx_v_src_sig, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
     __pyx_t_16 = __pyx_t_15;
     for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
       __pyx_v_i = __pyx_t_17;
@@ -7392,11 +7450,11 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
       __pyx_t_3 = (__pyx_v_dst_type != Py_None);
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 131, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         if (__pyx_t_2) {
           __pyx_v_match_found = 1;
@@ -7412,35 +7470,35 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_6datacube_update_3D(CYTHON_UNUSED PyObj
     __pyx_L32_break:;
     __pyx_t_2 = (__pyx_v_match_found != 0);
     if (__pyx_t_2) {
-      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
+      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_2 = (PyList_GET_SIZE(__pyx_v_candidates) != 0);
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
-  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 131, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_9 > 1) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 128, __pyx_L1_error)
+    __PYX_ERR(0, 131, __pyx_L1_error)
   }
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
     if (unlikely(__pyx_v_signatures == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 128, __pyx_L1_error)
+      __PYX_ERR(0, 131, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 128, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -7479,14 +7537,14 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_44__defaults__(CYTHON_UNUSED PyObject *
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -7558,31 +7616,31 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_5utils_27datacube_update_3D(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_recon)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 1); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 1); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 2); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 2); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 3); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 3); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b3)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 4); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 4); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lambda_mu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 5); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 5); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -7592,7 +7650,7 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_5utils_27datacube_update_3D(PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "datacube_update_3D") < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "datacube_update_3D") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7608,21 +7666,21 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_5utils_27datacube_update_3D(PyObje
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_orig = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_orig.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_recon = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_recon.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_b1 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b1.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_b2 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b2.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_b3 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b3.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
+    __pyx_v_orig = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_orig.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_recon = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_recon.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_b1 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b1.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_b2 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b2.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
+    __pyx_v_b3 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b3.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
+    __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_float(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.utils.datacube_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7644,6 +7702,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   int __pyx_v_MBCend[3];
   long __pyx_v_q;
   float __pyx_v_delta;
+  float __pyx_v_recon_norm;
   float __pyx_v_oldVal;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -7731,7 +7790,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   PyObject *__pyx_t_82 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_0datacube_update_3D", 0);
 
-  /* "cyTVDN/utils.pyx":143
+  /* "cyTVDN/utils.pyx":146
  *     # shape of the 3-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2]]             # <<<<<<<<<<<<<<
@@ -7743,7 +7802,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_1[2] = (__pyx_v_orig.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/utils.pyx":152
+  /* "cyTVDN/utils.pyx":155
  *     # (In Cython these can't be defined inside the conditional)
  *     cdef int MBCend[3]
  *     MBCend = shape             # <<<<<<<<<<<<<<
@@ -7752,7 +7811,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
  */
   memcpy(&(__pyx_v_MBCend[0]), __pyx_v_shape, sizeof(__pyx_v_MBCend[0]) * (3));
 
-  /* "cyTVDN/utils.pyx":153
+  /* "cyTVDN/utils.pyx":156
  *     cdef int MBCend[3]
  *     MBCend = shape
  *     for q in range(3):             # <<<<<<<<<<<<<<
@@ -7762,7 +7821,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   for (__pyx_t_2 = 0; __pyx_t_2 < 3; __pyx_t_2+=1) {
     __pyx_v_q = __pyx_t_2;
 
-    /* "cyTVDN/utils.pyx":154
+    /* "cyTVDN/utils.pyx":157
  *     MBCend = shape
  *     for q in range(3):
  *         MBCend[q] -= 1             # <<<<<<<<<<<<<<
@@ -7773,16 +7832,25 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
     (__pyx_v_MBCend[__pyx_t_3]) = ((__pyx_v_MBCend[__pyx_t_3]) - 1);
   }
 
-  /* "cyTVDN/utils.pyx":156
+  /* "cyTVDN/utils.pyx":159
  *         MBCend[q] -= 1
  * 
  *     cdef _float delta = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float recon_norm = 0.0
  *     cdef _float oldVal
- * 
  */
   __pyx_v_delta = 0.0;
 
-  /* "cyTVDN/utils.pyx":159
+  /* "cyTVDN/utils.pyx":160
+ * 
+ *     cdef _float delta = 0.0
+ *     cdef _float recon_norm = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float oldVal
+ * 
+ */
+  __pyx_v_recon_norm = 0.0;
+
+  /* "cyTVDN/utils.pyx":163
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -7792,7 +7860,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":164
+    /* "cyTVDN/utils.pyx":168
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -7819,7 +7887,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
               if (__pyx_t_7 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_8, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_8, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -7834,7 +7902,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                               __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((float)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":165
+                              /* "cyTVDN/utils.pyx":169
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -7843,7 +7911,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":166
+                              /* "cyTVDN/utils.pyx":170
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -7852,7 +7920,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":167
+                              /* "cyTVDN/utils.pyx":171
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -7864,7 +7932,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":168
+                                /* "cyTVDN/utils.pyx":172
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]             # <<<<<<<<<<<<<<
@@ -7876,7 +7944,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_13 = __pyx_v_k;
                                 __pyx_v_oldVal = (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_11 * __pyx_v_recon.strides[0]) ) + __pyx_t_12 * __pyx_v_recon.strides[1]) ) + __pyx_t_13 * __pyx_v_recon.strides[2]) )));
 
-                                /* "cyTVDN/utils.pyx":169
+                                /* "cyTVDN/utils.pyx":173
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -7887,7 +7955,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_15 = __pyx_v_j;
                                 __pyx_t_16 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":171
+                                /* "cyTVDN/utils.pyx":175
  *                 recon[i,j,k] = orig[i,j,k] - \
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +             # <<<<<<<<<<<<<<
@@ -7902,7 +7970,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_22 = __pyx_v_j;
                                 __pyx_t_23 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":172
+                                /* "cyTVDN/utils.pyx":176
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,(j+1)%shape[1],k])) +             # <<<<<<<<<<<<<<
@@ -7917,7 +7985,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_29 = ((__pyx_v_j + 1) % (__pyx_v_shape[1]));
                                 __pyx_t_30 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":173
+                                /* "cyTVDN/utils.pyx":177
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,(j+1)%shape[1],k])) +
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,(k+1)%shape[2]]))             # <<<<<<<<<<<<<<
@@ -7932,7 +8000,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_36 = __pyx_v_j;
                                 __pyx_t_37 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
 
-                                /* "cyTVDN/utils.pyx":169
+                                /* "cyTVDN/utils.pyx":173
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -7944,17 +8012,26 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_40 = __pyx_v_k;
                                 *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_38 * __pyx_v_recon.strides[0]) ) + __pyx_t_39 * __pyx_v_recon.strides[1]) ) + __pyx_t_40 * __pyx_v_recon.strides[2]) )) = ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_14 * __pyx_v_orig.strides[0]) ) + __pyx_t_15 * __pyx_v_orig.strides[1]) ) + __pyx_t_16 * __pyx_v_orig.strides[2]) ))) - ((((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_17 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_18 * __pyx_v_b1.strides[0]) ) + __pyx_t_19 * __pyx_v_b1.strides[1]) ) + __pyx_t_20 * __pyx_v_b1.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_21 * __pyx_v_b1.strides[0]) ) + __pyx_t_22 * __pyx_v_b1.strides[1]) ) + __pyx_t_23 * __pyx_v_b1.strides[2]) ))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_24 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_25 * __pyx_v_b2.strides[0]) ) + __pyx_t_26 * __pyx_v_b2.strides[1]) ) + __pyx_t_27 * __pyx_v_b2.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_28 * __pyx_v_b2.strides[0]) ) + __pyx_t_29 * __pyx_v_b2.strides[1]) ) + __pyx_t_30 * __pyx_v_b2.strides[2]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_31 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_32 * __pyx_v_b3.strides[0]) ) + __pyx_t_33 * __pyx_v_b3.strides[1]) ) + __pyx_t_34 * __pyx_v_b3.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_35 * __pyx_v_b3.strides[0]) ) + __pyx_t_36 * __pyx_v_b3.strides[1]) ) + __pyx_t_37 * __pyx_v_b3.strides[2]) )))))));
 
-                                /* "cyTVDN/utils.pyx":175
+                                /* "cyTVDN/utils.pyx":179
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,(k+1)%shape[2]]))
  *                     )
  *                 delta += fabs(recon[i,j,k] - oldVal)             # <<<<<<<<<<<<<<
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:
- *         # handling the mirror boundary condition
  */
                                 __pyx_t_41 = __pyx_v_i;
                                 __pyx_t_42 = __pyx_v_j;
                                 __pyx_t_43 = __pyx_v_k;
                                 __pyx_v_delta = (__pyx_v_delta + fabs(((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_41 * __pyx_v_recon.strides[0]) ) + __pyx_t_42 * __pyx_v_recon.strides[1]) ) + __pyx_t_43 * __pyx_v_recon.strides[2]) ))) - __pyx_v_oldVal)));
+
+                                /* "cyTVDN/utils.pyx":180
+ *                     )
+ *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ *     elif BC_mode == 1:
+ *         # handling the mirror boundary condition
+ */
+                                __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                               }
                           }
                       }
@@ -7969,7 +8046,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":164
+        /* "cyTVDN/utils.pyx":168
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -7988,7 +8065,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":159
+    /* "cyTVDN/utils.pyx":163
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -7998,9 +8075,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
     goto __pyx_L5;
   }
 
-  /* "cyTVDN/utils.pyx":176
- *                     )
+  /* "cyTVDN/utils.pyx":181
  *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -8008,7 +8085,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":180
+    /* "cyTVDN/utils.pyx":185
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -8035,7 +8112,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
               if (__pyx_t_5 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -8050,7 +8127,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                               __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((float)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":181
+                              /* "cyTVDN/utils.pyx":186
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -8059,7 +8136,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":182
+                              /* "cyTVDN/utils.pyx":187
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -8068,7 +8145,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":183
+                              /* "cyTVDN/utils.pyx":188
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -8080,7 +8157,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":184
+                                /* "cyTVDN/utils.pyx":189
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]             # <<<<<<<<<<<<<<
@@ -8092,7 +8169,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_46 = __pyx_v_k;
                                 __pyx_v_oldVal = (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_44 * __pyx_v_recon.strides[0]) ) + __pyx_t_45 * __pyx_v_recon.strides[1]) ) + __pyx_t_46 * __pyx_v_recon.strides[2]) )));
 
-                                /* "cyTVDN/utils.pyx":185
+                                /* "cyTVDN/utils.pyx":190
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8103,7 +8180,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_48 = __pyx_v_j;
                                 __pyx_t_49 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":187
+                                /* "cyTVDN/utils.pyx":192
  *                 recon[i,j,k] = orig[i,j,k] - \
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +             # <<<<<<<<<<<<<<
@@ -8125,7 +8202,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_58 = __pyx_v_j;
                                 __pyx_t_59 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":188
+                                /* "cyTVDN/utils.pyx":193
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,max(i+1,MBCend[1]),k])) +             # <<<<<<<<<<<<<<
@@ -8147,7 +8224,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_66 = __pyx_t_64;
                                 __pyx_t_67 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":189
+                                /* "cyTVDN/utils.pyx":194
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,max(i+1,MBCend[1]),k])) +
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,max(i+1,MBCend[2])]))             # <<<<<<<<<<<<<<
@@ -8169,7 +8246,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_74 = __pyx_v_j;
                                 __pyx_t_75 = __pyx_t_72;
 
-                                /* "cyTVDN/utils.pyx":185
+                                /* "cyTVDN/utils.pyx":190
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8181,17 +8258,26 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_78 = __pyx_v_k;
                                 *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_76 * __pyx_v_recon.strides[0]) ) + __pyx_t_77 * __pyx_v_recon.strides[1]) ) + __pyx_t_78 * __pyx_v_recon.strides[2]) )) = ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_47 * __pyx_v_orig.strides[0]) ) + __pyx_t_48 * __pyx_v_orig.strides[1]) ) + __pyx_t_49 * __pyx_v_orig.strides[2]) ))) - ((((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_50 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_51 * __pyx_v_b1.strides[0]) ) + __pyx_t_52 * __pyx_v_b1.strides[1]) ) + __pyx_t_53 * __pyx_v_b1.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_57 * __pyx_v_b1.strides[0]) ) + __pyx_t_58 * __pyx_v_b1.strides[1]) ) + __pyx_t_59 * __pyx_v_b1.strides[2]) ))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_60 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_61 * __pyx_v_b2.strides[0]) ) + __pyx_t_62 * __pyx_v_b2.strides[1]) ) + __pyx_t_63 * __pyx_v_b2.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_65 * __pyx_v_b2.strides[0]) ) + __pyx_t_66 * __pyx_v_b2.strides[1]) ) + __pyx_t_67 * __pyx_v_b2.strides[2]) )))))) + ((*((float *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_68 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_69 * __pyx_v_b3.strides[0]) ) + __pyx_t_70 * __pyx_v_b3.strides[1]) ) + __pyx_t_71 * __pyx_v_b3.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_73 * __pyx_v_b3.strides[0]) ) + __pyx_t_74 * __pyx_v_b3.strides[1]) ) + __pyx_t_75 * __pyx_v_b3.strides[2]) )))))));
 
-                                /* "cyTVDN/utils.pyx":191
+                                /* "cyTVDN/utils.pyx":196
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,max(i+1,MBCend[2])]))
  *                     )
  *                 delta += fabs(recon[i,j,k] - oldVal)             # <<<<<<<<<<<<<<
+ *                 recon_norm += fabs(recon_norm)
  * 
- *     return delta
  */
                                 __pyx_t_79 = __pyx_v_i;
                                 __pyx_t_80 = __pyx_v_j;
                                 __pyx_t_81 = __pyx_v_k;
                                 __pyx_v_delta = (__pyx_v_delta + fabs(((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_79 * __pyx_v_recon.strides[0]) ) + __pyx_t_80 * __pyx_v_recon.strides[1]) ) + __pyx_t_81 * __pyx_v_recon.strides[2]) ))) - __pyx_v_oldVal)));
+
+                                /* "cyTVDN/utils.pyx":197
+ *                     )
+ *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(recon_norm)             # <<<<<<<<<<<<<<
+ * 
+ *     return delta / recon_norm
+ */
+                                __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_recon_norm));
                               }
                           }
                       }
@@ -8206,7 +8292,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":180
+        /* "cyTVDN/utils.pyx":185
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -8225,9 +8311,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":176
- *                     )
+    /* "cyTVDN/utils.pyx":181
  *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -8235,19 +8321,19 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_26datacube_update_3D(CYTHON_UNUSED PyOb
   }
   __pyx_L5:;
 
-  /* "cyTVDN/utils.pyx":193
- *                 delta += fabs(recon[i,j,k] - oldVal)
+  /* "cyTVDN/utils.pyx":199
+ *                 recon_norm += fabs(recon_norm)
  * 
- *     return delta             # <<<<<<<<<<<<<<
+ *     return delta / recon_norm             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_82 = PyFloat_FromDouble(__pyx_v_delta); if (unlikely(!__pyx_t_82)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_82 = PyFloat_FromDouble((__pyx_v_delta / __pyx_v_recon_norm)); if (unlikely(!__pyx_t_82)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_82);
   __pyx_r = __pyx_t_82;
   __pyx_t_82 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/utils.pyx":128
+  /* "cyTVDN/utils.pyx":131
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,             # <<<<<<<<<<<<<<
@@ -8279,14 +8365,14 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_46__defaults__(CYTHON_UNUSED PyObject *
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -8358,31 +8444,31 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_5utils_29datacube_update_3D(PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_recon)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 1); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 1); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b1)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 2); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 2); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b2)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 3); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 3); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b3)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 4); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 4); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_lambda_mu)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 5); __PYX_ERR(0, 128, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, 5); __PYX_ERR(0, 131, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -8392,7 +8478,7 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_5utils_29datacube_update_3D(PyObje
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "datacube_update_3D") < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "datacube_update_3D") < 0)) __PYX_ERR(0, 131, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8408,21 +8494,21 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_5utils_29datacube_update_3D(PyObje
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_orig = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_orig.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_recon = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_recon.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_b1 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b1.memview)) __PYX_ERR(0, 128, __pyx_L3_error)
-    __pyx_v_b2 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b2.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_b3 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b3.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
-    __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 129, __pyx_L3_error)
+    __pyx_v_orig = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_orig.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_recon = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_recon.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_b1 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b1.memview)) __PYX_ERR(0, 131, __pyx_L3_error)
+    __pyx_v_b2 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[3], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b2.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
+    __pyx_v_b3 = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[4], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b3.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
+    __pyx_v_lambda_mu = __Pyx_PyObject_to_MemoryviewSlice_ds_double(values[5], PyBUF_WRITABLE); if (unlikely(!__pyx_v_lambda_mu.memview)) __PYX_ERR(0, 132, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 132, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("datacube_update_3D", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 131, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.utils.datacube_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8444,6 +8530,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   int __pyx_v_MBCend[3];
   long __pyx_v_q;
   double __pyx_v_delta;
+  double __pyx_v_recon_norm;
   double __pyx_v_oldVal;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
@@ -8531,7 +8618,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   PyObject *__pyx_t_82 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_1datacube_update_3D", 0);
 
-  /* "cyTVDN/utils.pyx":143
+  /* "cyTVDN/utils.pyx":146
  *     # shape of the 3-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [orig.shape[0],orig.shape[1],orig.shape[2]]             # <<<<<<<<<<<<<<
@@ -8543,7 +8630,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_1[2] = (__pyx_v_orig.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/utils.pyx":152
+  /* "cyTVDN/utils.pyx":155
  *     # (In Cython these can't be defined inside the conditional)
  *     cdef int MBCend[3]
  *     MBCend = shape             # <<<<<<<<<<<<<<
@@ -8552,7 +8639,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
  */
   memcpy(&(__pyx_v_MBCend[0]), __pyx_v_shape, sizeof(__pyx_v_MBCend[0]) * (3));
 
-  /* "cyTVDN/utils.pyx":153
+  /* "cyTVDN/utils.pyx":156
  *     cdef int MBCend[3]
  *     MBCend = shape
  *     for q in range(3):             # <<<<<<<<<<<<<<
@@ -8562,7 +8649,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   for (__pyx_t_2 = 0; __pyx_t_2 < 3; __pyx_t_2+=1) {
     __pyx_v_q = __pyx_t_2;
 
-    /* "cyTVDN/utils.pyx":154
+    /* "cyTVDN/utils.pyx":157
  *     MBCend = shape
  *     for q in range(3):
  *         MBCend[q] -= 1             # <<<<<<<<<<<<<<
@@ -8573,16 +8660,25 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
     (__pyx_v_MBCend[__pyx_t_3]) = ((__pyx_v_MBCend[__pyx_t_3]) - 1);
   }
 
-  /* "cyTVDN/utils.pyx":156
+  /* "cyTVDN/utils.pyx":159
  *         MBCend[q] -= 1
  * 
  *     cdef _float delta = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float recon_norm = 0.0
  *     cdef _float oldVal
- * 
  */
   __pyx_v_delta = 0.0;
 
-  /* "cyTVDN/utils.pyx":159
+  /* "cyTVDN/utils.pyx":160
+ * 
+ *     cdef _float delta = 0.0
+ *     cdef _float recon_norm = 0.0             # <<<<<<<<<<<<<<
+ *     cdef _float oldVal
+ * 
+ */
+  __pyx_v_recon_norm = 0.0;
+
+  /* "cyTVDN/utils.pyx":163
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -8592,7 +8688,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_4 = (((__pyx_v_BC_mode == 0) | (__pyx_v_BC_mode == 2)) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":164
+    /* "cyTVDN/utils.pyx":168
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -8619,7 +8715,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
               if (__pyx_t_7 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_8, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_11, __pyx_t_12, __pyx_t_13, __pyx_t_14, __pyx_t_15, __pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19, __pyx_t_20, __pyx_t_21, __pyx_t_22, __pyx_t_23, __pyx_t_24, __pyx_t_25, __pyx_t_26, __pyx_t_27, __pyx_t_28, __pyx_t_29, __pyx_t_30, __pyx_t_31, __pyx_t_32, __pyx_t_33, __pyx_t_34, __pyx_t_35, __pyx_t_36, __pyx_t_37, __pyx_t_38, __pyx_t_39, __pyx_t_40, __pyx_t_41, __pyx_t_42, __pyx_t_43, __pyx_t_8, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -8634,7 +8730,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                               __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((double)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":165
+                              /* "cyTVDN/utils.pyx":169
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -8643,7 +8739,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":166
+                              /* "cyTVDN/utils.pyx":170
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -8652,7 +8748,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":167
+                              /* "cyTVDN/utils.pyx":171
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -8664,7 +8760,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":168
+                                /* "cyTVDN/utils.pyx":172
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]             # <<<<<<<<<<<<<<
@@ -8676,7 +8772,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_13 = __pyx_v_k;
                                 __pyx_v_oldVal = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_11 * __pyx_v_recon.strides[0]) ) + __pyx_t_12 * __pyx_v_recon.strides[1]) ) + __pyx_t_13 * __pyx_v_recon.strides[2]) )));
 
-                                /* "cyTVDN/utils.pyx":169
+                                /* "cyTVDN/utils.pyx":173
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8687,7 +8783,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_15 = __pyx_v_j;
                                 __pyx_t_16 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":171
+                                /* "cyTVDN/utils.pyx":175
  *                 recon[i,j,k] = orig[i,j,k] - \
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +             # <<<<<<<<<<<<<<
@@ -8702,7 +8798,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_22 = __pyx_v_j;
                                 __pyx_t_23 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":172
+                                /* "cyTVDN/utils.pyx":176
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,(j+1)%shape[1],k])) +             # <<<<<<<<<<<<<<
@@ -8717,7 +8813,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_29 = ((__pyx_v_j + 1) % (__pyx_v_shape[1]));
                                 __pyx_t_30 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":173
+                                /* "cyTVDN/utils.pyx":177
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[(i+1)%shape[0],j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,(j+1)%shape[1],k])) +
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,(k+1)%shape[2]]))             # <<<<<<<<<<<<<<
@@ -8732,7 +8828,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_36 = __pyx_v_j;
                                 __pyx_t_37 = ((__pyx_v_k + 1) % (__pyx_v_shape[2]));
 
-                                /* "cyTVDN/utils.pyx":169
+                                /* "cyTVDN/utils.pyx":173
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8744,17 +8840,26 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_40 = __pyx_v_k;
                                 *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_38 * __pyx_v_recon.strides[0]) ) + __pyx_t_39 * __pyx_v_recon.strides[1]) ) + __pyx_t_40 * __pyx_v_recon.strides[2]) )) = ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_14 * __pyx_v_orig.strides[0]) ) + __pyx_t_15 * __pyx_v_orig.strides[1]) ) + __pyx_t_16 * __pyx_v_orig.strides[2]) ))) - ((((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_17 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_18 * __pyx_v_b1.strides[0]) ) + __pyx_t_19 * __pyx_v_b1.strides[1]) ) + __pyx_t_20 * __pyx_v_b1.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_21 * __pyx_v_b1.strides[0]) ) + __pyx_t_22 * __pyx_v_b1.strides[1]) ) + __pyx_t_23 * __pyx_v_b1.strides[2]) ))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_24 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_25 * __pyx_v_b2.strides[0]) ) + __pyx_t_26 * __pyx_v_b2.strides[1]) ) + __pyx_t_27 * __pyx_v_b2.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_28 * __pyx_v_b2.strides[0]) ) + __pyx_t_29 * __pyx_v_b2.strides[1]) ) + __pyx_t_30 * __pyx_v_b2.strides[2]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_31 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_32 * __pyx_v_b3.strides[0]) ) + __pyx_t_33 * __pyx_v_b3.strides[1]) ) + __pyx_t_34 * __pyx_v_b3.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_35 * __pyx_v_b3.strides[0]) ) + __pyx_t_36 * __pyx_v_b3.strides[1]) ) + __pyx_t_37 * __pyx_v_b3.strides[2]) )))))));
 
-                                /* "cyTVDN/utils.pyx":175
+                                /* "cyTVDN/utils.pyx":179
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,(k+1)%shape[2]]))
  *                     )
  *                 delta += fabs(recon[i,j,k] - oldVal)             # <<<<<<<<<<<<<<
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:
- *         # handling the mirror boundary condition
  */
                                 __pyx_t_41 = __pyx_v_i;
                                 __pyx_t_42 = __pyx_v_j;
                                 __pyx_t_43 = __pyx_v_k;
                                 __pyx_v_delta = (__pyx_v_delta + fabs(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_41 * __pyx_v_recon.strides[0]) ) + __pyx_t_42 * __pyx_v_recon.strides[1]) ) + __pyx_t_43 * __pyx_v_recon.strides[2]) ))) - __pyx_v_oldVal)));
+
+                                /* "cyTVDN/utils.pyx":180
+ *                     )
+ *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)             # <<<<<<<<<<<<<<
+ *     elif BC_mode == 1:
+ *         # handling the mirror boundary condition
+ */
+                                __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_oldVal));
                               }
                           }
                       }
@@ -8769,7 +8874,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":164
+        /* "cyTVDN/utils.pyx":168
  *         # this is gonna be somewhat slower than ideal but probably still
  *         # faster than if we left wraparound on...
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -8788,7 +8893,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":159
+    /* "cyTVDN/utils.pyx":163
  *     cdef _float oldVal
  * 
  *     if (BC_mode == 0) | (BC_mode == 2):             # <<<<<<<<<<<<<<
@@ -8798,9 +8903,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
     goto __pyx_L5;
   }
 
-  /* "cyTVDN/utils.pyx":176
- *                     )
+  /* "cyTVDN/utils.pyx":181
  *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -8808,7 +8913,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   __pyx_t_4 = ((__pyx_v_BC_mode == 1) != 0);
   if (__pyx_t_4) {
 
-    /* "cyTVDN/utils.pyx":180
+    /* "cyTVDN/utils.pyx":185
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -8835,7 +8940,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
               if (__pyx_t_5 > 0)
               {
                   #ifdef _OPENMP
-                  #pragma omp parallel reduction(+:__pyx_v_delta) private(__pyx_t_10, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_9)
+                  #pragma omp parallel reduction(+:__pyx_v_delta) reduction(+:__pyx_v_recon_norm) private(__pyx_t_10, __pyx_t_44, __pyx_t_45, __pyx_t_46, __pyx_t_47, __pyx_t_48, __pyx_t_49, __pyx_t_50, __pyx_t_51, __pyx_t_52, __pyx_t_53, __pyx_t_54, __pyx_t_55, __pyx_t_56, __pyx_t_57, __pyx_t_58, __pyx_t_59, __pyx_t_60, __pyx_t_61, __pyx_t_62, __pyx_t_63, __pyx_t_64, __pyx_t_65, __pyx_t_66, __pyx_t_67, __pyx_t_68, __pyx_t_69, __pyx_t_70, __pyx_t_71, __pyx_t_72, __pyx_t_73, __pyx_t_74, __pyx_t_75, __pyx_t_76, __pyx_t_77, __pyx_t_78, __pyx_t_79, __pyx_t_8, __pyx_t_80, __pyx_t_81, __pyx_t_9)
                   #endif /* _OPENMP */
                   {
                       #ifdef _OPENMP
@@ -8850,7 +8955,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                               __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
                               __pyx_v_oldVal = ((double)__PYX_NAN());
 
-                              /* "cyTVDN/utils.pyx":181
+                              /* "cyTVDN/utils.pyx":186
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]             # <<<<<<<<<<<<<<
@@ -8859,7 +8964,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_i = (__pyx_v_ij / (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":182
+                              /* "cyTVDN/utils.pyx":187
  *         for ij in prange(shape[0]*shape[1],nogil=True):
  *             i = ij / shape[1]
  *             j = ij % shape[1]             # <<<<<<<<<<<<<<
@@ -8868,7 +8973,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
  */
                               __pyx_v_j = (__pyx_v_ij % (__pyx_v_shape[1]));
 
-                              /* "cyTVDN/utils.pyx":183
+                              /* "cyTVDN/utils.pyx":188
  *             i = ij / shape[1]
  *             j = ij % shape[1]
  *             for k in range(shape[2]):             # <<<<<<<<<<<<<<
@@ -8880,7 +8985,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                               for (__pyx_t_10 = 0; __pyx_t_10 < __pyx_t_9; __pyx_t_10+=1) {
                                 __pyx_v_k = __pyx_t_10;
 
-                                /* "cyTVDN/utils.pyx":184
+                                /* "cyTVDN/utils.pyx":189
  *             j = ij % shape[1]
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]             # <<<<<<<<<<<<<<
@@ -8892,7 +8997,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_46 = __pyx_v_k;
                                 __pyx_v_oldVal = (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_44 * __pyx_v_recon.strides[0]) ) + __pyx_t_45 * __pyx_v_recon.strides[1]) ) + __pyx_t_46 * __pyx_v_recon.strides[2]) )));
 
-                                /* "cyTVDN/utils.pyx":185
+                                /* "cyTVDN/utils.pyx":190
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8903,7 +9008,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_48 = __pyx_v_j;
                                 __pyx_t_49 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":187
+                                /* "cyTVDN/utils.pyx":192
  *                 recon[i,j,k] = orig[i,j,k] - \
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +             # <<<<<<<<<<<<<<
@@ -8925,7 +9030,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_58 = __pyx_v_j;
                                 __pyx_t_59 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":188
+                                /* "cyTVDN/utils.pyx":193
  *                     (
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,max(i+1,MBCend[1]),k])) +             # <<<<<<<<<<<<<<
@@ -8947,7 +9052,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_66 = __pyx_t_64;
                                 __pyx_t_67 = __pyx_v_k;
 
-                                /* "cyTVDN/utils.pyx":189
+                                /* "cyTVDN/utils.pyx":194
  *                         (lambda_mu[0] * ( b1[i,j,k] - b1[max(i+1,MBCend[0]),j,k])) +
  *                         (lambda_mu[1] * ( b2[i,j,k] - b2[i,max(i+1,MBCend[1]),k])) +
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,max(i+1,MBCend[2])]))             # <<<<<<<<<<<<<<
@@ -8969,7 +9074,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_74 = __pyx_v_j;
                                 __pyx_t_75 = __pyx_t_72;
 
-                                /* "cyTVDN/utils.pyx":185
+                                /* "cyTVDN/utils.pyx":190
  *             for k in range(shape[2]):
  *                 oldVal = recon[i,j,k]
  *                 recon[i,j,k] = orig[i,j,k] - \             # <<<<<<<<<<<<<<
@@ -8981,17 +9086,26 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
                                 __pyx_t_78 = __pyx_v_k;
                                 *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_76 * __pyx_v_recon.strides[0]) ) + __pyx_t_77 * __pyx_v_recon.strides[1]) ) + __pyx_t_78 * __pyx_v_recon.strides[2]) )) = ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_orig.data + __pyx_t_47 * __pyx_v_orig.strides[0]) ) + __pyx_t_48 * __pyx_v_orig.strides[1]) ) + __pyx_t_49 * __pyx_v_orig.strides[2]) ))) - ((((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_50 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_51 * __pyx_v_b1.strides[0]) ) + __pyx_t_52 * __pyx_v_b1.strides[1]) ) + __pyx_t_53 * __pyx_v_b1.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_57 * __pyx_v_b1.strides[0]) ) + __pyx_t_58 * __pyx_v_b1.strides[1]) ) + __pyx_t_59 * __pyx_v_b1.strides[2]) ))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_60 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_61 * __pyx_v_b2.strides[0]) ) + __pyx_t_62 * __pyx_v_b2.strides[1]) ) + __pyx_t_63 * __pyx_v_b2.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_65 * __pyx_v_b2.strides[0]) ) + __pyx_t_66 * __pyx_v_b2.strides[1]) ) + __pyx_t_67 * __pyx_v_b2.strides[2]) )))))) + ((*((double *) ( /* dim=0 */ (__pyx_v_lambda_mu.data + __pyx_t_68 * __pyx_v_lambda_mu.strides[0]) ))) * ((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_69 * __pyx_v_b3.strides[0]) ) + __pyx_t_70 * __pyx_v_b3.strides[1]) ) + __pyx_t_71 * __pyx_v_b3.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b3.data + __pyx_t_73 * __pyx_v_b3.strides[0]) ) + __pyx_t_74 * __pyx_v_b3.strides[1]) ) + __pyx_t_75 * __pyx_v_b3.strides[2]) )))))));
 
-                                /* "cyTVDN/utils.pyx":191
+                                /* "cyTVDN/utils.pyx":196
  *                         (lambda_mu[2] * ( b3[i,j,k] - b3[i,j,max(i+1,MBCend[2])]))
  *                     )
  *                 delta += fabs(recon[i,j,k] - oldVal)             # <<<<<<<<<<<<<<
+ *                 recon_norm += fabs(recon_norm)
  * 
- *     return delta
  */
                                 __pyx_t_79 = __pyx_v_i;
                                 __pyx_t_80 = __pyx_v_j;
                                 __pyx_t_81 = __pyx_v_k;
                                 __pyx_v_delta = (__pyx_v_delta + fabs(((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_recon.data + __pyx_t_79 * __pyx_v_recon.strides[0]) ) + __pyx_t_80 * __pyx_v_recon.strides[1]) ) + __pyx_t_81 * __pyx_v_recon.strides[2]) ))) - __pyx_v_oldVal)));
+
+                                /* "cyTVDN/utils.pyx":197
+ *                     )
+ *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(recon_norm)             # <<<<<<<<<<<<<<
+ * 
+ *     return delta / recon_norm
+ */
+                                __pyx_v_recon_norm = (__pyx_v_recon_norm + fabs(__pyx_v_recon_norm));
                               }
                           }
                       }
@@ -9006,7 +9120,7 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
           #endif
         }
 
-        /* "cyTVDN/utils.pyx":180
+        /* "cyTVDN/utils.pyx":185
  *         # simply requires different math for computing the indices.
  *         # The new indexing is max(i+1,shape-1), so precompute shape[:]-1 as MBCend
  *         for ij in prange(shape[0]*shape[1],nogil=True):             # <<<<<<<<<<<<<<
@@ -9025,9 +9139,9 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
         }
     }
 
-    /* "cyTVDN/utils.pyx":176
- *                     )
+    /* "cyTVDN/utils.pyx":181
  *                 delta += fabs(recon[i,j,k] - oldVal)
+ *                 recon_norm += fabs(oldVal)
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
  *         # handling the mirror boundary condition
  *         # simply requires different math for computing the indices.
@@ -9035,19 +9149,19 @@ static PyObject *__pyx_pf_6cyTVDN_5utils_28datacube_update_3D(CYTHON_UNUSED PyOb
   }
   __pyx_L5:;
 
-  /* "cyTVDN/utils.pyx":193
- *                 delta += fabs(recon[i,j,k] - oldVal)
+  /* "cyTVDN/utils.pyx":199
+ *                 recon_norm += fabs(recon_norm)
  * 
- *     return delta             # <<<<<<<<<<<<<<
+ *     return delta / recon_norm             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_82 = PyFloat_FromDouble(__pyx_v_delta); if (unlikely(!__pyx_t_82)) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_82 = PyFloat_FromDouble((__pyx_v_delta / __pyx_v_recon_norm)); if (unlikely(!__pyx_t_82)) __PYX_ERR(0, 199, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_82);
   __pyx_r = __pyx_t_82;
   __pyx_t_82 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/utils.pyx":128
+  /* "cyTVDN/utils.pyx":131
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,             # <<<<<<<<<<<<<<
@@ -22760,6 +22874,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_q, __pyx_k_q, sizeof(__pyx_k_q), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_recon, __pyx_k_recon, sizeof(__pyx_k_recon), 0, 0, 1, 1},
+  {&__pyx_n_s_recon_norm, __pyx_k_recon_norm, sizeof(__pyx_k_recon_norm), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_cython, __pyx_k_reduce_cython, sizeof(__pyx_k_reduce_cython), 0, 0, 1, 1},
   {&__pyx_n_s_reduce_ex, __pyx_k_reduce_ex, sizeof(__pyx_k_reduce_ex), 0, 0, 1, 1},
@@ -23044,22 +23159,22 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *                _float[:,:,:,::] b2, _float[:,:,:,::] b3, _float[:,:,:,::] b4, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
-  __pyx_tuple__27 = PyTuple_Pack(18, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_b4, __pyx_n_s_lambda_mu, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_l, __pyx_n_s_ij, __pyx_n_s_MBCend, __pyx_n_s_q, __pyx_n_s_delta, __pyx_n_s_oldVal); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(19, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_b4, __pyx_n_s_lambda_mu, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_l, __pyx_n_s_ij, __pyx_n_s_MBCend, __pyx_n_s_q, __pyx_n_s_delta, __pyx_n_s_recon_norm, __pyx_n_s_oldVal); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 54, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(8, 0, 18, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_utils_pyx, __pyx_n_s_datacube_update_4D, 54, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(8, 0, 19, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_utils_pyx, __pyx_n_s_datacube_update_4D, 54, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 54, __pyx_L1_error)
 
-  /* "cyTVDN/utils.pyx":128
+  /* "cyTVDN/utils.pyx":131
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,             # <<<<<<<<<<<<<<
  *                _float[:,:,::] b2, _float[:,:,::] b3, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
-  __pyx_tuple__29 = PyTuple_Pack(16, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_lambda_mu, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_MBCend, __pyx_n_s_q, __pyx_n_s_delta, __pyx_n_s_oldVal); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(17, __pyx_n_s_orig, __pyx_n_s_recon, __pyx_n_s_b1, __pyx_n_s_b2, __pyx_n_s_b3, __pyx_n_s_lambda_mu, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_MBCend, __pyx_n_s_q, __pyx_n_s_delta, __pyx_n_s_recon_norm, __pyx_n_s_oldVal); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 16, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_utils_pyx, __pyx_n_s_datacube_update_3D, 128, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 17, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_utils_pyx, __pyx_n_s_datacube_update_3D, 131, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 131, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -23599,52 +23714,52 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "cyTVDN/utils.pyx":129
+  /* "cyTVDN/utils.pyx":132
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,
  *                _float[:,:,::] b2, _float[:,:,::] b3, _float[:] lambda_mu, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     perform the TV update step:
  */
-  __pyx_t_8 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 132, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
 
-  /* "cyTVDN/utils.pyx":128
+  /* "cyTVDN/utils.pyx":131
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def datacube_update_3D(_float[:,:,::] orig, _float[:,:,::] recon, _float[:,:,::] b1,             # <<<<<<<<<<<<<<
  *                _float[:,:,::] b2, _float[:,:,::] b3, _float[:] lambda_mu, int BC_mode=2):
  *     '''
  */
-  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8);
   __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_5utils_27datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_5utils_27datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults6), 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults6), 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_t_10)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_10, __pyx_pf_6cyTVDN_5utils_44__defaults__);
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_float, __pyx_t_10) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_float, __pyx_t_10) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_5utils_29datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_5utils_29datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults7), 0)) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults7), 0)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_t_10)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_10, __pyx_pf_6cyTVDN_5utils_46__defaults__);
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_double, __pyx_t_10) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_double, __pyx_t_10) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_5utils_7datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_5utils_7datacube_update_3D, 0, __pyx_n_s_datacube_update_3D, NULL, __pyx_n_s_cyTVDN_utils, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   ((__pyx_FusedFunctionObject *) __pyx_t_10)->__signatures__ = __pyx_t_8;
   __Pyx_GIVEREF(__pyx_t_8);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_datacube_update_3D, __pyx_t_10) < 0) __PYX_ERR(0, 128, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_datacube_update_3D, __pyx_t_10) < 0) __PYX_ERR(0, 131, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 

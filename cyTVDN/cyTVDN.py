@@ -26,6 +26,7 @@ def denoise4D(
     reference_data=None,
     BC_mode=2,
     quiet=False,
+    stopping_relative_change=None,
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
@@ -46,6 +47,10 @@ def denoise4D(
                                     1: Mirror
                         (default)   2: Jia-Zhao Adv Comp Math 2010 33:231-241
     quiet           (bool) Suppress informational messages and clear the progress bar after running.
+    stopping_relative_change
+                    (float) stopping criterion for relative change in reconstruction at each update step
+                    if None, do iterations. if specified, stop when the relative change is below this value
+                    A value of 0.05 seems to work best. 
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -79,9 +84,9 @@ def denoise4D(
             print(
                 "I tried to print with pretty characters but your system doesn't like Unicode..."
             )
-    assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
-        lam_mu > 0
-    ), "Parameters must satisfy 0 < λ/μ <= 1/32"
+    # assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
+    #     lam_mu > 0
+    # ), "Parameters must satisfy 0 < λ/μ <= 1/32"
 
     # warn about memory requirements
     if not quiet:
@@ -140,7 +145,9 @@ def denoise4D(
 
     if FISTA:
         for i in tqdm(
-            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising", leave=not quiet,
+            range(int(iterations_FISTA)),
+            desc="FISTA Accelerated TV Denoising",
+            leave=not quiet,
         ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
@@ -177,8 +184,20 @@ def denoise4D(
 
             if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
+
+            if (
+                stopping_relative_change is not None
+                and delta_recon[i] < stopping_relative_change
+            ):
+                MSE[i + 1 :] = MSE[i + 1]
+                # if we have converged, break out of the loop
+                break
     if unaccelerated:
-        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising", leave=not quiet):
+        for j in tqdm(
+            range(int(iterations_unacc)),
+            desc="Unaccelerated TV Denoising",
+            leave=not quiet,
+        ):
             i = j + iterations_FISTA
             # update accumulators
 
@@ -212,6 +231,14 @@ def denoise4D(
 
             if calculate_MSE:
                 MSE[i + 1] = sum_square_error_4D(reference_data, recon)
+
+            if (
+                stopping_relative_change is not None
+                and delta_recon[i] < stopping_relative_change
+            ):
+                MSE[i + 1 :] = MSE[i + 1]
+                # if we have converged, break out of the loop
+                break
 
     if calculate_MSE:
         return recon, b_norm, delta_recon, MSE

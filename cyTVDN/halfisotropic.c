@@ -5295,29 +5295,11 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
  * 
- *         # reset the local strides
+ *         # dynamically figure out strides to avoid multiple loops!
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":151
- * 
- *         # reset the local strides
- *         stride1[ax1] = 1             # <<<<<<<<<<<<<<
- *         stride2[ax2] = 1
- * 
- */
-                            (__pyx_v_stride1[__pyx_v_ax1]) = 1;
-
-                            /* "cyTVDN/halfisotropic.pyx":152
- *         # reset the local strides
- *         stride1[ax1] = 1
- *         stride2[ax2] = 1             # <<<<<<<<<<<<<<
- * 
- *         # dynamically figure out strides to avoid multiple loops!
- */
-                            (__pyx_v_stride2[__pyx_v_ax2]) = 1;
-
-                            /* "cyTVDN/halfisotropic.pyx":157
+                            /* "cyTVDN/halfisotropic.pyx":153
  *         # set stride to 1 if (a) it is a gradient axis and
  *         # (b) we are not at the zero element
  *         stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5331,7 +5313,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride1[0]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":158
+                            /* "cyTVDN/halfisotropic.pyx":154
  *         # (b) we are not at the zero element
  *         stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0
  *         stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5345,7 +5327,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride2[0]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":160
+                            /* "cyTVDN/halfisotropic.pyx":156
  *         stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0
  * 
  *         stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5359,7 +5341,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride1[1]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":161
+                            /* "cyTVDN/halfisotropic.pyx":157
  * 
  *         stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0
  *         stride2[1] = 1 if (master_stride2[1] & (j > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5373,7 +5355,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride2[1]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":164
+                            /* "cyTVDN/halfisotropic.pyx":160
  * 
  * 
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -5385,7 +5367,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                             for (__pyx_t_13 = (__pyx_v_start[2]); __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                               __pyx_v_k = __pyx_t_13;
 
-                              /* "cyTVDN/halfisotropic.pyx":165
+                              /* "cyTVDN/halfisotropic.pyx":161
  * 
  *         for k in range(start[2],shape[2]):
  *             stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5399,7 +5381,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                               }
                               (__pyx_v_stride1[2]) = __pyx_t_14;
 
-                              /* "cyTVDN/halfisotropic.pyx":166
+                              /* "cyTVDN/halfisotropic.pyx":162
  *         for k in range(start[2],shape[2]):
  *             stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0
  *             stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5413,7 +5395,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                               }
                               (__pyx_v_stride2[2]) = __pyx_t_14;
 
-                              /* "cyTVDN/halfisotropic.pyx":168
+                              /* "cyTVDN/halfisotropic.pyx":164
  *             stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0
  * 
  *             for l in range(start[3],shape[3]):             # <<<<<<<<<<<<<<
@@ -5425,7 +5407,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                               for (__pyx_t_16 = (__pyx_v_start[3]); __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                 __pyx_v_l = __pyx_t_16;
 
-                                /* "cyTVDN/halfisotropic.pyx":169
+                                /* "cyTVDN/halfisotropic.pyx":165
  * 
  *             for l in range(start[3],shape[3]):
  *                 stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5439,7 +5421,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 }
                                 (__pyx_v_stride1[3]) = __pyx_t_17;
 
-                                /* "cyTVDN/halfisotropic.pyx":170
+                                /* "cyTVDN/halfisotropic.pyx":166
  *             for l in range(start[3],shape[3]):
  *                 stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0
  *                 stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0             # <<<<<<<<<<<<<<
@@ -5453,7 +5435,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 }
                                 (__pyx_v_stride2[3]) = __pyx_t_17;
 
-                                /* "cyTVDN/halfisotropic.pyx":172
+                                /* "cyTVDN/halfisotropic.pyx":168
  *                 stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0
  * 
  *                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -5474,7 +5456,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_29 = __pyx_v_l;
                                 __pyx_v_delta1 = (((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ) + __pyx_t_21 * __pyx_v_a.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_22 * __pyx_v_a.strides[0]) ) + __pyx_t_23 * __pyx_v_a.strides[1]) ) + __pyx_t_24 * __pyx_v_a.strides[2]) ) + __pyx_t_25 * __pyx_v_a.strides[3]) )))) + (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_26 * __pyx_v_b1.strides[0]) ) + __pyx_t_27 * __pyx_v_b1.strides[1]) ) + __pyx_t_28 * __pyx_v_b1.strides[2]) ) + __pyx_t_29 * __pyx_v_b1.strides[3]) ))));
 
-                                /* "cyTVDN/halfisotropic.pyx":173
+                                /* "cyTVDN/halfisotropic.pyx":169
  * 
  *                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]
  *                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -5495,7 +5477,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_41 = __pyx_v_l;
                                 __pyx_v_delta2 = (((*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_30 * __pyx_v_a.strides[0]) ) + __pyx_t_31 * __pyx_v_a.strides[1]) ) + __pyx_t_32 * __pyx_v_a.strides[2]) ) + __pyx_t_33 * __pyx_v_a.strides[3]) ))) - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_34 * __pyx_v_a.strides[0]) ) + __pyx_t_35 * __pyx_v_a.strides[1]) ) + __pyx_t_36 * __pyx_v_a.strides[2]) ) + __pyx_t_37 * __pyx_v_a.strides[3]) )))) + (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_38 * __pyx_v_b2.strides[0]) ) + __pyx_t_39 * __pyx_v_b2.strides[1]) ) + __pyx_t_40 * __pyx_v_b2.strides[2]) ) + __pyx_t_41 * __pyx_v_b2.strides[3]) ))));
 
-                                /* "cyTVDN/halfisotropic.pyx":175
+                                /* "cyTVDN/halfisotropic.pyx":171
  *                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]
  * 
  *                 b_mag = hypot(delta1,delta2)             # <<<<<<<<<<<<<<
@@ -5504,7 +5486,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  */
                                 __pyx_v_b_mag = hypot(__pyx_v_delta1, __pyx_v_delta2);
 
-                                /* "cyTVDN/halfisotropic.pyx":177
+                                /* "cyTVDN/halfisotropic.pyx":173
  *                 b_mag = hypot(delta1,delta2)
  * 
  *                 if b_mag > clip:             # <<<<<<<<<<<<<<
@@ -5514,7 +5496,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_42 = ((__pyx_v_b_mag > __pyx_v_clip) != 0);
                                 if (__pyx_t_42) {
 
-                                  /* "cyTVDN/halfisotropic.pyx":178
+                                  /* "cyTVDN/halfisotropic.pyx":174
  * 
  *                 if b_mag > clip:
  *                     delta1 = delta1 / ( b_mag / clip )             # <<<<<<<<<<<<<<
@@ -5523,7 +5505,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  */
                                   __pyx_v_delta1 = (__pyx_v_delta1 / (__pyx_v_b_mag / __pyx_v_clip));
 
-                                  /* "cyTVDN/halfisotropic.pyx":179
+                                  /* "cyTVDN/halfisotropic.pyx":175
  *                 if b_mag > clip:
  *                     delta1 = delta1 / ( b_mag / clip )
  *                     delta2 = delta2 / ( b_mag / clip )             # <<<<<<<<<<<<<<
@@ -5532,7 +5514,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  */
                                   __pyx_v_delta2 = (__pyx_v_delta2 / (__pyx_v_b_mag / __pyx_v_clip));
 
-                                  /* "cyTVDN/halfisotropic.pyx":177
+                                  /* "cyTVDN/halfisotropic.pyx":173
  *                 b_mag = hypot(delta1,delta2)
  * 
  *                 if b_mag > clip:             # <<<<<<<<<<<<<<
@@ -5541,7 +5523,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  */
                                 }
 
-                                /* "cyTVDN/halfisotropic.pyx":181
+                                /* "cyTVDN/halfisotropic.pyx":177
  *                     delta2 = delta2 / ( b_mag / clip )
  * 
  *                 b1_new = delta1 + tk*(delta1 - d1[i,j,k,l])             # <<<<<<<<<<<<<<
@@ -5554,7 +5536,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_46 = __pyx_v_l;
                                 __pyx_v_b1_new = (__pyx_v_delta1 + (__pyx_v_tk * (__pyx_v_delta1 - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d1.data + __pyx_t_43 * __pyx_v_d1.strides[0]) ) + __pyx_t_44 * __pyx_v_d1.strides[1]) ) + __pyx_t_45 * __pyx_v_d1.strides[2]) ) + __pyx_t_46 * __pyx_v_d1.strides[3]) ))))));
 
-                                /* "cyTVDN/halfisotropic.pyx":182
+                                /* "cyTVDN/halfisotropic.pyx":178
  * 
  *                 b1_new = delta1 + tk*(delta1 - d1[i,j,k,l])
  *                 b2_new = delta2 + tk*(delta2 - d2[i,j,k,l])             # <<<<<<<<<<<<<<
@@ -5567,7 +5549,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_50 = __pyx_v_l;
                                 __pyx_v_b2_new = (__pyx_v_delta2 + (__pyx_v_tk * (__pyx_v_delta2 - (*((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d2.data + __pyx_t_47 * __pyx_v_d2.strides[0]) ) + __pyx_t_48 * __pyx_v_d2.strides[1]) ) + __pyx_t_49 * __pyx_v_d2.strides[2]) ) + __pyx_t_50 * __pyx_v_d2.strides[3]) ))))));
 
-                                /* "cyTVDN/halfisotropic.pyx":184
+                                /* "cyTVDN/halfisotropic.pyx":180
  *                 b2_new = delta2 + tk*(delta2 - d2[i,j,k,l])
  * 
  *                 b1[i,j,k,l] = b1_new             # <<<<<<<<<<<<<<
@@ -5580,7 +5562,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_54 = __pyx_v_l;
                                 *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_51 * __pyx_v_b1.strides[0]) ) + __pyx_t_52 * __pyx_v_b1.strides[1]) ) + __pyx_t_53 * __pyx_v_b1.strides[2]) ) + __pyx_t_54 * __pyx_v_b1.strides[3]) )) = __pyx_v_b1_new;
 
-                                /* "cyTVDN/halfisotropic.pyx":185
+                                /* "cyTVDN/halfisotropic.pyx":181
  * 
  *                 b1[i,j,k,l] = b1_new
  *                 b2[i,j,k,l] = b2_new             # <<<<<<<<<<<<<<
@@ -5593,7 +5575,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_58 = __pyx_v_l;
                                 *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_55 * __pyx_v_b2.strides[0]) ) + __pyx_t_56 * __pyx_v_b2.strides[1]) ) + __pyx_t_57 * __pyx_v_b2.strides[2]) ) + __pyx_t_58 * __pyx_v_b2.strides[3]) )) = __pyx_v_b2_new;
 
-                                /* "cyTVDN/halfisotropic.pyx":187
+                                /* "cyTVDN/halfisotropic.pyx":183
  *                 b2[i,j,k,l] = b2_new
  * 
  *                 norm += fabs(b1_new) + fabs(b2_new)             # <<<<<<<<<<<<<<
@@ -5602,7 +5584,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  */
                                 __pyx_v_norm = (__pyx_v_norm + (fabs(__pyx_v_b1_new) + fabs(__pyx_v_b2_new)));
 
-                                /* "cyTVDN/halfisotropic.pyx":189
+                                /* "cyTVDN/halfisotropic.pyx":185
  *                 norm += fabs(b1_new) + fabs(b2_new)
  * 
  *                 d1[i,j,k,l] = delta1             # <<<<<<<<<<<<<<
@@ -5615,7 +5597,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
                                 __pyx_t_62 = __pyx_v_l;
                                 *((float *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d1.data + __pyx_t_59 * __pyx_v_d1.strides[0]) ) + __pyx_t_60 * __pyx_v_d1.strides[1]) ) + __pyx_t_61 * __pyx_v_d1.strides[2]) ) + __pyx_t_62 * __pyx_v_d1.strides[3]) )) = __pyx_v_delta1;
 
-                                /* "cyTVDN/halfisotropic.pyx":190
+                                /* "cyTVDN/halfisotropic.pyx":186
  * 
  *                 d1[i,j,k,l] = delta1
  *                 d2[i,j,k,l] = delta2             # <<<<<<<<<<<<<<
@@ -5661,7 +5643,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":192
+  /* "cyTVDN/halfisotropic.pyx":188
  *                 d2[i,j,k,l] = delta2
  * 
  *     return norm             # <<<<<<<<<<<<<<
@@ -5669,7 +5651,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_14iso_accumulator_update_4D_FI
  * @cython.boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_67 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_67)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_67 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_67)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_67);
   __pyx_r = __pyx_t_67;
   __pyx_t_67 = 0;
@@ -6105,29 +6087,11 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
  * 
- *         # reset the local strides
+ *         # dynamically figure out strides to avoid multiple loops!
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":151
- * 
- *         # reset the local strides
- *         stride1[ax1] = 1             # <<<<<<<<<<<<<<
- *         stride2[ax2] = 1
- * 
- */
-                            (__pyx_v_stride1[__pyx_v_ax1]) = 1;
-
-                            /* "cyTVDN/halfisotropic.pyx":152
- *         # reset the local strides
- *         stride1[ax1] = 1
- *         stride2[ax2] = 1             # <<<<<<<<<<<<<<
- * 
- *         # dynamically figure out strides to avoid multiple loops!
- */
-                            (__pyx_v_stride2[__pyx_v_ax2]) = 1;
-
-                            /* "cyTVDN/halfisotropic.pyx":157
+                            /* "cyTVDN/halfisotropic.pyx":153
  *         # set stride to 1 if (a) it is a gradient axis and
  *         # (b) we are not at the zero element
  *         stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6141,7 +6105,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride1[0]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":158
+                            /* "cyTVDN/halfisotropic.pyx":154
  *         # (b) we are not at the zero element
  *         stride1[0] = 1 if (master_stride1[0] & (i > 0)) else 0
  *         stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6155,7 +6119,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride2[0]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":160
+                            /* "cyTVDN/halfisotropic.pyx":156
  *         stride2[0] = 1 if (master_stride2[0] & (i > 0)) else 0
  * 
  *         stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6169,7 +6133,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride1[1]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":161
+                            /* "cyTVDN/halfisotropic.pyx":157
  * 
  *         stride1[1] = 1 if (master_stride1[1] & (j > 0)) else 0
  *         stride2[1] = 1 if (master_stride2[1] & (j > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6183,7 +6147,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                             }
                             (__pyx_v_stride2[1]) = __pyx_t_11;
 
-                            /* "cyTVDN/halfisotropic.pyx":164
+                            /* "cyTVDN/halfisotropic.pyx":160
  * 
  * 
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -6195,7 +6159,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                             for (__pyx_t_13 = (__pyx_v_start[2]); __pyx_t_13 < __pyx_t_12; __pyx_t_13+=1) {
                               __pyx_v_k = __pyx_t_13;
 
-                              /* "cyTVDN/halfisotropic.pyx":165
+                              /* "cyTVDN/halfisotropic.pyx":161
  * 
  *         for k in range(start[2],shape[2]):
  *             stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6209,7 +6173,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                               }
                               (__pyx_v_stride1[2]) = __pyx_t_14;
 
-                              /* "cyTVDN/halfisotropic.pyx":166
+                              /* "cyTVDN/halfisotropic.pyx":162
  *         for k in range(start[2],shape[2]):
  *             stride1[2] = 1 if (master_stride1[2] & (k > 0)) else 0
  *             stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6223,7 +6187,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                               }
                               (__pyx_v_stride2[2]) = __pyx_t_14;
 
-                              /* "cyTVDN/halfisotropic.pyx":168
+                              /* "cyTVDN/halfisotropic.pyx":164
  *             stride2[2] = 1 if (master_stride2[2] & (k > 0)) else 0
  * 
  *             for l in range(start[3],shape[3]):             # <<<<<<<<<<<<<<
@@ -6235,7 +6199,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                               for (__pyx_t_16 = (__pyx_v_start[3]); __pyx_t_16 < __pyx_t_15; __pyx_t_16+=1) {
                                 __pyx_v_l = __pyx_t_16;
 
-                                /* "cyTVDN/halfisotropic.pyx":169
+                                /* "cyTVDN/halfisotropic.pyx":165
  * 
  *             for l in range(start[3],shape[3]):
  *                 stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6249,7 +6213,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 }
                                 (__pyx_v_stride1[3]) = __pyx_t_17;
 
-                                /* "cyTVDN/halfisotropic.pyx":170
+                                /* "cyTVDN/halfisotropic.pyx":166
  *             for l in range(start[3],shape[3]):
  *                 stride1[3] = 1 if (master_stride1[3] & (l > 0)) else 0
  *                 stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0             # <<<<<<<<<<<<<<
@@ -6263,7 +6227,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 }
                                 (__pyx_v_stride2[3]) = __pyx_t_17;
 
-                                /* "cyTVDN/halfisotropic.pyx":172
+                                /* "cyTVDN/halfisotropic.pyx":168
  *                 stride2[3] = 1 if (master_stride2[3] & (l > 0)) else 0
  * 
  *                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -6284,7 +6248,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_29 = __pyx_v_l;
                                 __pyx_v_delta1 = (((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_18 * __pyx_v_a.strides[0]) ) + __pyx_t_19 * __pyx_v_a.strides[1]) ) + __pyx_t_20 * __pyx_v_a.strides[2]) ) + __pyx_t_21 * __pyx_v_a.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_22 * __pyx_v_a.strides[0]) ) + __pyx_t_23 * __pyx_v_a.strides[1]) ) + __pyx_t_24 * __pyx_v_a.strides[2]) ) + __pyx_t_25 * __pyx_v_a.strides[3]) )))) + (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_26 * __pyx_v_b1.strides[0]) ) + __pyx_t_27 * __pyx_v_b1.strides[1]) ) + __pyx_t_28 * __pyx_v_b1.strides[2]) ) + __pyx_t_29 * __pyx_v_b1.strides[3]) ))));
 
-                                /* "cyTVDN/halfisotropic.pyx":173
+                                /* "cyTVDN/halfisotropic.pyx":169
  * 
  *                 delta1 = a[i,j,k,l] - a[i-stride1[0],j-stride1[1],k-stride1[2],l-stride1[3]] + b1[i,j,k,l]
  *                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]             # <<<<<<<<<<<<<<
@@ -6305,7 +6269,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_41 = __pyx_v_l;
                                 __pyx_v_delta2 = (((*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_30 * __pyx_v_a.strides[0]) ) + __pyx_t_31 * __pyx_v_a.strides[1]) ) + __pyx_t_32 * __pyx_v_a.strides[2]) ) + __pyx_t_33 * __pyx_v_a.strides[3]) ))) - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_34 * __pyx_v_a.strides[0]) ) + __pyx_t_35 * __pyx_v_a.strides[1]) ) + __pyx_t_36 * __pyx_v_a.strides[2]) ) + __pyx_t_37 * __pyx_v_a.strides[3]) )))) + (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_38 * __pyx_v_b2.strides[0]) ) + __pyx_t_39 * __pyx_v_b2.strides[1]) ) + __pyx_t_40 * __pyx_v_b2.strides[2]) ) + __pyx_t_41 * __pyx_v_b2.strides[3]) ))));
 
-                                /* "cyTVDN/halfisotropic.pyx":175
+                                /* "cyTVDN/halfisotropic.pyx":171
  *                 delta2 = a[i,j,k,l] - a[i-stride2[0],j-stride2[1],k-stride2[2],l-stride2[3]] + b2[i,j,k,l]
  * 
  *                 b_mag = hypot(delta1,delta2)             # <<<<<<<<<<<<<<
@@ -6314,7 +6278,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  */
                                 __pyx_v_b_mag = hypot(__pyx_v_delta1, __pyx_v_delta2);
 
-                                /* "cyTVDN/halfisotropic.pyx":177
+                                /* "cyTVDN/halfisotropic.pyx":173
  *                 b_mag = hypot(delta1,delta2)
  * 
  *                 if b_mag > clip:             # <<<<<<<<<<<<<<
@@ -6324,7 +6288,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_42 = ((__pyx_v_b_mag > __pyx_v_clip) != 0);
                                 if (__pyx_t_42) {
 
-                                  /* "cyTVDN/halfisotropic.pyx":178
+                                  /* "cyTVDN/halfisotropic.pyx":174
  * 
  *                 if b_mag > clip:
  *                     delta1 = delta1 / ( b_mag / clip )             # <<<<<<<<<<<<<<
@@ -6333,7 +6297,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  */
                                   __pyx_v_delta1 = (__pyx_v_delta1 / (__pyx_v_b_mag / __pyx_v_clip));
 
-                                  /* "cyTVDN/halfisotropic.pyx":179
+                                  /* "cyTVDN/halfisotropic.pyx":175
  *                 if b_mag > clip:
  *                     delta1 = delta1 / ( b_mag / clip )
  *                     delta2 = delta2 / ( b_mag / clip )             # <<<<<<<<<<<<<<
@@ -6342,7 +6306,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  */
                                   __pyx_v_delta2 = (__pyx_v_delta2 / (__pyx_v_b_mag / __pyx_v_clip));
 
-                                  /* "cyTVDN/halfisotropic.pyx":177
+                                  /* "cyTVDN/halfisotropic.pyx":173
  *                 b_mag = hypot(delta1,delta2)
  * 
  *                 if b_mag > clip:             # <<<<<<<<<<<<<<
@@ -6351,7 +6315,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  */
                                 }
 
-                                /* "cyTVDN/halfisotropic.pyx":181
+                                /* "cyTVDN/halfisotropic.pyx":177
  *                     delta2 = delta2 / ( b_mag / clip )
  * 
  *                 b1_new = delta1 + tk*(delta1 - d1[i,j,k,l])             # <<<<<<<<<<<<<<
@@ -6364,7 +6328,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_46 = __pyx_v_l;
                                 __pyx_v_b1_new = (__pyx_v_delta1 + (__pyx_v_tk * (__pyx_v_delta1 - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d1.data + __pyx_t_43 * __pyx_v_d1.strides[0]) ) + __pyx_t_44 * __pyx_v_d1.strides[1]) ) + __pyx_t_45 * __pyx_v_d1.strides[2]) ) + __pyx_t_46 * __pyx_v_d1.strides[3]) ))))));
 
-                                /* "cyTVDN/halfisotropic.pyx":182
+                                /* "cyTVDN/halfisotropic.pyx":178
  * 
  *                 b1_new = delta1 + tk*(delta1 - d1[i,j,k,l])
  *                 b2_new = delta2 + tk*(delta2 - d2[i,j,k,l])             # <<<<<<<<<<<<<<
@@ -6377,7 +6341,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_50 = __pyx_v_l;
                                 __pyx_v_b2_new = (__pyx_v_delta2 + (__pyx_v_tk * (__pyx_v_delta2 - (*((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d2.data + __pyx_t_47 * __pyx_v_d2.strides[0]) ) + __pyx_t_48 * __pyx_v_d2.strides[1]) ) + __pyx_t_49 * __pyx_v_d2.strides[2]) ) + __pyx_t_50 * __pyx_v_d2.strides[3]) ))))));
 
-                                /* "cyTVDN/halfisotropic.pyx":184
+                                /* "cyTVDN/halfisotropic.pyx":180
  *                 b2_new = delta2 + tk*(delta2 - d2[i,j,k,l])
  * 
  *                 b1[i,j,k,l] = b1_new             # <<<<<<<<<<<<<<
@@ -6390,7 +6354,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_54 = __pyx_v_l;
                                 *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b1.data + __pyx_t_51 * __pyx_v_b1.strides[0]) ) + __pyx_t_52 * __pyx_v_b1.strides[1]) ) + __pyx_t_53 * __pyx_v_b1.strides[2]) ) + __pyx_t_54 * __pyx_v_b1.strides[3]) )) = __pyx_v_b1_new;
 
-                                /* "cyTVDN/halfisotropic.pyx":185
+                                /* "cyTVDN/halfisotropic.pyx":181
  * 
  *                 b1[i,j,k,l] = b1_new
  *                 b2[i,j,k,l] = b2_new             # <<<<<<<<<<<<<<
@@ -6403,7 +6367,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_58 = __pyx_v_l;
                                 *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b2.data + __pyx_t_55 * __pyx_v_b2.strides[0]) ) + __pyx_t_56 * __pyx_v_b2.strides[1]) ) + __pyx_t_57 * __pyx_v_b2.strides[2]) ) + __pyx_t_58 * __pyx_v_b2.strides[3]) )) = __pyx_v_b2_new;
 
-                                /* "cyTVDN/halfisotropic.pyx":187
+                                /* "cyTVDN/halfisotropic.pyx":183
  *                 b2[i,j,k,l] = b2_new
  * 
  *                 norm += fabs(b1_new) + fabs(b2_new)             # <<<<<<<<<<<<<<
@@ -6412,7 +6376,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  */
                                 __pyx_v_norm = (__pyx_v_norm + (fabs(__pyx_v_b1_new) + fabs(__pyx_v_b2_new)));
 
-                                /* "cyTVDN/halfisotropic.pyx":189
+                                /* "cyTVDN/halfisotropic.pyx":185
  *                 norm += fabs(b1_new) + fabs(b2_new)
  * 
  *                 d1[i,j,k,l] = delta1             # <<<<<<<<<<<<<<
@@ -6425,7 +6389,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
                                 __pyx_t_62 = __pyx_v_l;
                                 *((double *) ( /* dim=3 */ (( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d1.data + __pyx_t_59 * __pyx_v_d1.strides[0]) ) + __pyx_t_60 * __pyx_v_d1.strides[1]) ) + __pyx_t_61 * __pyx_v_d1.strides[2]) ) + __pyx_t_62 * __pyx_v_d1.strides[3]) )) = __pyx_v_delta1;
 
-                                /* "cyTVDN/halfisotropic.pyx":190
+                                /* "cyTVDN/halfisotropic.pyx":186
  * 
  *                 d1[i,j,k,l] = delta1
  *                 d2[i,j,k,l] = delta2             # <<<<<<<<<<<<<<
@@ -6471,7 +6435,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":192
+  /* "cyTVDN/halfisotropic.pyx":188
  *                 d2[i,j,k,l] = delta2
  * 
  *     return norm             # <<<<<<<<<<<<<<
@@ -6479,7 +6443,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
  * @cython.boundscheck(False)
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_67 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_67)) __PYX_ERR(0, 192, __pyx_L1_error)
+  __pyx_t_67 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_67)) __PYX_ERR(0, 188, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_67);
   __pyx_r = __pyx_t_67;
   __pyx_t_67 = 0;
@@ -6509,7 +6473,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_16iso_accumulator_update_4D_FI
   return __pyx_r;
 }
 
-/* "cyTVDN/halfisotropic.pyx":197
+/* "cyTVDN/halfisotropic.pyx":193
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
@@ -6556,23 +6520,23 @@ static PyObject *__pyx_pw_6cyTVDN_13halfisotropic_5accumulator_update_3D(PyObjec
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_args)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kwargs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_defaults)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 193, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 197, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 193, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -6589,7 +6553,7 @@ static PyObject *__pyx_pw_6cyTVDN_13halfisotropic_5accumulator_update_3D(PyObjec
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 197, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 193, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.__pyx_fused_cpdef", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -6640,7 +6604,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
   int __pyx_t_18;
   __Pyx_RefNannySetupContext("accumulator_update_3D", 0);
   __Pyx_INCREF(__pyx_v_kwargs);
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -6654,7 +6618,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     __pyx_t_2 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
   __pyx_t_3 = ((!__pyx_t_4) != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
@@ -6662,21 +6626,21 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     __Pyx_INCREF(Py_None);
     __Pyx_DECREF_SET(__pyx_v_kwargs, Py_None);
   }
-  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ndarray = ((PyTypeObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   __pyx_v_itemsize = -1L;
   if (unlikely(__pyx_v_args == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
-  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
   __pyx_t_2 = ((0 < __pyx_t_5) != 0);
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 197, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
     }
     __pyx_t_1 = PyTuple_GET_ITEM(((PyObject*)__pyx_v_args), 0);
     __Pyx_INCREF(__pyx_t_1);
@@ -6693,18 +6657,18 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
   }
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
-  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_4 != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_kwargs == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 197, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_arg = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -6713,12 +6677,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
   /*else*/ {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 197, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
     }
-    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_INCREF(__pyx_int_4);
     __Pyx_GIVEREF(__pyx_int_4);
@@ -6729,15 +6693,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
   __pyx_L6:;
   while (1) {
@@ -6747,7 +6711,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg, __pyx_v_ndarray); 
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_dtype = __pyx_t_6;
         __pyx_t_6 = 0;
@@ -6756,14 +6720,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_2 = __pyx_memoryview_check(__pyx_v_arg); 
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_arg_base = __pyx_t_6;
         __pyx_t_6 = 0;
         __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg_base, __pyx_v_ndarray); 
         __pyx_t_2 = (__pyx_t_3 != 0);
         if (__pyx_t_2) {
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_v_dtype = __pyx_t_6;
           __pyx_t_6 = 0;
@@ -6785,14 +6749,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_2 = (__pyx_v_dtype != Py_None);
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_itemsize = __pyx_t_5;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_kind = __pyx_t_7;
         __pyx_v_dtype_signed = (__pyx_v_kind == 'i');
@@ -6807,15 +6771,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L16_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L16_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           __pyx_t_2 = (((sizeof(double)) == __pyx_v_itemsize) != 0);
@@ -6824,15 +6788,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L19_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L19_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           break;
@@ -6859,7 +6823,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
@@ -6881,27 +6845,27 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
         PyErr_Clear(); 
       }
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
     goto __pyx_L10_break;
   }
   __pyx_L10_break:;
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_candidates = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
   if (unlikely(__pyx_v_signatures == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_6);
   __pyx_t_6 = __pyx_t_1;
@@ -6909,12 +6873,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_6, __pyx_t_9, &__pyx_t_5, &__pyx_t_1, NULL, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_sig, __pyx_t_1);
     __pyx_t_1 = 0;
     __pyx_v_match_found = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_14 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
@@ -6928,10 +6892,10 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     }
     __pyx_t_12 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_kp_s_) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s_);
     __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 197, __pyx_L1_error)
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -6946,12 +6910,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     }
     __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_12, __pyx_kp_s__2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s__2);
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __Pyx_XDECREF_SET(__pyx_v_src_sig, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
     __pyx_t_16 = __pyx_t_15;
     for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
       __pyx_v_i = __pyx_t_17;
@@ -6962,11 +6926,11 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
       __pyx_t_3 = (__pyx_v_dst_type != Py_None);
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 193, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         if (__pyx_t_2) {
           __pyx_v_match_found = 1;
@@ -6982,35 +6946,35 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_4accumulator_update_3D(CYTHON_
     __pyx_L32_break:;
     __pyx_t_2 = (__pyx_v_match_found != 0);
     if (__pyx_t_2) {
-      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_2 = (PyList_GET_SIZE(__pyx_v_candidates) != 0);
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
-  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 193, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_9 > 1) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 197, __pyx_L1_error)
+    __PYX_ERR(0, 193, __pyx_L1_error)
   }
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
     if (unlikely(__pyx_v_signatures == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 197, __pyx_L1_error)
+      __PYX_ERR(0, 193, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -7049,14 +7013,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_36__defaults__(CYTHON_UNUSED P
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -7122,19 +7086,19 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_21accumulator_upda
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 1); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 1); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 2); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 2); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 3); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 3); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -7144,7 +7108,7 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_21accumulator_upda
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D") < 0)) __PYX_ERR(0, 197, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D") < 0)) __PYX_ERR(0, 193, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7158,19 +7122,19 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_21accumulator_upda
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
     if (values[4]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 197, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 193, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.accumulator_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7240,7 +7204,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   PyObject *__pyx_t_38 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_0accumulator_update_3D", 0);
 
-  /* "cyTVDN/halfisotropic.pyx":208
+  /* "cyTVDN/halfisotropic.pyx":204
  *     # shape of the 4-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -7252,7 +7216,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":212
+  /* "cyTVDN/halfisotropic.pyx":208
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -7264,7 +7228,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":213
+  /* "cyTVDN/halfisotropic.pyx":209
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
@@ -7274,7 +7238,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTVDN/halfisotropic.pyx":217
+  /* "cyTVDN/halfisotropic.pyx":213
  *     # keep track of the norm of the accumulators
  * 
  *     cdef _float norm = 0.0             # <<<<<<<<<<<<<<
@@ -7283,7 +7247,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
   __pyx_v_norm = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":225
+  /* "cyTVDN/halfisotropic.pyx":221
  *     # for better division of labor on systems with a lot of threads,
  *     # we roll the two outer loops together into one prange
  *     cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])             # <<<<<<<<<<<<<<
@@ -7292,7 +7256,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
   __pyx_v_outer_iterator = (((__pyx_v_shape[0]) - (__pyx_v_start[0])) * ((__pyx_v_shape[1]) - (__pyx_v_start[1])));
 
-  /* "cyTVDN/halfisotropic.pyx":228
+  /* "cyTVDN/halfisotropic.pyx":224
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -7334,7 +7298,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
                             __pyx_v_j = ((Py_ssize_t)0xbad0bad0);
                             __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
 
-                            /* "cyTVDN/halfisotropic.pyx":229
+                            /* "cyTVDN/halfisotropic.pyx":225
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -7343,7 +7307,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
                             __pyx_v_i = ((__pyx_v_start[0]) + (__pyx_v_ij / ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":230
+                            /* "cyTVDN/halfisotropic.pyx":226
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -7352,7 +7316,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":231
+                            /* "cyTVDN/halfisotropic.pyx":227
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -7364,7 +7328,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
                             for (__pyx_t_9 = (__pyx_v_start[2]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
                               __pyx_v_k = __pyx_t_9;
 
-                              /* "cyTVDN/halfisotropic.pyx":232
+                              /* "cyTVDN/halfisotropic.pyx":228
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -7378,7 +7342,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
                               __pyx_t_14 = (__pyx_v_j - (__pyx_v_start[1]));
                               __pyx_t_15 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                              /* "cyTVDN/halfisotropic.pyx":233
+                              /* "cyTVDN/halfisotropic.pyx":229
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                                                  + b[i,j,k], clip)             # <<<<<<<<<<<<<<
@@ -7389,7 +7353,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
                               __pyx_t_17 = __pyx_v_j;
                               __pyx_t_18 = __pyx_v_k;
 
-                              /* "cyTVDN/halfisotropic.pyx":232
+                              /* "cyTVDN/halfisotropic.pyx":228
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -7398,7 +7362,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
                               __pyx_v_b_new = __pyx_fuse_0__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_10 * __pyx_v_a.strides[0]) ) + __pyx_t_11 * __pyx_v_a.strides[1]) ) + __pyx_t_12 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_16 * __pyx_v_b.strides[0]) ) + __pyx_t_17 * __pyx_v_b.strides[1]) ) + __pyx_t_18 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                              /* "cyTVDN/halfisotropic.pyx":234
+                              /* "cyTVDN/halfisotropic.pyx":230
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                                                  + b[i,j,k], clip)
  *             norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -7407,7 +7371,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
                               __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-                              /* "cyTVDN/halfisotropic.pyx":235
+                              /* "cyTVDN/halfisotropic.pyx":231
  *                                                  + b[i,j,k], clip)
  *             norm += fabs(b_new)
  *             b[i,j,k] = b_new             # <<<<<<<<<<<<<<
@@ -7432,7 +7396,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
         #endif
       }
 
-      /* "cyTVDN/halfisotropic.pyx":228
+      /* "cyTVDN/halfisotropic.pyx":224
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -7451,7 +7415,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":244
+  /* "cyTVDN/halfisotropic.pyx":240
  *     cdef Py_ssize_t m,n,o
  *     cdef Py_ssize_t stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -7460,7 +7424,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":245
+  /* "cyTVDN/halfisotropic.pyx":241
  *     cdef Py_ssize_t stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -7469,7 +7433,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTVDN/halfisotropic.pyx":248
+  /* "cyTVDN/halfisotropic.pyx":244
  * 
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -7481,7 +7445,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   __pyx_t_22[2] = 0;
   memcpy(&(__pyx_v_delta[0]), __pyx_t_22, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":249
+  /* "cyTVDN/halfisotropic.pyx":245
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -7491,7 +7455,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTVDN/halfisotropic.pyx":250
+    /* "cyTVDN/halfisotropic.pyx":246
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -7500,7 +7464,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTVDN/halfisotropic.pyx":249
+    /* "cyTVDN/halfisotropic.pyx":245
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -7510,7 +7474,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
     break;
     case 1:
 
-    /* "cyTVDN/halfisotropic.pyx":252
+    /* "cyTVDN/halfisotropic.pyx":248
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -7519,7 +7483,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTVDN/halfisotropic.pyx":251
+    /* "cyTVDN/halfisotropic.pyx":247
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -7529,7 +7493,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
     break;
     case 2:
 
-    /* "cyTVDN/halfisotropic.pyx":255
+    /* "cyTVDN/halfisotropic.pyx":251
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -7538,7 +7502,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTVDN/halfisotropic.pyx":253
+    /* "cyTVDN/halfisotropic.pyx":249
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -7549,7 +7513,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
     default: break;
   }
 
-  /* "cyTVDN/halfisotropic.pyx":257
+  /* "cyTVDN/halfisotropic.pyx":253
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
@@ -7561,7 +7525,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
 
-    /* "cyTVDN/halfisotropic.pyx":258
+    /* "cyTVDN/halfisotropic.pyx":254
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
@@ -7573,7 +7537,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_n = __pyx_t_9;
 
-      /* "cyTVDN/halfisotropic.pyx":259
+      /* "cyTVDN/halfisotropic.pyx":255
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
@@ -7585,7 +7549,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
       for (__pyx_t_25 = 0; __pyx_t_25 < __pyx_t_24; __pyx_t_25+=1) {
         __pyx_v_o = __pyx_t_25;
 
-        /* "cyTVDN/halfisotropic.pyx":260
+        /* "cyTVDN/halfisotropic.pyx":256
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -7599,7 +7563,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
         __pyx_t_30 = (__pyx_v_n + (__pyx_v_delta[1]));
         __pyx_t_31 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTVDN/halfisotropic.pyx":261
+        /* "cyTVDN/halfisotropic.pyx":257
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
@@ -7610,7 +7574,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
         __pyx_t_33 = __pyx_v_n;
         __pyx_t_34 = __pyx_v_o;
 
-        /* "cyTVDN/halfisotropic.pyx":260
+        /* "cyTVDN/halfisotropic.pyx":256
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -7619,7 +7583,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
         __pyx_v_b_new = __pyx_fuse_0__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_26 * __pyx_v_a.strides[0]) ) + __pyx_t_27 * __pyx_v_a.strides[1]) ) + __pyx_t_28 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_29 * __pyx_v_a.strides[0]) ) + __pyx_t_30 * __pyx_v_a.strides[1]) ) + __pyx_t_31 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_32 * __pyx_v_b.strides[0]) ) + __pyx_t_33 * __pyx_v_b.strides[1]) ) + __pyx_t_34 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-        /* "cyTVDN/halfisotropic.pyx":262
+        /* "cyTVDN/halfisotropic.pyx":258
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                     + b[m,n,o], clip)
  *                 norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -7628,7 +7592,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  */
         __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-        /* "cyTVDN/halfisotropic.pyx":263
+        /* "cyTVDN/halfisotropic.pyx":259
  *                                     + b[m,n,o], clip)
  *                 norm += fabs(b_new)
  *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
@@ -7643,7 +7607,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
     }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":265
+  /* "cyTVDN/halfisotropic.pyx":261
  *                 b[m,n,o] = b_new
  * 
  *     return norm             # <<<<<<<<<<<<<<
@@ -7651,13 +7615,13 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_20accumulator_update_3D(CYTHON
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_38 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_38)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_38 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_38)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_38);
   __pyx_r = __pyx_t_38;
   __pyx_t_38 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/halfisotropic.pyx":197
+  /* "cyTVDN/halfisotropic.pyx":193
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
@@ -7685,14 +7649,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_38__defaults__(CYTHON_UNUSED P
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -7758,19 +7722,19 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_23accumulator_upda
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 1); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 1); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 2); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 2); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 3); __PYX_ERR(0, 197, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, 3); __PYX_ERR(0, 193, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
@@ -7780,7 +7744,7 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_23accumulator_upda
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D") < 0)) __PYX_ERR(0, 197, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D") < 0)) __PYX_ERR(0, 193, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -7794,19 +7758,19 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_23accumulator_upda
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
     if (values[4]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 197, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 197, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 193, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.accumulator_update_3D", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -7876,7 +7840,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   PyObject *__pyx_t_38 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_1accumulator_update_3D", 0);
 
-  /* "cyTVDN/halfisotropic.pyx":208
+  /* "cyTVDN/halfisotropic.pyx":204
  *     # shape of the 4-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -7888,7 +7852,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":212
+  /* "cyTVDN/halfisotropic.pyx":208
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -7900,7 +7864,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":213
+  /* "cyTVDN/halfisotropic.pyx":209
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
@@ -7910,7 +7874,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTVDN/halfisotropic.pyx":217
+  /* "cyTVDN/halfisotropic.pyx":213
  *     # keep track of the norm of the accumulators
  * 
  *     cdef _float norm = 0.0             # <<<<<<<<<<<<<<
@@ -7919,7 +7883,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
   __pyx_v_norm = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":225
+  /* "cyTVDN/halfisotropic.pyx":221
  *     # for better division of labor on systems with a lot of threads,
  *     # we roll the two outer loops together into one prange
  *     cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])             # <<<<<<<<<<<<<<
@@ -7928,7 +7892,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
   __pyx_v_outer_iterator = (((__pyx_v_shape[0]) - (__pyx_v_start[0])) * ((__pyx_v_shape[1]) - (__pyx_v_start[1])));
 
-  /* "cyTVDN/halfisotropic.pyx":228
+  /* "cyTVDN/halfisotropic.pyx":224
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -7970,7 +7934,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
                             __pyx_v_j = ((Py_ssize_t)0xbad0bad0);
                             __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
 
-                            /* "cyTVDN/halfisotropic.pyx":229
+                            /* "cyTVDN/halfisotropic.pyx":225
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -7979,7 +7943,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
                             __pyx_v_i = ((__pyx_v_start[0]) + (__pyx_v_ij / ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":230
+                            /* "cyTVDN/halfisotropic.pyx":226
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -7988,7 +7952,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":231
+                            /* "cyTVDN/halfisotropic.pyx":227
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -8000,7 +7964,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
                             for (__pyx_t_9 = (__pyx_v_start[2]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
                               __pyx_v_k = __pyx_t_9;
 
-                              /* "cyTVDN/halfisotropic.pyx":232
+                              /* "cyTVDN/halfisotropic.pyx":228
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -8014,7 +7978,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
                               __pyx_t_14 = (__pyx_v_j - (__pyx_v_start[1]));
                               __pyx_t_15 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                              /* "cyTVDN/halfisotropic.pyx":233
+                              /* "cyTVDN/halfisotropic.pyx":229
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                                                  + b[i,j,k], clip)             # <<<<<<<<<<<<<<
@@ -8025,7 +7989,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
                               __pyx_t_17 = __pyx_v_j;
                               __pyx_t_18 = __pyx_v_k;
 
-                              /* "cyTVDN/halfisotropic.pyx":232
+                              /* "cyTVDN/halfisotropic.pyx":228
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -8034,7 +7998,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
                               __pyx_v_b_new = __pyx_fuse_1__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_10 * __pyx_v_a.strides[0]) ) + __pyx_t_11 * __pyx_v_a.strides[1]) ) + __pyx_t_12 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_16 * __pyx_v_b.strides[0]) ) + __pyx_t_17 * __pyx_v_b.strides[1]) ) + __pyx_t_18 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                              /* "cyTVDN/halfisotropic.pyx":234
+                              /* "cyTVDN/halfisotropic.pyx":230
  *             b_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                                                  + b[i,j,k], clip)
  *             norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -8043,7 +8007,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
                               __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-                              /* "cyTVDN/halfisotropic.pyx":235
+                              /* "cyTVDN/halfisotropic.pyx":231
  *                                                  + b[i,j,k], clip)
  *             norm += fabs(b_new)
  *             b[i,j,k] = b_new             # <<<<<<<<<<<<<<
@@ -8068,7 +8032,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
         #endif
       }
 
-      /* "cyTVDN/halfisotropic.pyx":228
+      /* "cyTVDN/halfisotropic.pyx":224
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -8087,7 +8051,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":244
+  /* "cyTVDN/halfisotropic.pyx":240
  *     cdef Py_ssize_t m,n,o
  *     cdef Py_ssize_t stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -8096,7 +8060,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":245
+  /* "cyTVDN/halfisotropic.pyx":241
  *     cdef Py_ssize_t stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -8105,7 +8069,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTVDN/halfisotropic.pyx":248
+  /* "cyTVDN/halfisotropic.pyx":244
  * 
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -8117,7 +8081,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   __pyx_t_22[2] = 0;
   memcpy(&(__pyx_v_delta[0]), __pyx_t_22, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":249
+  /* "cyTVDN/halfisotropic.pyx":245
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -8127,7 +8091,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTVDN/halfisotropic.pyx":250
+    /* "cyTVDN/halfisotropic.pyx":246
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -8136,7 +8100,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTVDN/halfisotropic.pyx":249
+    /* "cyTVDN/halfisotropic.pyx":245
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -8146,7 +8110,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
     break;
     case 1:
 
-    /* "cyTVDN/halfisotropic.pyx":252
+    /* "cyTVDN/halfisotropic.pyx":248
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -8155,7 +8119,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTVDN/halfisotropic.pyx":251
+    /* "cyTVDN/halfisotropic.pyx":247
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -8165,7 +8129,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
     break;
     case 2:
 
-    /* "cyTVDN/halfisotropic.pyx":255
+    /* "cyTVDN/halfisotropic.pyx":251
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -8174,7 +8138,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTVDN/halfisotropic.pyx":253
+    /* "cyTVDN/halfisotropic.pyx":249
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -8185,7 +8149,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
     default: break;
   }
 
-  /* "cyTVDN/halfisotropic.pyx":257
+  /* "cyTVDN/halfisotropic.pyx":253
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
@@ -8197,7 +8161,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
 
-    /* "cyTVDN/halfisotropic.pyx":258
+    /* "cyTVDN/halfisotropic.pyx":254
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
@@ -8209,7 +8173,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_n = __pyx_t_9;
 
-      /* "cyTVDN/halfisotropic.pyx":259
+      /* "cyTVDN/halfisotropic.pyx":255
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
@@ -8221,7 +8185,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
       for (__pyx_t_25 = 0; __pyx_t_25 < __pyx_t_24; __pyx_t_25+=1) {
         __pyx_v_o = __pyx_t_25;
 
-        /* "cyTVDN/halfisotropic.pyx":260
+        /* "cyTVDN/halfisotropic.pyx":256
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -8235,7 +8199,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
         __pyx_t_30 = (__pyx_v_n + (__pyx_v_delta[1]));
         __pyx_t_31 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTVDN/halfisotropic.pyx":261
+        /* "cyTVDN/halfisotropic.pyx":257
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                     + b[m,n,o], clip)             # <<<<<<<<<<<<<<
@@ -8246,7 +8210,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
         __pyx_t_33 = __pyx_v_n;
         __pyx_t_34 = __pyx_v_o;
 
-        /* "cyTVDN/halfisotropic.pyx":260
+        /* "cyTVDN/halfisotropic.pyx":256
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -8255,7 +8219,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
         __pyx_v_b_new = __pyx_fuse_1__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_26 * __pyx_v_a.strides[0]) ) + __pyx_t_27 * __pyx_v_a.strides[1]) ) + __pyx_t_28 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_29 * __pyx_v_a.strides[0]) ) + __pyx_t_30 * __pyx_v_a.strides[1]) ) + __pyx_t_31 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_32 * __pyx_v_b.strides[0]) ) + __pyx_t_33 * __pyx_v_b.strides[1]) ) + __pyx_t_34 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-        /* "cyTVDN/halfisotropic.pyx":262
+        /* "cyTVDN/halfisotropic.pyx":258
  *                 b_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                     + b[m,n,o], clip)
  *                 norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -8264,7 +8228,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  */
         __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-        /* "cyTVDN/halfisotropic.pyx":263
+        /* "cyTVDN/halfisotropic.pyx":259
  *                                     + b[m,n,o], clip)
  *                 norm += fabs(b_new)
  *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
@@ -8279,7 +8243,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
     }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":265
+  /* "cyTVDN/halfisotropic.pyx":261
  *                 b[m,n,o] = b_new
  * 
  *     return norm             # <<<<<<<<<<<<<<
@@ -8287,13 +8251,13 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_38 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_38)) __PYX_ERR(0, 265, __pyx_L1_error)
+  __pyx_t_38 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_38)) __PYX_ERR(0, 261, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_38);
   __pyx_r = __pyx_t_38;
   __pyx_t_38 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/halfisotropic.pyx":197
+  /* "cyTVDN/halfisotropic.pyx":193
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
@@ -8314,7 +8278,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_22accumulator_update_3D(CYTHON
   return __pyx_r;
 }
 
-/* "cyTVDN/halfisotropic.pyx":271
+/* "cyTVDN/halfisotropic.pyx":267
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -8361,23 +8325,23 @@ static PyObject *__pyx_pw_6cyTVDN_13halfisotropic_7accumulator_update_3D_FISTA(P
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_args)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 1); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_kwargs)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 2); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_defaults)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, 3); __PYX_ERR(0, 267, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 271, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "__pyx_fused_cpdef") < 0)) __PYX_ERR(0, 267, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -8394,7 +8358,7 @@ static PyObject *__pyx_pw_6cyTVDN_13halfisotropic_7accumulator_update_3D_FISTA(P
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 271, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("__pyx_fused_cpdef", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 267, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.__pyx_fused_cpdef", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -8445,7 +8409,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
   int __pyx_t_18;
   __Pyx_RefNannySetupContext("accumulator_update_3D_FISTA", 0);
   __Pyx_INCREF(__pyx_v_kwargs);
-  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(Py_None);
   __Pyx_GIVEREF(Py_None);
@@ -8459,7 +8423,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     __pyx_t_2 = __pyx_t_4;
     goto __pyx_L4_bool_binop_done;
   }
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_v_kwargs); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
   __pyx_t_3 = ((!__pyx_t_4) != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L4_bool_binop_done:;
@@ -8467,21 +8431,21 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     __Pyx_INCREF(Py_None);
     __Pyx_DECREF_SET(__pyx_v_kwargs, Py_None);
   }
-  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__Pyx_ImportNumPyArrayTypeIfAvailable()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ndarray = ((PyTypeObject*)__pyx_t_1);
   __pyx_t_1 = 0;
   __pyx_v_itemsize = -1L;
   if (unlikely(__pyx_v_args == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
-  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
   __pyx_t_2 = ((0 < __pyx_t_5) != 0);
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 271, __pyx_L1_error)
+      __PYX_ERR(0, 267, __pyx_L1_error)
     }
     __pyx_t_1 = PyTuple_GET_ITEM(((PyObject*)__pyx_v_args), 0);
     __Pyx_INCREF(__pyx_t_1);
@@ -8498,18 +8462,18 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
   }
   if (unlikely(__pyx_v_kwargs == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
-  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_4 = (__Pyx_PyDict_ContainsTF(__pyx_n_s_a, ((PyObject*)__pyx_v_kwargs), Py_EQ)); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
   __pyx_t_3 = (__pyx_t_4 != 0);
   __pyx_t_2 = __pyx_t_3;
   __pyx_L7_bool_binop_done:;
   if (__pyx_t_2) {
     if (unlikely(__pyx_v_kwargs == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 271, __pyx_L1_error)
+      __PYX_ERR(0, 267, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_kwargs), __pyx_n_s_a); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_arg = __pyx_t_1;
     __pyx_t_1 = 0;
@@ -8518,12 +8482,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
   /*else*/ {
     if (unlikely(__pyx_v_args == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 271, __pyx_L1_error)
+      __PYX_ERR(0, 267, __pyx_L1_error)
     }
-    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
-    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_GET_SIZE(((PyObject*)__pyx_v_args)); if (unlikely(__pyx_t_5 == ((Py_ssize_t)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
+    __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_6 = PyTuple_New(3); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_INCREF(__pyx_int_6);
     __Pyx_GIVEREF(__pyx_int_6);
@@ -8534,15 +8498,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_6, 2, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyString_Format(__pyx_kp_s_Expected_at_least_d_argument_s_g, __pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
   __pyx_L6:;
   while (1) {
@@ -8552,7 +8516,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg, __pyx_v_ndarray); 
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_dtype = __pyx_t_6;
         __pyx_t_6 = 0;
@@ -8561,14 +8525,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_2 = __pyx_memoryview_check(__pyx_v_arg); 
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_base); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
         __pyx_v_arg_base = __pyx_t_6;
         __pyx_t_6 = 0;
         __pyx_t_3 = __Pyx_TypeCheck(__pyx_v_arg_base, __pyx_v_ndarray); 
         __pyx_t_2 = (__pyx_t_3 != 0);
         if (__pyx_t_2) {
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg_base, __pyx_n_s_dtype); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
           __pyx_v_dtype = __pyx_t_6;
           __pyx_t_6 = 0;
@@ -8590,14 +8554,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_2 = (__pyx_v_dtype != Py_None);
       __pyx_t_3 = (__pyx_t_2 != 0);
       if (__pyx_t_3) {
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_itemsize); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_itemsize = __pyx_t_5;
-        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_dtype, __pyx_n_s_kind); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_6);
-        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_7 = __Pyx_PyObject_Ord(__pyx_t_6); if (unlikely(__pyx_t_7 == ((long)(long)(Py_UCS4)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
         __pyx_v_kind = __pyx_t_7;
         __pyx_v_dtype_signed = (__pyx_v_kind == 'i');
@@ -8612,15 +8576,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L16_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L16_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           __pyx_t_2 = (((sizeof(double)) == __pyx_v_itemsize) != 0);
@@ -8629,15 +8593,15 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
             __pyx_t_3 = __pyx_t_2;
             goto __pyx_L19_bool_binop_done;
           }
-          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+          __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_arg, __pyx_n_s_ndim); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_6);
-          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 271, __pyx_L1_error)
+          __pyx_t_5 = __Pyx_PyIndex_AsSsize_t(__pyx_t_6); if (unlikely((__pyx_t_5 == (Py_ssize_t)-1) && PyErr_Occurred())) __PYX_ERR(0, 267, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
           __pyx_t_2 = ((((Py_ssize_t)__pyx_t_5) == 3) != 0);
           __pyx_t_3 = __pyx_t_2;
           __pyx_L19_bool_binop_done:;
           if (__pyx_t_3) {
-            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+            if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
             goto __pyx_L10_break;
           }
           break;
@@ -8664,7 +8628,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_float, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
@@ -8686,27 +8650,27 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_3 = (__pyx_v_memslice.memview != 0);
       if (__pyx_t_3) {
         __PYX_XDEC_MEMVIEW((&__pyx_v_memslice), 1); 
-        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+        if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, __pyx_n_s_double, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
         goto __pyx_L10_break;
       }
       /*else*/ {
         PyErr_Clear(); 
       }
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_dest_sig, 0, Py_None, long, 1, __Pyx_PyInt_From_long, 1, 0, 0) < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
     goto __pyx_L10_break;
   }
   __pyx_L10_break:;
-  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_6 = PyList_New(0); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_v_candidates = ((PyObject*)__pyx_t_6);
   __pyx_t_6 = 0;
   __pyx_t_5 = 0;
   if (unlikely(__pyx_v_signatures == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_dict_iterator(((PyObject*)__pyx_v_signatures), 1, ((PyObject *)NULL), (&__pyx_t_9), (&__pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_6);
   __pyx_t_6 = __pyx_t_1;
@@ -8714,12 +8678,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
   while (1) {
     __pyx_t_11 = __Pyx_dict_iter_next(__pyx_t_6, __pyx_t_9, &__pyx_t_5, &__pyx_t_1, NULL, NULL, __pyx_t_10);
     if (unlikely(__pyx_t_11 == 0)) break;
-    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 271, __pyx_L1_error)
+    if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_sig, __pyx_t_1);
     __pyx_t_1 = 0;
     __pyx_v_match_found = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_v_sig, __pyx_n_s_strip); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __pyx_t_14 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_13))) {
@@ -8733,10 +8697,10 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     }
     __pyx_t_12 = (__pyx_t_14) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_14, __pyx_kp_s_) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s_);
     __Pyx_XDECREF(__pyx_t_14); __pyx_t_14 = 0;
-    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 271, __pyx_L1_error)
+    if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_12);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
-    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_13 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_split); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
     __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
     __pyx_t_12 = NULL;
@@ -8751,12 +8715,12 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     }
     __pyx_t_1 = (__pyx_t_12) ? __Pyx_PyObject_Call2Args(__pyx_t_13, __pyx_t_12, __pyx_kp_s__2) : __Pyx_PyObject_CallOneArg(__pyx_t_13, __pyx_kp_s__2);
     __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
     __Pyx_XDECREF_SET(__pyx_v_src_sig, __pyx_t_1);
     __pyx_t_1 = 0;
-    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_15 = PyList_GET_SIZE(__pyx_v_dest_sig); if (unlikely(__pyx_t_15 == ((Py_ssize_t)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
     __pyx_t_16 = __pyx_t_15;
     for (__pyx_t_17 = 0; __pyx_t_17 < __pyx_t_16; __pyx_t_17+=1) {
       __pyx_v_i = __pyx_t_17;
@@ -8767,11 +8731,11 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
       __pyx_t_3 = (__pyx_v_dst_type != Py_None);
       __pyx_t_2 = (__pyx_t_3 != 0);
       if (__pyx_t_2) {
-        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_src_sig, __pyx_v_i, Py_ssize_t, 1, PyInt_FromSsize_t, 0, 0, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_1);
-        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_13 = PyObject_RichCompare(__pyx_t_1, __pyx_v_dst_type, Py_EQ); __Pyx_XGOTREF(__pyx_t_13); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_IsTrue(__pyx_t_13); if (unlikely(__pyx_t_2 < 0)) __PYX_ERR(0, 267, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         if (__pyx_t_2) {
           __pyx_v_match_found = 1;
@@ -8787,35 +8751,35 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_6accumulator_update_3D_FISTA(C
     __pyx_L32_break:;
     __pyx_t_2 = (__pyx_v_match_found != 0);
     if (__pyx_t_2) {
-      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
+      __pyx_t_18 = __Pyx_PyList_Append(__pyx_v_candidates, __pyx_v_sig); if (unlikely(__pyx_t_18 == ((int)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
     }
   }
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
   __pyx_t_2 = (PyList_GET_SIZE(__pyx_v_candidates) != 0);
   __pyx_t_3 = ((!__pyx_t_2) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
-  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_9 = PyList_GET_SIZE(__pyx_v_candidates); if (unlikely(__pyx_t_9 == ((Py_ssize_t)-1))) __PYX_ERR(0, 267, __pyx_L1_error)
   __pyx_t_3 = ((__pyx_t_9 > 1) != 0);
   if (__pyx_t_3) {
-    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __Pyx_Raise(__pyx_t_6, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
-    __PYX_ERR(0, 271, __pyx_L1_error)
+    __PYX_ERR(0, 267, __pyx_L1_error)
   }
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
     if (unlikely(__pyx_v_signatures == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 271, __pyx_L1_error)
+      __PYX_ERR(0, 267, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 271, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyDict_GetItem(((PyObject*)__pyx_v_signatures), PyList_GET_ITEM(__pyx_v_candidates, 0)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 267, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     __pyx_r = __pyx_t_6;
     __pyx_t_6 = 0;
@@ -8854,14 +8818,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_44__defaults__(CYTHON_UNUSED P
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -8933,31 +8897,31 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_27accumulator_upda
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_d)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_tk)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -8967,7 +8931,7 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_27accumulator_upda
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 271, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 267, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -8983,21 +8947,21 @@ static PyObject *__pyx_fuse_0__pyx_pw_6cyTVDN_13halfisotropic_27accumulator_upda
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_tk = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_tk == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_float(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_tk = __pyx_PyFloat_AsFloat(values[3]); if (unlikely((__pyx_v_tk == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsFloat(values[5]); if (unlikely((__pyx_v_clip == (float)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 271, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 267, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9080,7 +9044,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   PyObject *__pyx_t_50 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_0accumulator_update_3D_FISTA", 0);
 
-  /* "cyTVDN/halfisotropic.pyx":283
+  /* "cyTVDN/halfisotropic.pyx":279
  *     # shape of the 4-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -9092,7 +9056,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":287
+  /* "cyTVDN/halfisotropic.pyx":283
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -9104,7 +9068,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":288
+  /* "cyTVDN/halfisotropic.pyx":284
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
@@ -9114,7 +9078,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTVDN/halfisotropic.pyx":290
+  /* "cyTVDN/halfisotropic.pyx":286
  *     start[ax] += 1
  * 
  *     cdef _float norm = 0.0             # <<<<<<<<<<<<<<
@@ -9123,7 +9087,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
   __pyx_v_norm = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":297
+  /* "cyTVDN/halfisotropic.pyx":293
  * 
  *     # temporary holder for updated d value
  *     cdef _float d_new = 0.0             # <<<<<<<<<<<<<<
@@ -9132,7 +9096,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
   __pyx_v_d_new = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":301
+  /* "cyTVDN/halfisotropic.pyx":297
  *     # for better division of labor on systems with a lot of threads,
  *     # we roll the two outer loops together into one prange
  *     cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])             # <<<<<<<<<<<<<<
@@ -9141,7 +9105,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
   __pyx_v_outer_iterator = (((__pyx_v_shape[0]) - (__pyx_v_start[0])) * ((__pyx_v_shape[1]) - (__pyx_v_start[1])));
 
-  /* "cyTVDN/halfisotropic.pyx":304
+  /* "cyTVDN/halfisotropic.pyx":300
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -9184,7 +9148,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                             __pyx_v_j = ((Py_ssize_t)0xbad0bad0);
                             __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
 
-                            /* "cyTVDN/halfisotropic.pyx":305
+                            /* "cyTVDN/halfisotropic.pyx":301
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -9193,7 +9157,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
                             __pyx_v_i = ((__pyx_v_start[0]) + (__pyx_v_ij / ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":306
+                            /* "cyTVDN/halfisotropic.pyx":302
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -9202,7 +9166,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":307
+                            /* "cyTVDN/halfisotropic.pyx":303
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -9214,7 +9178,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                             for (__pyx_t_9 = (__pyx_v_start[2]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
                               __pyx_v_k = __pyx_t_9;
 
-                              /* "cyTVDN/halfisotropic.pyx":308
+                              /* "cyTVDN/halfisotropic.pyx":304
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -9228,7 +9192,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                               __pyx_t_14 = (__pyx_v_j - (__pyx_v_start[1]));
                               __pyx_t_15 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                              /* "cyTVDN/halfisotropic.pyx":309
+                              /* "cyTVDN/halfisotropic.pyx":305
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                              + b[i,j,k], clip)             # <<<<<<<<<<<<<<
@@ -9239,7 +9203,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                               __pyx_t_17 = __pyx_v_j;
                               __pyx_t_18 = __pyx_v_k;
 
-                              /* "cyTVDN/halfisotropic.pyx":308
+                              /* "cyTVDN/halfisotropic.pyx":304
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -9248,7 +9212,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
                               __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_10 * __pyx_v_a.strides[0]) ) + __pyx_t_11 * __pyx_v_a.strides[1]) ) + __pyx_t_12 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_16 * __pyx_v_b.strides[0]) ) + __pyx_t_17 * __pyx_v_b.strides[1]) ) + __pyx_t_18 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                              /* "cyTVDN/halfisotropic.pyx":310
+                              /* "cyTVDN/halfisotropic.pyx":306
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                              + b[i,j,k], clip)
  *             b_new = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
@@ -9260,7 +9224,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                               __pyx_t_21 = __pyx_v_k;
                               __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_19 * __pyx_v_d.strides[0]) ) + __pyx_t_20 * __pyx_v_d.strides[1]) ) + __pyx_t_21 * __pyx_v_d.strides[2]) ))))));
 
-                              /* "cyTVDN/halfisotropic.pyx":311
+                              /* "cyTVDN/halfisotropic.pyx":307
  *                              + b[i,j,k], clip)
  *             b_new = d_new + tk*(d_new - d[i,j,k])
  *             b[i,j,k] = b_new             # <<<<<<<<<<<<<<
@@ -9272,7 +9236,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
                               __pyx_t_24 = __pyx_v_k;
                               *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_22 * __pyx_v_b.strides[0]) ) + __pyx_t_23 * __pyx_v_b.strides[1]) ) + __pyx_t_24 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
 
-                              /* "cyTVDN/halfisotropic.pyx":312
+                              /* "cyTVDN/halfisotropic.pyx":308
  *             b_new = d_new + tk*(d_new - d[i,j,k])
  *             b[i,j,k] = b_new
  *             norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -9281,7 +9245,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
                               __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-                              /* "cyTVDN/halfisotropic.pyx":313
+                              /* "cyTVDN/halfisotropic.pyx":309
  *             b[i,j,k] = b_new
  *             norm += fabs(b_new)
  *             d[i,j,k] = d_new             # <<<<<<<<<<<<<<
@@ -9306,7 +9270,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
         #endif
       }
 
-      /* "cyTVDN/halfisotropic.pyx":304
+      /* "cyTVDN/halfisotropic.pyx":300
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -9325,7 +9289,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":322
+  /* "cyTVDN/halfisotropic.pyx":318
  *     cdef Py_ssize_t m,n,o
  *     cdef Py_ssize_t stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -9334,7 +9298,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":323
+  /* "cyTVDN/halfisotropic.pyx":319
  *     cdef Py_ssize_t stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -9343,7 +9307,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTVDN/halfisotropic.pyx":326
+  /* "cyTVDN/halfisotropic.pyx":322
  * 
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -9355,7 +9319,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   __pyx_t_28[2] = 0;
   memcpy(&(__pyx_v_delta[0]), __pyx_t_28, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":327
+  /* "cyTVDN/halfisotropic.pyx":323
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -9365,7 +9329,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTVDN/halfisotropic.pyx":328
+    /* "cyTVDN/halfisotropic.pyx":324
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -9374,7 +9338,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTVDN/halfisotropic.pyx":327
+    /* "cyTVDN/halfisotropic.pyx":323
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -9384,7 +9348,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
     break;
     case 1:
 
-    /* "cyTVDN/halfisotropic.pyx":330
+    /* "cyTVDN/halfisotropic.pyx":326
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -9393,7 +9357,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTVDN/halfisotropic.pyx":329
+    /* "cyTVDN/halfisotropic.pyx":325
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -9403,7 +9367,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
     break;
     case 2:
 
-    /* "cyTVDN/halfisotropic.pyx":333
+    /* "cyTVDN/halfisotropic.pyx":329
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -9412,7 +9376,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTVDN/halfisotropic.pyx":331
+    /* "cyTVDN/halfisotropic.pyx":327
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -9423,7 +9387,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
     default: break;
   }
 
-  /* "cyTVDN/halfisotropic.pyx":335
+  /* "cyTVDN/halfisotropic.pyx":331
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
@@ -9435,7 +9399,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
 
-    /* "cyTVDN/halfisotropic.pyx":336
+    /* "cyTVDN/halfisotropic.pyx":332
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
@@ -9447,7 +9411,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_n = __pyx_t_9;
 
-      /* "cyTVDN/halfisotropic.pyx":337
+      /* "cyTVDN/halfisotropic.pyx":333
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
@@ -9459,7 +9423,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
       for (__pyx_t_31 = 0; __pyx_t_31 < __pyx_t_30; __pyx_t_31+=1) {
         __pyx_v_o = __pyx_t_31;
 
-        /* "cyTVDN/halfisotropic.pyx":338
+        /* "cyTVDN/halfisotropic.pyx":334
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -9473,7 +9437,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
         __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
         __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTVDN/halfisotropic.pyx":339
+        /* "cyTVDN/halfisotropic.pyx":335
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                 + b[m,n,o], clip)             # <<<<<<<<<<<<<<
@@ -9484,7 +9448,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
         __pyx_t_39 = __pyx_v_n;
         __pyx_t_40 = __pyx_v_o;
 
-        /* "cyTVDN/halfisotropic.pyx":338
+        /* "cyTVDN/halfisotropic.pyx":334
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -9493,7 +9457,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
         __pyx_v_d_new = __pyx_fuse_0__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-        /* "cyTVDN/halfisotropic.pyx":340
+        /* "cyTVDN/halfisotropic.pyx":336
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                 + b[m,n,o], clip)
  *                 b_new = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
@@ -9505,7 +9469,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
         __pyx_t_43 = __pyx_v_o;
         __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_41 * __pyx_v_d.strides[0]) ) + __pyx_t_42 * __pyx_v_d.strides[1]) ) + __pyx_t_43 * __pyx_v_d.strides[2]) ))))));
 
-        /* "cyTVDN/halfisotropic.pyx":341
+        /* "cyTVDN/halfisotropic.pyx":337
  *                                 + b[m,n,o], clip)
  *                 b_new = d_new + tk*(d_new - d[m,n,o])
  *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
@@ -9517,7 +9481,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
         __pyx_t_46 = __pyx_v_o;
         *((float *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
 
-        /* "cyTVDN/halfisotropic.pyx":342
+        /* "cyTVDN/halfisotropic.pyx":338
  *                 b_new = d_new + tk*(d_new - d[m,n,o])
  *                 b[m,n,o] = b_new
  *                 norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -9526,7 +9490,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
  */
         __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-        /* "cyTVDN/halfisotropic.pyx":343
+        /* "cyTVDN/halfisotropic.pyx":339
  *                 b[m,n,o] = b_new
  *                 norm += fabs(b_new)
  *                 d[m,n,o] = d_new             # <<<<<<<<<<<<<<
@@ -9541,19 +9505,19 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_26accumulator_update_3D_FISTA(
     }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":345
+  /* "cyTVDN/halfisotropic.pyx":341
  *                 d[m,n,o] = d_new
  * 
  *     return norm             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_50 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_50)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_50 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_50)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_50);
   __pyx_r = __pyx_t_50;
   __pyx_t_50 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/halfisotropic.pyx":271
+  /* "cyTVDN/halfisotropic.pyx":267
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -9582,14 +9546,14 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_46__defaults__(CYTHON_UNUSED P
   PyObject *__pyx_t_2 = NULL;
   __Pyx_RefNannySetupContext("__defaults__", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_self)->__pyx_arg_BC_mode); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
   __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_2);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_2);
@@ -9661,31 +9625,31 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_29accumulator_upda
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_b)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 1); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_d)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 2); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_tk)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 3); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  4:
         if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_ax)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 4); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  5:
         if (likely((values[5] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_clip)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 271, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, 5); __PYX_ERR(0, 267, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  6:
@@ -9695,7 +9659,7 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_29accumulator_upda
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 271, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "accumulator_update_3D_FISTA") < 0)) __PYX_ERR(0, 267, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -9711,21 +9675,21 @@ static PyObject *__pyx_fuse_1__pyx_pw_6cyTVDN_13halfisotropic_29accumulator_upda
         default: goto __pyx_L5_argtuple_error;
       }
     }
-    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 271, __pyx_L3_error)
-    __pyx_v_tk = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_tk == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
-    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
-    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
+    __pyx_v_a = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[0], PyBUF_WRITABLE); if (unlikely(!__pyx_v_a.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_b = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[1], PyBUF_WRITABLE); if (unlikely(!__pyx_v_b.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_d = __Pyx_PyObject_to_MemoryviewSlice_dsdsds_double(values[2], PyBUF_WRITABLE); if (unlikely(!__pyx_v_d.memview)) __PYX_ERR(0, 267, __pyx_L3_error)
+    __pyx_v_tk = __pyx_PyFloat_AsDouble(values[3]); if (unlikely((__pyx_v_tk == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+    __pyx_v_ax = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_ax == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
+    __pyx_v_clip = __pyx_PyFloat_AsDouble(values[5]); if (unlikely((__pyx_v_clip == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
     if (values[6]) {
-      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 272, __pyx_L3_error)
+      __pyx_v_BC_mode = __Pyx_PyInt_As_int(values[6]); if (unlikely((__pyx_v_BC_mode == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 268, __pyx_L3_error)
     } else {
       __pyx_v_BC_mode = __pyx_dynamic_args->__pyx_arg_BC_mode;
     }
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 271, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("accumulator_update_3D_FISTA", 0, 6, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 267, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("cyTVDN.halfisotropic.accumulator_update_3D_FISTA", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
@@ -9808,7 +9772,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   PyObject *__pyx_t_50 = NULL;
   __Pyx_RefNannySetupContext("__pyx_fuse_1accumulator_update_3D_FISTA", 0);
 
-  /* "cyTVDN/halfisotropic.pyx":283
+  /* "cyTVDN/halfisotropic.pyx":279
  *     # shape of the 4-D array
  *     cdef Py_ssize_t shape[3]
  *     shape[:] = [a.shape[0],a.shape[1],a.shape[2]]             # <<<<<<<<<<<<<<
@@ -9820,7 +9784,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   __pyx_t_1[2] = (__pyx_v_a.shape[2]);
   memcpy(&(__pyx_v_shape[0]), __pyx_t_1, sizeof(__pyx_v_shape[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":287
+  /* "cyTVDN/halfisotropic.pyx":283
  *     # start point on each axis. this is zero for all axes but the rolling direction
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -9832,7 +9796,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   __pyx_t_2[2] = 0;
   memcpy(&(__pyx_v_start[0]), __pyx_t_2, sizeof(__pyx_v_start[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":288
+  /* "cyTVDN/halfisotropic.pyx":284
  *     cdef Py_ssize_t start[3]
  *     start[:] = [0,0,0]
  *     start[ax] += 1             # <<<<<<<<<<<<<<
@@ -9842,7 +9806,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   __pyx_t_3 = __pyx_v_ax;
   (__pyx_v_start[__pyx_t_3]) = ((__pyx_v_start[__pyx_t_3]) + 1);
 
-  /* "cyTVDN/halfisotropic.pyx":290
+  /* "cyTVDN/halfisotropic.pyx":286
  *     start[ax] += 1
  * 
  *     cdef _float norm = 0.0             # <<<<<<<<<<<<<<
@@ -9851,7 +9815,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
   __pyx_v_norm = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":297
+  /* "cyTVDN/halfisotropic.pyx":293
  * 
  *     # temporary holder for updated d value
  *     cdef _float d_new = 0.0             # <<<<<<<<<<<<<<
@@ -9860,7 +9824,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
   __pyx_v_d_new = 0.0;
 
-  /* "cyTVDN/halfisotropic.pyx":301
+  /* "cyTVDN/halfisotropic.pyx":297
  *     # for better division of labor on systems with a lot of threads,
  *     # we roll the two outer loops together into one prange
  *     cdef Py_ssize_t outer_iterator = (shape[0] - start[0]) * (shape[1] - start[1])             # <<<<<<<<<<<<<<
@@ -9869,7 +9833,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
   __pyx_v_outer_iterator = (((__pyx_v_shape[0]) - (__pyx_v_start[0])) * ((__pyx_v_shape[1]) - (__pyx_v_start[1])));
 
-  /* "cyTVDN/halfisotropic.pyx":304
+  /* "cyTVDN/halfisotropic.pyx":300
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -9912,7 +9876,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                             __pyx_v_j = ((Py_ssize_t)0xbad0bad0);
                             __pyx_v_k = ((Py_ssize_t)0xbad0bad0);
 
-                            /* "cyTVDN/halfisotropic.pyx":305
+                            /* "cyTVDN/halfisotropic.pyx":301
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -9921,7 +9885,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
                             __pyx_v_i = ((__pyx_v_start[0]) + (__pyx_v_ij / ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":306
+                            /* "cyTVDN/halfisotropic.pyx":302
  *     for ij in prange(outer_iterator,nogil=True):
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))             # <<<<<<<<<<<<<<
@@ -9930,7 +9894,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
                             __pyx_v_j = ((__pyx_v_start[1]) + (__pyx_v_ij % ((__pyx_v_shape[1]) - (__pyx_v_start[1]))));
 
-                            /* "cyTVDN/halfisotropic.pyx":307
+                            /* "cyTVDN/halfisotropic.pyx":303
  *         i = start[0] + (ij / (shape[1] - start[1]))
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):             # <<<<<<<<<<<<<<
@@ -9942,7 +9906,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                             for (__pyx_t_9 = (__pyx_v_start[2]); __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
                               __pyx_v_k = __pyx_t_9;
 
-                              /* "cyTVDN/halfisotropic.pyx":308
+                              /* "cyTVDN/halfisotropic.pyx":304
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -9956,7 +9920,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                               __pyx_t_14 = (__pyx_v_j - (__pyx_v_start[1]));
                               __pyx_t_15 = (__pyx_v_k - (__pyx_v_start[2]));
 
-                              /* "cyTVDN/halfisotropic.pyx":309
+                              /* "cyTVDN/halfisotropic.pyx":305
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                              + b[i,j,k], clip)             # <<<<<<<<<<<<<<
@@ -9967,7 +9931,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                               __pyx_t_17 = __pyx_v_j;
                               __pyx_t_18 = __pyx_v_k;
 
-                              /* "cyTVDN/halfisotropic.pyx":308
+                              /* "cyTVDN/halfisotropic.pyx":304
  *         j = start[1] + (ij % (shape[1] - start[1]))
  *         for k in range(start[2],shape[2]):
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]             # <<<<<<<<<<<<<<
@@ -9976,7 +9940,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
                               __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_10 * __pyx_v_a.strides[0]) ) + __pyx_t_11 * __pyx_v_a.strides[1]) ) + __pyx_t_12 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_13 * __pyx_v_a.strides[0]) ) + __pyx_t_14 * __pyx_v_a.strides[1]) ) + __pyx_t_15 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_16 * __pyx_v_b.strides[0]) ) + __pyx_t_17 * __pyx_v_b.strides[1]) ) + __pyx_t_18 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-                              /* "cyTVDN/halfisotropic.pyx":310
+                              /* "cyTVDN/halfisotropic.pyx":306
  *             d_new = clipval( a[i,j,k] - a[i-start[0],j-start[1],k-start[2]]
  *                              + b[i,j,k], clip)
  *             b_new = d_new + tk*(d_new - d[i,j,k])             # <<<<<<<<<<<<<<
@@ -9988,7 +9952,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                               __pyx_t_21 = __pyx_v_k;
                               __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_19 * __pyx_v_d.strides[0]) ) + __pyx_t_20 * __pyx_v_d.strides[1]) ) + __pyx_t_21 * __pyx_v_d.strides[2]) ))))));
 
-                              /* "cyTVDN/halfisotropic.pyx":311
+                              /* "cyTVDN/halfisotropic.pyx":307
  *                              + b[i,j,k], clip)
  *             b_new = d_new + tk*(d_new - d[i,j,k])
  *             b[i,j,k] = b_new             # <<<<<<<<<<<<<<
@@ -10000,7 +9964,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
                               __pyx_t_24 = __pyx_v_k;
                               *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_22 * __pyx_v_b.strides[0]) ) + __pyx_t_23 * __pyx_v_b.strides[1]) ) + __pyx_t_24 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
 
-                              /* "cyTVDN/halfisotropic.pyx":312
+                              /* "cyTVDN/halfisotropic.pyx":308
  *             b_new = d_new + tk*(d_new - d[i,j,k])
  *             b[i,j,k] = b_new
  *             norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -10009,7 +9973,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
                               __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-                              /* "cyTVDN/halfisotropic.pyx":313
+                              /* "cyTVDN/halfisotropic.pyx":309
  *             b[i,j,k] = b_new
  *             norm += fabs(b_new)
  *             d[i,j,k] = d_new             # <<<<<<<<<<<<<<
@@ -10034,7 +9998,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
         #endif
       }
 
-      /* "cyTVDN/halfisotropic.pyx":304
+      /* "cyTVDN/halfisotropic.pyx":300
  * 
  *     # perform the main loop
  *     for ij in prange(outer_iterator,nogil=True):             # <<<<<<<<<<<<<<
@@ -10053,7 +10017,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
       }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":322
+  /* "cyTVDN/halfisotropic.pyx":318
  *     cdef Py_ssize_t m,n,o
  *     cdef Py_ssize_t stop[3]
  *     stop = shape             # <<<<<<<<<<<<<<
@@ -10062,7 +10026,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
   memcpy(&(__pyx_v_stop[0]), __pyx_v_shape, sizeof(__pyx_v_stop[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":323
+  /* "cyTVDN/halfisotropic.pyx":319
  *     cdef Py_ssize_t stop[3]
  *     stop = shape
  *     stop[ax] = 1             # <<<<<<<<<<<<<<
@@ -10071,7 +10035,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
   (__pyx_v_stop[__pyx_v_ax]) = 1;
 
-  /* "cyTVDN/halfisotropic.pyx":326
+  /* "cyTVDN/halfisotropic.pyx":322
  * 
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]             # <<<<<<<<<<<<<<
@@ -10083,7 +10047,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   __pyx_t_28[2] = 0;
   memcpy(&(__pyx_v_delta[0]), __pyx_t_28, sizeof(__pyx_v_delta[0]) * (3));
 
-  /* "cyTVDN/halfisotropic.pyx":327
+  /* "cyTVDN/halfisotropic.pyx":323
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -10093,7 +10057,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   switch (__pyx_v_BC_mode) {
     case 0:
 
-    /* "cyTVDN/halfisotropic.pyx":328
+    /* "cyTVDN/halfisotropic.pyx":324
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1             # <<<<<<<<<<<<<<
@@ -10102,7 +10066,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = ((__pyx_v_shape[__pyx_v_ax]) - 1);
 
-    /* "cyTVDN/halfisotropic.pyx":327
+    /* "cyTVDN/halfisotropic.pyx":323
  *     cdef Py_ssize_t delta[3]
  *     delta[:] = [0,0,0]
  *     if BC_mode == 0:             # <<<<<<<<<<<<<<
@@ -10112,7 +10076,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
     break;
     case 1:
 
-    /* "cyTVDN/halfisotropic.pyx":330
+    /* "cyTVDN/halfisotropic.pyx":326
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:
  *         delta[ax] = 1             # <<<<<<<<<<<<<<
@@ -10121,7 +10085,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = 1;
 
-    /* "cyTVDN/halfisotropic.pyx":329
+    /* "cyTVDN/halfisotropic.pyx":325
  *     if BC_mode == 0:
  *         delta[ax] = shape[ax] - 1
  *     elif BC_mode == 1:             # <<<<<<<<<<<<<<
@@ -10131,7 +10095,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
     break;
     case 2:
 
-    /* "cyTVDN/halfisotropic.pyx":333
+    /* "cyTVDN/halfisotropic.pyx":329
  *     elif BC_mode == 2:
  *         # keep all deltas at zero to make each entry on the hyperslab zero!
  *         delta[ax] = 0             # <<<<<<<<<<<<<<
@@ -10140,7 +10104,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
     (__pyx_v_delta[__pyx_v_ax]) = 0;
 
-    /* "cyTVDN/halfisotropic.pyx":331
+    /* "cyTVDN/halfisotropic.pyx":327
  *     elif BC_mode == 1:
  *         delta[ax] = 1
  *     elif BC_mode == 2:             # <<<<<<<<<<<<<<
@@ -10151,7 +10115,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
     default: break;
   }
 
-  /* "cyTVDN/halfisotropic.pyx":335
+  /* "cyTVDN/halfisotropic.pyx":331
  *         delta[ax] = 0
  * 
  *     for m in range(stop[0]):             # <<<<<<<<<<<<<<
@@ -10163,7 +10127,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
   for (__pyx_t_4 = 0; __pyx_t_4 < __pyx_t_5; __pyx_t_4+=1) {
     __pyx_v_m = __pyx_t_4;
 
-    /* "cyTVDN/halfisotropic.pyx":336
+    /* "cyTVDN/halfisotropic.pyx":332
  * 
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):             # <<<<<<<<<<<<<<
@@ -10175,7 +10139,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
     for (__pyx_t_9 = 0; __pyx_t_9 < __pyx_t_8; __pyx_t_9+=1) {
       __pyx_v_n = __pyx_t_9;
 
-      /* "cyTVDN/halfisotropic.pyx":337
+      /* "cyTVDN/halfisotropic.pyx":333
  *     for m in range(stop[0]):
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):             # <<<<<<<<<<<<<<
@@ -10187,7 +10151,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
       for (__pyx_t_31 = 0; __pyx_t_31 < __pyx_t_30; __pyx_t_31+=1) {
         __pyx_v_o = __pyx_t_31;
 
-        /* "cyTVDN/halfisotropic.pyx":338
+        /* "cyTVDN/halfisotropic.pyx":334
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -10201,7 +10165,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
         __pyx_t_36 = (__pyx_v_n + (__pyx_v_delta[1]));
         __pyx_t_37 = (__pyx_v_o + (__pyx_v_delta[2]));
 
-        /* "cyTVDN/halfisotropic.pyx":339
+        /* "cyTVDN/halfisotropic.pyx":335
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                 + b[m,n,o], clip)             # <<<<<<<<<<<<<<
@@ -10212,7 +10176,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
         __pyx_t_39 = __pyx_v_n;
         __pyx_t_40 = __pyx_v_o;
 
-        /* "cyTVDN/halfisotropic.pyx":338
+        /* "cyTVDN/halfisotropic.pyx":334
  *         for n in range(stop[1]):
  *             for o in range(stop[2]):
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]             # <<<<<<<<<<<<<<
@@ -10221,7 +10185,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
         __pyx_v_d_new = __pyx_fuse_1__pyx_f_6cyTVDN_13halfisotropic_clipval((((*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_32 * __pyx_v_a.strides[0]) ) + __pyx_t_33 * __pyx_v_a.strides[1]) ) + __pyx_t_34 * __pyx_v_a.strides[2]) ))) - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_a.data + __pyx_t_35 * __pyx_v_a.strides[0]) ) + __pyx_t_36 * __pyx_v_a.strides[1]) ) + __pyx_t_37 * __pyx_v_a.strides[2]) )))) + (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_38 * __pyx_v_b.strides[0]) ) + __pyx_t_39 * __pyx_v_b.strides[1]) ) + __pyx_t_40 * __pyx_v_b.strides[2]) )))), __pyx_v_clip);
 
-        /* "cyTVDN/halfisotropic.pyx":340
+        /* "cyTVDN/halfisotropic.pyx":336
  *                 d_new = clipval( a[m,n,o] - a[m+delta[0],n+delta[1],o+delta[2]]
  *                                 + b[m,n,o], clip)
  *                 b_new = d_new + tk*(d_new - d[m,n,o])             # <<<<<<<<<<<<<<
@@ -10233,7 +10197,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
         __pyx_t_43 = __pyx_v_o;
         __pyx_v_b_new = (__pyx_v_d_new + (__pyx_v_tk * (__pyx_v_d_new - (*((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_d.data + __pyx_t_41 * __pyx_v_d.strides[0]) ) + __pyx_t_42 * __pyx_v_d.strides[1]) ) + __pyx_t_43 * __pyx_v_d.strides[2]) ))))));
 
-        /* "cyTVDN/halfisotropic.pyx":341
+        /* "cyTVDN/halfisotropic.pyx":337
  *                                 + b[m,n,o], clip)
  *                 b_new = d_new + tk*(d_new - d[m,n,o])
  *                 b[m,n,o] = b_new             # <<<<<<<<<<<<<<
@@ -10245,7 +10209,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
         __pyx_t_46 = __pyx_v_o;
         *((double *) ( /* dim=2 */ (( /* dim=1 */ (( /* dim=0 */ (__pyx_v_b.data + __pyx_t_44 * __pyx_v_b.strides[0]) ) + __pyx_t_45 * __pyx_v_b.strides[1]) ) + __pyx_t_46 * __pyx_v_b.strides[2]) )) = __pyx_v_b_new;
 
-        /* "cyTVDN/halfisotropic.pyx":342
+        /* "cyTVDN/halfisotropic.pyx":338
  *                 b_new = d_new + tk*(d_new - d[m,n,o])
  *                 b[m,n,o] = b_new
  *                 norm += fabs(b_new)             # <<<<<<<<<<<<<<
@@ -10254,7 +10218,7 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
  */
         __pyx_v_norm = (__pyx_v_norm + fabs(__pyx_v_b_new));
 
-        /* "cyTVDN/halfisotropic.pyx":343
+        /* "cyTVDN/halfisotropic.pyx":339
  *                 b[m,n,o] = b_new
  *                 norm += fabs(b_new)
  *                 d[m,n,o] = d_new             # <<<<<<<<<<<<<<
@@ -10269,19 +10233,19 @@ static PyObject *__pyx_pf_6cyTVDN_13halfisotropic_28accumulator_update_3D_FISTA(
     }
   }
 
-  /* "cyTVDN/halfisotropic.pyx":345
+  /* "cyTVDN/halfisotropic.pyx":341
  *                 d[m,n,o] = d_new
  * 
  *     return norm             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_50 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_50)) __PYX_ERR(0, 345, __pyx_L1_error)
+  __pyx_t_50 = PyFloat_FromDouble(__pyx_v_norm); if (unlikely(!__pyx_t_50)) __PYX_ERR(0, 341, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_50);
   __pyx_r = __pyx_t_50;
   __pyx_t_50 = 0;
   goto __pyx_L0;
 
-  /* "cyTVDN/halfisotropic.pyx":271
+  /* "cyTVDN/halfisotropic.pyx":267
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
@@ -24282,29 +24246,29 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__25);
   __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(9, 0, 27, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_halfisotropic_pyx, __pyx_n_s_iso_accumulator_update_4D_FISTA, 102, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(0, 102, __pyx_L1_error)
 
-  /* "cyTVDN/halfisotropic.pyx":197
+  /* "cyTVDN/halfisotropic.pyx":193
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
-  __pyx_tuple__27 = PyTuple_Pack(19, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_outer_iterator, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_tuple__27 = PyTuple_Pack(19, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_outer_iterator, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__27)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__27);
   __Pyx_GIVEREF(__pyx_tuple__27);
-  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(5, 0, 19, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_halfisotropic_pyx, __pyx_n_s_accumulator_update_3D, 197, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_codeobj__28 = (PyObject*)__Pyx_PyCode_New(5, 0, 19, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__27, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_halfisotropic_pyx, __pyx_n_s_accumulator_update_3D, 193, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__28)) __PYX_ERR(0, 193, __pyx_L1_error)
 
-  /* "cyTVDN/halfisotropic.pyx":271
+  /* "cyTVDN/halfisotropic.pyx":267
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
  *     _float tk, int ax, _float clip, int BC_mode=2):
  *     '''
  */
-  __pyx_tuple__29 = PyTuple_Pack(22, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_d, __pyx_n_s_tk, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_d_new, __pyx_n_s_outer_iterator, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_tuple__29 = PyTuple_Pack(22, __pyx_n_s_a, __pyx_n_s_b, __pyx_n_s_d, __pyx_n_s_tk, __pyx_n_s_ax, __pyx_n_s_clip, __pyx_n_s_BC_mode, __pyx_n_s_shape, __pyx_n_s_start, __pyx_n_s_norm, __pyx_n_s_b_new, __pyx_n_s_i, __pyx_n_s_j, __pyx_n_s_k, __pyx_n_s_ij, __pyx_n_s_d_new, __pyx_n_s_outer_iterator, __pyx_n_s_m, __pyx_n_s_n, __pyx_n_s_o, __pyx_n_s_stop, __pyx_n_s_delta); if (unlikely(!__pyx_tuple__29)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__29);
   __Pyx_GIVEREF(__pyx_tuple__29);
-  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 22, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_halfisotropic_pyx, __pyx_n_s_accumulator_update_3D_FISTA, 271, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_codeobj__30 = (PyObject*)__Pyx_PyCode_New(7, 0, 22, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__29, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_cyTVDN_halfisotropic_pyx, __pyx_n_s_accumulator_update_3D_FISTA, 267, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__30)) __PYX_ERR(0, 267, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -24795,93 +24759,93 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_iso_accumulator_update_4D_FISTA, __pyx_t_4) < 0) __PYX_ERR(0, 102, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-  /* "cyTVDN/halfisotropic.pyx":197
+  /* "cyTVDN/halfisotropic.pyx":193
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D(_float[:,:,::] a,_float[:,:,::] b,int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
-  __pyx_t_5 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_6 = PyTuple_New(1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_GIVEREF(__pyx_t_5);
   PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5);
   __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_13halfisotropic_21accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_13halfisotropic_21accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_7, sizeof(__pyx_defaults2), 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_7, sizeof(__pyx_defaults2), 0)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults2, __pyx_t_7)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_7, __pyx_t_6);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_7, __pyx_pf_6cyTVDN_13halfisotropic_36__defaults__);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_float, __pyx_t_7) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_float, __pyx_t_7) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_13halfisotropic_23accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_13halfisotropic_23accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_7, sizeof(__pyx_defaults3), 0)) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_7, sizeof(__pyx_defaults3), 0)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults3, __pyx_t_7)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_7, __pyx_t_6);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_7, __pyx_pf_6cyTVDN_13halfisotropic_38__defaults__);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_double, __pyx_t_7) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_double, __pyx_t_7) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_13halfisotropic_5accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_7 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_13halfisotropic_5accumulator_update_3D, 0, __pyx_n_s_accumulator_update_3D, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__28)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_7, __pyx_t_6);
   ((__pyx_FusedFunctionObject *) __pyx_t_7)->__signatures__ = __pyx_t_5;
   __Pyx_GIVEREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D, __pyx_t_7) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D, __pyx_t_7) < 0) __PYX_ERR(0, 193, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-  /* "cyTVDN/halfisotropic.pyx":272
+  /* "cyTVDN/halfisotropic.pyx":268
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,
  *     _float tk, int ax, _float clip, int BC_mode=2):             # <<<<<<<<<<<<<<
  *     '''
  *     computes b = clip( a - roll(a,x,axis=ax) + b, -clip,+clip ) in place
  */
-  __pyx_t_8 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 272, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_long(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 268, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
 
-  /* "cyTVDN/halfisotropic.pyx":271
+  /* "cyTVDN/halfisotropic.pyx":267
  * @cython.wraparound(False)
  * @cython.cdivision(True)
  * def accumulator_update_3D_FISTA(_float[:,:,::] a, _float[:,:,::] b, _float[:,:,::] d,             # <<<<<<<<<<<<<<
  *     _float tk, int ax, _float clip, int BC_mode=2):
  *     '''
  */
-  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_9 = PyTuple_New(1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_9);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_t_8);
   __pyx_t_8 = 0;
-  __pyx_t_8 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_13halfisotropic_27accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_0__pyx_mdef_6cyTVDN_13halfisotropic_27accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults6), 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults6), 0)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults6, __pyx_t_10)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_10, __pyx_pf_6cyTVDN_13halfisotropic_44__defaults__);
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_float, __pyx_t_10) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_float, __pyx_t_10) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_13halfisotropic_29accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_fuse_1__pyx_mdef_6cyTVDN_13halfisotropic_29accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
-  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults7), 0)) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (!__Pyx_CyFunction_InitDefaults(__pyx_t_10, sizeof(__pyx_defaults7), 0)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_CyFunction_Defaults(__pyx_defaults7, __pyx_t_10)->__pyx_arg_BC_mode = 2;
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   __Pyx_CyFunction_SetDefaultsGetter(__pyx_t_10, __pyx_pf_6cyTVDN_13halfisotropic_46__defaults__);
-  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_double, __pyx_t_10) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_8, __pyx_n_s_double, __pyx_t_10) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
-  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_13halfisotropic_7accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 271, __pyx_L1_error)
+  __pyx_t_10 = __pyx_FusedFunction_NewEx(&__pyx_mdef_6cyTVDN_13halfisotropic_7accumulator_update_3D_FISTA, 0, __pyx_n_s_accumulator_update_3D_FISTA, NULL, __pyx_n_s_cyTVDN_halfisotropic, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_10);
   __Pyx_CyFunction_SetDefaultsTuple(__pyx_t_10, __pyx_t_9);
   ((__pyx_FusedFunctionObject *) __pyx_t_10)->__signatures__ = __pyx_t_8;
   __Pyx_GIVEREF(__pyx_t_8);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D_FISTA, __pyx_t_10) < 0) __PYX_ERR(0, 271, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_accumulator_update_3D_FISTA, __pyx_t_10) < 0) __PYX_ERR(0, 267, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
   __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
 
