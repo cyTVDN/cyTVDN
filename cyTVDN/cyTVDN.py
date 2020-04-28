@@ -13,21 +13,22 @@ from tqdm import tqdm
 from hurry.filesize import size, alternative
 import psutil
 from tabulate import tabulate
+from typing import Optional, Tuple
 
 
 def denoise4D(
-    datacube,
-    mu,
-    iterations=10,
-    FISTA=True,
-    isotropic_R=False,
-    isotropic_Q=False,
-    reference_data=None,
-    BC_mode=2,
-    lam=None,
-    quiet=False,
-    stopping_relative_change=None,
-):
+    datacube:np.ndarray,
+    mu:np.ndarray,
+    iterations:int=10,
+    FISTA:bool=True,
+    isotropic_R:bool=False,
+    isotropic_Q:bool=False,
+    reference_data:Optional[np.ndarray]=None,
+    BC_mode:int=2,
+    lam:Optional[np.ndarray]=None,
+    quiet:bool=False,
+    stopping_relative_change:Optional[float]=None,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
@@ -243,8 +244,15 @@ def denoise4D(
 
 
 def denoise3D(
-    datacube, mu, iterations=7_500, BC_mode=2, FISTA=False, reference_data=None, stopping_relative_change=None, lam=None,
-):
+    datacube:np.ndarray,
+    mu:np.ndarray,
+    iterations:int=7_500,
+    BC_mode:int=2,
+    FISTA:bool=False,
+    reference_data:Optional[np.ndarray]=None,
+    stopping_relative_change:Optional[float]=None,
+    lam:Optional[np.ndarray]=None,
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 3D datacube
 
