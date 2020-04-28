@@ -17,17 +17,17 @@ from typing import Optional, Tuple
 
 
 def denoise4D(
-    datacube:np.ndarray,
-    mu:np.ndarray,
-    iterations:int=10,
-    FISTA:bool=True,
-    isotropic_R:bool=False,
-    isotropic_Q:bool=False,
-    reference_data:Optional[np.ndarray]=None,
-    BC_mode:int=2,
-    lam:Optional[np.ndarray]=None,
-    quiet:bool=False,
-    stopping_relative_change:Optional[float]=None,
+    datacube: np.ndarray,
+    mu: np.ndarray,
+    iterations: int = 10,
+    FISTA: bool = True,
+    isotropic_R: bool = False,
+    isotropic_Q: bool = False,
+    reference_data: Optional[np.ndarray] = None,
+    BC_mode: int = 2,
+    lam: Optional[np.ndarray] = None,
+    quiet: bool = False,
+    stopping_relative_change: Optional[float] = None,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
@@ -64,7 +64,7 @@ def denoise4D(
     ), "datacube must be floating point datatype."
 
     if lam is None:
-        lam = mu / 32.
+        lam = mu / 32.0
 
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
 
@@ -244,14 +244,14 @@ def denoise4D(
 
 
 def denoise3D(
-    datacube:np.ndarray,
-    mu:np.ndarray,
-    iterations:int=7_500,
-    BC_mode:int=2,
-    FISTA:bool=False,
-    reference_data:Optional[np.ndarray]=None,
-    stopping_relative_change:Optional[float]=None,
-    lam:Optional[np.ndarray]=None,
+    datacube: np.ndarray,
+    mu: np.ndarray,
+    iterations: int = 7_500,
+    BC_mode: int = 2,
+    FISTA: bool = False,
+    reference_data: Optional[np.ndarray] = None,
+    stopping_relative_change: Optional[float] = None,
+    lam: Optional[np.ndarray] = None,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 3D datacube
@@ -286,7 +286,7 @@ def denoise3D(
     ), "datacube must be floating point datatype."
 
     if lam is None:
-        lam = mu / 16.
+        lam = mu / 16.0
 
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
 
