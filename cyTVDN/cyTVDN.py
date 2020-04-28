@@ -17,7 +17,6 @@ from tabulate import tabulate
 
 def denoise4D(
     datacube,
-    lam,
     mu,
     iterations=10,
     FISTA=True,
@@ -25,6 +24,7 @@ def denoise4D(
     isotropic_Q=False,
     reference_data=None,
     BC_mode=2,
+    lam=None,
     quiet=False,
     stopping_relative_change=None,
 ):
@@ -62,15 +62,14 @@ def denoise4D(
         np.float64,
     ), "datacube must be floating point datatype."
 
+    if lam is None:
+        lam = mu / 32.
+
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
 
     assert datacube.flags[
         "C_CONTIGUOUS"
     ], "datacube must be C-contiguous. Try np.ascontiguousarray(datacube) on the array"
-
-    # If no lambda is given, default to mu/32
-    if lam is None:
-        lam = mu / 32.0
 
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
@@ -84,9 +83,8 @@ def denoise4D(
             print(
                 "I tried to print with pretty characters but your system doesn't like Unicode..."
             )
-    # assert np.all(lam_mu <= (1.0 / 32.0)) & np.all(
-    #     lam_mu > 0
-    # ), "Parameters must satisfy 0 < λ/μ <= 1/32"
+    if np.all(lam_mu <= (1.0 / 32.0)) and np.all(lam_mu > 0):
+        print("WARNING: Parameters must satisfy 0 < λ/μ <= 1/32 or result may diverge!")
 
     # warn about memory requirements
     if not quiet:
@@ -189,7 +187,6 @@ def denoise4D(
                 stopping_relative_change is not None
                 and delta_recon[i] < stopping_relative_change
             ):
-                MSE[i + 1 :] = MSE[i + 1]
                 # if we have converged, break out of the loop
                 break
     if unaccelerated:
@@ -236,7 +233,6 @@ def denoise4D(
                 stopping_relative_change is not None
                 and delta_recon[i] < stopping_relative_change
             ):
-                MSE[i + 1 :] = MSE[i + 1]
                 # if we have converged, break out of the loop
                 break
 
@@ -247,7 +243,7 @@ def denoise4D(
 
 
 def denoise3D(
-    datacube, lam, mu, iterations=7_500, BC_mode=2, FISTA=False, reference_data=None
+    datacube, mu, iterations=7_500, BC_mode=2, FISTA=False, reference_data=None, stopping_relative_change=None, lam=None,
 ):
     """
     Perform Proximal Anisotropic Total Variational denoising on a 3D datacube
@@ -266,6 +262,10 @@ def denoise3D(
                     but involves much more memory use
     reference_data  (np.array) For testing convergence, pass an infinite signal dataset
                     and the mean square error will be calculated for each iteration
+    stopping_relative_change
+                    (float) stopping criterion for relative change in reconstruction at each update step
+                    if None, do iterations. if specified, stop when the relative change is below this value
+                    A value of 0.05 seems to work best. 
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -276,6 +276,9 @@ def denoise3D(
         np.float32,
         np.float64,
     ), "datacube must be floating point datatype."
+
+    if lam is None:
+        lam = mu / 16.
 
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
 
@@ -372,6 +375,13 @@ def denoise3D(
 
             if calculate_error:
                 MSE[i + 1] = sum_square_error_3D(reference_data, recon)
+
+            if (
+                stopping_relative_change is not None
+                and delta_recon[i] < stopping_relative_change
+            ):
+                # if we have converged, break out of the loop
+                break
     if unaccelerated:
         for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
             i = j + iterations_FISTA
@@ -393,6 +403,13 @@ def denoise3D(
 
             if calculate_error:
                 MSE[i + 1] = sum_square_error_3D(reference_data, recon)
+
+            if (
+                stopping_relative_change is not None
+                and delta_recon[i] < stopping_relative_change
+            ):
+                # if we have converged, break out of the loop
+                break
 
     if calculate_error:
         return recon, b_norm, delta_recon, MSE
