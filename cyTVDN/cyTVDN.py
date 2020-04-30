@@ -64,7 +64,7 @@ def denoise4D(
     ), "datacube must be floating point datatype."
 
     if lam is None:
-        lam = mu / 32.0
+        lam = mu * 1.0 / 32.0
 
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
 
@@ -84,7 +84,7 @@ def denoise4D(
             print(
                 "I tried to print with pretty characters but your system doesn't like Unicode..."
             )
-    if np.all(lam_mu <= (1.0 / 32.0)) and np.all(lam_mu > 0):
+    if np.all(lam_mu <= (1.0 / 32.0)) and np.all(lam_mu > 0) and not quiet:
         print("WARNING: Parameters must satisfy 0 < λ/μ <= 1/32 or result may diverge!")
 
     # warn about memory requirements
