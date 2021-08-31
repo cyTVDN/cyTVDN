@@ -121,16 +121,12 @@ def run_MPI():
             size = data.shape[:2]
         # load EMD data:
         elif any(ftype in args["input"][0].split(".")[-1] for ftype in ("h5", "emd")):
-            fb = py4DSTEM.file.io.FileBrowser(args["input"][0])
+            py4d_memmap = py4DSTEM.io.read(args["input"][0],mem="MEMMAP")
+            dataset_path = py4d_memmap.data.name
 
-            # hack to swap out the HDF driver:
-            # fb.file.close()
-            fb.file = h5py.File(
-                args["input"][0], "r", driver="mpio", comm=MPI.COMM_WORLD
-            )
+            h5_file = h5py.File(args["input"][0], "r", driver="mpio", comm=MPI.COMM_WORLD)
 
-            dc = fb.get_dataobject(0, memory_map=True)
-            data = dc.data
+            data = h5_file[dataset_path]
             size = data.shape[:2]
         else:
             if HEAD_WORKER:
