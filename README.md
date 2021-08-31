@@ -29,6 +29,10 @@ This module implements an extension of the TV denoising algorithm described in [
 - [ ] Semi-Isotropic FISTA 4D
 - [ ] Semi-Isotropic FISTA 3D
 
+#### To-Do:
+- [ ] Use `brew --prefix` to get correct compilers on Mac
+- [ ] Advice on picking the correct &mu;
+
 ## Installation
 To install, clone the git repo, navigate to the directory and run:
 ```bash
