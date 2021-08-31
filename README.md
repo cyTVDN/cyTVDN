@@ -37,9 +37,36 @@ This module implements an extension of the TV denoising algorithm described in [
 To install, clone the git repo, navigate to the directory and run:
 ```bash
 pip install Cython
-python setup.py build_ext
-python setup.py install
+pip install .
 ```
+
+## Usage
+Example usage for EELS:
+```python
+import cyTVDN as tv
+import numpy as np
+# eels_data should be a 3D numpy array, usually with
+# scan axes on axes 0 and 1, and eels spetra along axis 2
+mu = np.array([1, 1, 0.5], dtype=eels_data.dtype)
+recon, bnorm, delta = tv.denoise3D(eels_data, mu, iterations=1_000, FISTA=True, stopping_relative_change=0.05)
+```
+
+Example usage for 4D-STEM:
+```python
+import cyTVDN as tv
+import numpy as np
+import py4DSTEM
+
+datacube = py4DSTEM.file.io.read('/Path/To/Data.dm4')
+mu = np.array([1, 1, 0.5, 0.5], dtype=datacube.data.dtype)
+recon, bnorm, delta = tv.denoise4D(datacube.data, mu, iterations=100, FISTA=True, stopping_relative_change=0.05)
+```
+
+`recon` contains the denoised data, and `bnorm` tracks the total 1-norm of the accumulator arrays, and `delta` tracks the relative magnitude of the update steps (which is relevant for determining convergence). 
+
+The parameter `mu` is a 3- or 4-element numpy array which controls the relative weighting of the raw data in the TV minimization problem. Increasing the value of mu decreases the strength of denoising along that dimension of the data. See (yet-to-be-written-paper) for details of the parameter selection process. 
+
+## Additional Installation Notes
 ### MacOS
 Naturally, you will need a C compiler in order for Cython to compile the module. On Macs this is somewhat complicated because the Apple-provided versions of `gcc` and `clang` do not support the `-fopenmp` option, which is used to enable multithreaded execution. To build with multithreading on a Mac you will need to use Homebrew to install `llvm`, and `libomp`. The `setup.py` script should figure out the right compiler and linker without intervention as long as they are installed in the usual Homebrew locations. 
 
@@ -74,32 +101,6 @@ For datasets that are too large to fit in RAM on a single machine, an MPI implem
 > It's probably best to have one MPI worker per node, and to set OpenMP to use all (or maybe all-1 to leave some resources for async communication?) of the node's cores. I assert this on the basis that all the computations are bound by memory bandwidth, so there's probably no benefit to have more workers per node. Having more workers increases the amount of MPI communication needed, and having fewer but larger workers reduces the total communication load.
 
 >The MPI implementation currently only allows for the J-Z boundary condition. Other BCs change what data has to be synchronized, and it gets complicated quickly. J-Z seems to work best for all data we've tested. 
-
-## Usage
-Example usage for EELS:
-```python
-import cyTVDN as tv
-import numpy as np
-# eels_data should be a 3D numpy array, usually with
-# scan axes on axes 0 and 1, and eels spetra along axis 2
-mu = np.array([1, 1, 0.5], dtype=eels_data.dtype)
-lam = mu / 16.
-recon, convergence = tv.denoise3D(eels_data, lam, mu, iterations=1_000, FISTA=False)
-```
-
-Example usage for 4D-STEM:
-```python
-import cyTVDN as tv
-import numpy as np
-import py4DSTEM
-
-datacube = py4DSTEM.file.io.read('/Path/To/Data.dm4')
-mu = np.array([1, 1, 0.5, 0.5], dtype=datacube.data.dtype)
-lam = mu / 32.
-recon, convergence = tv.denoise4D(datacube.data, lam, mu, iterations=100, FISTA=False)
-```
-
-`recon` contains the denoised data, and `convergence` tracks the total 1-norm of the accumulator arrays. 
 
 ### Notes
 
