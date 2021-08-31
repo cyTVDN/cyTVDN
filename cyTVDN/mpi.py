@@ -232,7 +232,6 @@ def run_MPI():
             np.float32
         )
     elif args["dimensions"][0] == 4:
-        # TODO: fix this for non-py4DSTEM files!!!
         raw = np.zeros(
             (
                 read_slice_x.stop - read_slice_x.start,
@@ -243,7 +242,12 @@ def run_MPI():
             dtype=np.float32,
         )
         logger.debug(f"Raw is shape {raw.shape}")
-        data.read_direct(raw, source_sel=np.s_[read_slice_x, read_slice_y, :, :])
+        if type(data) is h5py.Dataset:
+            data.read_direct(raw, source_sel=np.s_[read_slice_x, read_slice_y, :, :])
+        elif type(data) is np.memmap:
+            raw[:,:,:,:] = data[read_slice_x,read_slice_y,:,:]
+        else:
+            logger.error(f"An apparently unsupported datatype was encountered in reading the raw data: {type(data)}")
         # TODO: make dtype a flag
 
     if HEAD_WORKER:
