@@ -75,7 +75,7 @@ setup(
     author_email="steven.zeltmann@lbl.gov",
     packages=["cyTVDN"],
     ext_modules=cythonize(ext_modules, compiler_directives={"language_level": "3"}),
-    install_requires=["Cython", "hurry.filesize", "psutil", "tabulate"],
+    install_requires=["Cython", "hurry.filesize", "psutil", "tabulate", "loguru"],
     extras_require={"MPI": ["mpi4py", "h5py"]},
     setup_requires=["Cython"],
     entry_points={"console_scripts": ["cyTVMPI=cyTVDN.mpi:run_MPI"]},

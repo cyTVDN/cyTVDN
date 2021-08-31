@@ -8,18 +8,22 @@ import h5py
 from hurry import filesize
 import psutil
 
-import logging
+from loguru import logging
 import sys
 
-logger = logging.getLogger("cyTVDN")
-logger.setLevel(logging.DEBUG)
-logger.handlers = []
+# old logging setup using the stdlib Logger
+# logger = logging.getLogger("cyTVDN")
+# logger.setLevel(logging.DEBUG)
+# logger.handlers = []
 
-handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
-formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-handler.setFormatter(formatter)
-logger.addHandler(handler)
+# handler = logging.StreamHandler(sys.stdout)
+# handler.setLevel(logging.DEBUG)
+# formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+# handler.setFormatter(formatter)
+# logger.addHandler(handler)
+
+# new loguru log setup:
+logger.add(sys.stdout)
 
 try:
     import py4DSTEM
