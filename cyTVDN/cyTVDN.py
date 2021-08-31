@@ -21,24 +21,27 @@ def denoise4D(
     mu: np.ndarray,
     iterations: int = 10,
     FISTA: bool = True,
+    stopping_relative_change: Optional[float] = None,
     isotropic_R: bool = False,
     isotropic_Q: bool = False,
     reference_data: Optional[np.ndarray] = None,
     BC_mode: int = 2,
     lam: Optional[np.ndarray] = None,
     quiet: bool = False,
-    stopping_relative_change: Optional[float] = None,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 4D datacube
 
     Arguments:
     datacube        (np.array) a C-contiguous 4D numpy array. Must be float32 or float64 dtype
-    lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
-    mu              (np.array) TV weighting parameter
+    mu              (4-element np.array) TV weighting parameter
     iterations      (int) number of iterations to perform TV update step
     FISTA           (bool) whether to use FISTA Acceleration. Converges much faster,
                     but involves much more memory use
+    stopping_relative_change
+                    (float) stopping criterion for relative change in reconstruction at each update step
+                    if None, do iterations. if specified, stop when the relative change is below this value
+                    A value of 0.05 seems to work best. 
     isotropic_R     (bool) Use half-isotropic algorithm on axes 0 and 1 (real space in py4DSTEM convention)
     isotropic_Q     (bool) Use half-isotropic algorithm on axies 2 and 3 (reciprocal space in py4DSTEM convention)
     reference_data  (np.array) For testing convergence, pass an infinite signal dataset
@@ -47,13 +50,11 @@ def denoise4D(
                                     0: Periodic
                                     1: Mirror
                         (default)   2: Jia-Zhao Adv Comp Math 2010 33:231-241
+    lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
     quiet           (bool) Suppress informational messages and clear the progress bar after running.
-    stopping_relative_change
-                    (float) stopping criterion for relative change in reconstruction at each update step
-                    if None, do iterations. if specified, stop when the relative change is below this value
-                    A value of 0.05 seems to work best. 
 
-    The algorithm used is an extension of that shown in this paper:
+
+    The algorithm used is an extension of the one shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
     Advances in Computational Mathematics 33.2 (2010): 231-241.
     """
@@ -67,10 +68,11 @@ def denoise4D(
         lam = mu * 1.0 / 32.0
 
     assert lam.dtype == datacube.dtype, "Lambda must have same dtype as datacube."
+    assert mu.dtype == datacube.dtype, "Mu must have same dtype as datacube."
 
     assert datacube.flags[
         "C_CONTIGUOUS"
-    ], "datacube must be C-contiguous. Try np.ascontiguousarray(datacube) on the array"
+    ], "datacube must be C-contiguous. Try np.ascontiguousarray(datacube) on the array."
 
     lambdaInv = 1.0 / lam
     lam_mu = (lam / mu).astype(datacube.dtype)
@@ -247,19 +249,23 @@ def denoise3D(
     datacube: np.ndarray,
     mu: np.ndarray,
     iterations: int = 7_500,
+    stopping_relative_change: Optional[float] = None,
     BC_mode: int = 2,
     FISTA: bool = False,
     reference_data: Optional[np.ndarray] = None,
-    stopping_relative_change: Optional[float] = None,
     lam: Optional[np.ndarray] = None,
+    quiet: bool = False,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, Optional[np.ndarray]]:
     """
     Perform Proximal Anisotropic Total Variational denoising on a 3D datacube
 
     Arguments:
     datacube        (np.array) a C-contiguous 3D numpy array. Must be float32 or float64 dtype
-    lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
-    mu              (float) TV weighting parameter
+    stopping_relative_change
+                    (float) stopping criterion for relative change in reconstruction at each update step
+                    if None, do iterations. if specified, stop when the relative change is below this value
+                    A value of 0.05 seems to work best. 
+    mu              (3-element np.array) TV weighting parameter for each dimension
     iterations      (int) number of iterations to perform TV update step
                     (list) first perform FISTA iterations, then unaccelerated
     BC_mode         (int) boundary conditions for evaluating difference operators:
@@ -270,10 +276,8 @@ def denoise3D(
                     but involves much more memory use
     reference_data  (np.array) For testing convergence, pass an infinite signal dataset
                     and the mean square error will be calculated for each iteration
-    stopping_relative_change
-                    (float) stopping criterion for relative change in reconstruction at each update step
-                    if None, do iterations. if specified, stop when the relative change is below this value
-                    A value of 0.05 seems to work best. 
+    lam             (np.array) TV weights for each dimension. Must be same dtype as datacube
+    quiet           (bool) Suppress informational messages and clear the progress bar after running.
 
     The algorithm used is an extension of that shown in this paper:
     Jia, Rong-Qing, and Hanqing Zhao. "A fast algorithm for the total variation model of image denoising."
@@ -300,17 +304,18 @@ def denoise3D(
     assert np.all(lam_mu <= (1.0 / 16.0)) & np.all(
         lam_mu > 0
     ), "Parameters must satisfy 0 < λ/μ <= 1/8"
-    try:
-        print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}]")
-    except Exception:
+    if not quiet:
+        try:
+            print(f"λ/μ ≈ [1/{mu/lam[0]:.0f}, 1/{mu/lam[1]:.0f}, 1/{mu/lam[2]:.0f}]")
+        except Exception:
+            print(
+                "I tried to print with pretty characters but your system doesn't like Unicode..."
+            )
+        # warn about memory requirements
         print(
-            "I tried to print with pretty characters but your system doesn't like Unicode..."
+            f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
+            flush=True,
         )
-    # warn about memory requirements
-    print(
-        f"Available RAM: {size(psutil.virtual_memory().available,system=alternative)}",
-        flush=True,
-    )
 
     unaccelerated = not FISTA
     if type(iterations) in (list, tuple):
@@ -323,16 +328,17 @@ def denoise3D(
         iterations_FISTA = iterations * FISTA
         iterations_unacc = iterations * (not FISTA)
 
-    if FISTA:
-        print(
-            f"FISTA Accelerated TV denoising will require {size(datacube.nbytes*7,system=alternative)} of RAM...",
-            flush=True,
-        )
-    else:
-        print(
-            f"Unaccelerated TV denoising will require {size(datacube.nbytes*4,system=alternative)} of RAM...",
-            flush=True,
-        )
+    if not quiet:
+        if FISTA:
+            print(
+                f"FISTA Accelerated TV denoising will require {size(datacube.nbytes*7,system=alternative)} of RAM...",
+                flush=True,
+            )
+        else:
+            print(
+                f"Unaccelerated TV denoising will require {size(datacube.nbytes*4,system=alternative)} of RAM...",
+                flush=True,
+            )
 
     calculate_error = reference_data is not None
     if calculate_error:
@@ -359,7 +365,7 @@ def denoise3D(
 
     if FISTA:
         for i in tqdm(
-            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising"
+            range(int(iterations_FISTA)), desc="FISTA Accelerated TV Denoising", leave=not quiet,
         ):
             # update the tk factor
             tk_new = (1 + np.sqrt(1 + 4 * tk ** 2)) / 2
@@ -391,7 +397,7 @@ def denoise3D(
                 # if we have converged, break out of the loop
                 break
     if unaccelerated:
-        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising"):
+        for j in tqdm(range(int(iterations_unacc)), desc="Unaccelerated TV Denoising", leave=not quiet):
             i = j + iterations_FISTA
             # update accumulators
             b_norm[i] += accumulator_update_3D(
