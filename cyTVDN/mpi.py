@@ -247,7 +247,7 @@ def run_MPI():
         elif type(data) is np.memmap:
             raw[:,:,:,:] = data[read_slice_x,read_slice_y,:,:]
         else:
-            logger.error(f"An apparently unsupported datatype was encountered in reading the raw data: {type(data)}")
+            logger.error(f"An apparently unsupported datatype was encountered in reading the raw data: {type(data)}???")
         # TODO: make dtype a flag
 
     if HEAD_WORKER:
