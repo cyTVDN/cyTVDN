@@ -83,12 +83,12 @@ def run_MPI():
     )
     parser.add_argument("-L", "--lambda", type=float, nargs="+")
     parser.add_argument("-m", "--mu", type=float, nargs="+")
-    parser.add_argument("-v", "--verbose", type=str2bool, default=False)
+    parser.add_argument("-v", "--verbose", type=str2bool, default=True)
 
     args = vars(parser.parse_args())
 
-    # VERBOSE = args["verbose"]
-    VERBOSE = True
+    VERBOSE = args["verbose"][0]
+    # VERBOSE = True
 
     ndim = args["dimensions"][0]
     FISTA = args["fista"][0]
@@ -309,11 +309,11 @@ def run_MPI():
 
         if HEAD_WORKER:
             logger.info(
-                f"With all accumulators allocated, free RAM is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
+                f"With all accumulators allocated, free RAM on the HEAD worker is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
             )
         else:
             logger.debug(
-                f"With all accumulators allocated, free RAM on rank {rank} is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
+                f"With all accumulators allocated, free RAM on rank {rank} worker is {filesize.size(psutil.virtual_memory().available,system=filesize.alternative)}."
             )
 
         # create the iterators (so that only the head spits out tqdm stuff)
@@ -373,7 +373,7 @@ def run_MPI():
                 )
 
                 comm.Barrier()
-                # block until communication finishes. copy buffered data.
+                # block until communication finishes. then copy buffered data.
                 if HEAD_WORKER:
                     logger.info(
                         f"Passed accumulator barrier on iteration {i} and entering sync block."
@@ -449,7 +449,10 @@ def run_MPI():
                         f"Rank {rank} at iteration {i} spent {time()-t_comm_wait} seconds waiting for reconstruction communication"
                     )
 
-    # temporary kludge for writing output files
+    # Because we have to use the mpio HDF5 drivers, we probably can't use py4DSTEM's
+    # built-in writer, so instead we hard-code the structure of a v0,7 EMD file and
+    # create it ourselves. Every worker replicates the group structure, which is apparently
+    # the right way to do this in MPI
     t_save_start = time()
     logger.info(f"Rank {rank} is saving data...")
     fout = h5py.File(
@@ -504,9 +507,6 @@ def run_MPI():
         source_sel=np.s_[local_valid_slice_x, local_valid_slice_y, :, :],
         dest_sel=np.s_[valid_slice_x, valid_slice_y, :, :],
     )
-    # dset[valid_slice_x, valid_slice_y, :, :] = recon[
-    #     local_valid_slice_x, local_valid_slice_y, :, :
-    # ]
     fout.close()
 
     logger.info(f"Rank {rank} is done! Writing data took {time()-t_save_start} seconds")
