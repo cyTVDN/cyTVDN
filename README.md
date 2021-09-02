@@ -39,6 +39,11 @@ To install, clone the git repo, navigate to the directory and run:
 pip install Cython
 pip install .
 ```
+Additional dependencies for distributed execution are installed by passing the MPI option:
+```bash
+pip install -e ".[MPI]"
+```
+(the parentheses stop the shell from thinking you want a regex.)
 
 ## Usage
 Example usage for EELS:
