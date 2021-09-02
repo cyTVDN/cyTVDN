@@ -8,7 +8,7 @@ import h5py
 from hurry import filesize
 import psutil
 
-from loguru import logging
+from loguru import logger
 import sys
 
 # old logging setup using the stdlib Logger
