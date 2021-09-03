@@ -86,7 +86,7 @@ def denoise4D(
             print(
                 "I tried to print with pretty characters but your system doesn't like Unicode..."
             )
-    if np.all(lam_mu <= (1.0 / 32.0)) and np.all(lam_mu > 0) and not quiet:
+    if (np.any(lam_mu > (1.0 / 32.0)) or np.any(lam_mu <= 0)) and not quiet:
         print("WARNING: Parameters must satisfy 0 < λ/μ <= 1/32 or result may diverge!")
 
     # warn about memory requirements
