@@ -84,7 +84,7 @@ setup(
         "numpy",
         "ipython",
         "tqdm"],
-    extras_require={"MPI": ["mpi4py", "h5py"]},
+    extras_require={"MPI": ["mpi4py", "h5py"], "IO":["py4DSTEM", "ncempy"]},
     setup_requires=["Cython"],
     entry_points={"console_scripts": ["cyTVMPI=cyTVDN.mpi:run_MPI"]},
 )

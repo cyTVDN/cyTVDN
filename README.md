@@ -39,11 +39,17 @@ To install, clone the git repo, navigate to the directory and run:
 pip install Cython
 pip install .
 ```
+
 Additional dependencies for distributed execution are installed by passing the MPI option:
 ```bash
 pip install -e ".[MPI]"
 ```
 (the parentheses stop the shell from thinking you want a regex.)
+
+The I/O handlers for 4D and 3D data can also be installed by specifying:
+```bash
+pip install -e ".[IO]"
+```
 
 ## Usage
 Example usage for EELS:
