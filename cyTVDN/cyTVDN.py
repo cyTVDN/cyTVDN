@@ -237,6 +237,8 @@ def denoise4D(
                 and delta_recon[i] < stopping_relative_change
             ):
                 # if we have converged, break out of the loop
+                if not quiet:
+                    print(f"Stopping condition reached after {i} iterations, stopping.")
                 break
 
     if calculate_MSE:
@@ -423,6 +425,8 @@ def denoise3D(
                 and delta_recon[i] < stopping_relative_change
             ):
                 # if we have converged, break out of the loop
+                if not quiet:
+                    print(f"Stopping condition reached after {i} iterations, stopping.")
                 break
 
     if calculate_error:
