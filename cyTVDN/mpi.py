@@ -35,7 +35,7 @@ try:
 except Exception:
     logger.info("Failed to import ncempy. Cannot read EELS data...")
 
-
+@logger.catch
 def run_MPI():
     import argparse
     import os
@@ -87,7 +87,7 @@ def run_MPI():
 
     args = vars(parser.parse_args())
 
-    VERBOSE = args["verbose"][0]
+    VERBOSE = args["verbose"]
     # VERBOSE = True
 
     ndim = args["dimensions"][0]
@@ -121,7 +121,7 @@ def run_MPI():
             size = data.shape[:2]
         # load EMD data:
         elif any(ftype in args["input"][0].split(".")[-1] for ftype in ("h5", "emd")):
-            py4d_memmap = py4DSTEM.io.read(args["input"][0],mem="MEMMAP")
+            py4d_memmap = py4DSTEM.io.read(args["input"][0],mem="MEMMAP",data_id=0)
             dataset_path = py4d_memmap.data.name
 
             h5_file = h5py.File(args["input"][0], "r", driver="mpio", comm=MPI.COMM_WORLD)
