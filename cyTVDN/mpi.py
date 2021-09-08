@@ -11,18 +11,6 @@ import psutil
 from loguru import logger
 import sys
 
-# old logging setup using the stdlib Logger
-# logger = logging.getLogger("cyTVDN")
-# logger.setLevel(logging.DEBUG)
-# logger.handlers = []
-
-# handler = logging.StreamHandler(sys.stdout)
-# handler.setLevel(logging.DEBUG)
-# formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-# handler.setFormatter(formatter)
-# logger.addHandler(handler)
-
-# new loguru log setup:
 logger.add(sys.stdout)
 
 try:

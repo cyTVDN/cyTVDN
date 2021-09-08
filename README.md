@@ -101,7 +101,9 @@ CC=icc LDSHARED="icc -shared" python setup.py build_ext
 **Using the Cray compiler causes weird OpenMP behavior when combined with MPI, where all threads attempt to use the same single core! But this doesn't happen on a single node interactive job, and I don't know why. Using the Intel compiler did not have this problem.**
 
 #### MPI
-For datasets that are too large to fit in RAM on a single machine, an MPI implementation is provided. The implementation is roughly as follows:
+For datasets that are too large to fit in RAM on a single machine, an MPI implementation is provided. You will need to link against an MPI build of `h5py` to run with MPI. (Many HPC facilities provide this, or you can build it yourself). 
+
+The implementation is roughly as follows:
 * Divide the work across a 2D grid along the real-space axes. (*This is not necessarily the most efficient division of labor, but it makes I/O and communication easier.*)
 * Each worker loads a chunk of the data, with one pixel of overlap in scan position in each direction. At the edges of the scan there is no "overlap." 
 * Each worker performs an acuumulator update step using only its local hunk. *Some of the computed values at the boundaries are invalid because they do not respect the global boundary conditions of the problem.*

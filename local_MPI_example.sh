@@ -5,6 +5,8 @@
 # pip uninstall h5py
 # brew install hdf5-mpi
 # CC="mpicc" HDF5_MPI="ON" HDF5_DIR="***PATH/TO/HDF5/INSTALL" pip install --no-binary=h5py h5py
+# with the caveat that homebrew will refuse to install hdf5-mpi if you already have an
+# hdf5 install... in which case you can `brew unlink hdf5` beforehand.
 
 OMP_NUM_THREADS=1 \
 mpirun -n 4 \
